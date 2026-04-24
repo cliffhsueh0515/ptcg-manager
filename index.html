@@ -167,7 +167,8 @@
       <input type="text" id="searchInput" placeholder="🔍 搜尋卡牌名稱或賽場標誌..." oninput="render()">
       <select id="sortSelect" onchange="render()">
         <option value="reg">排序：賽場標誌</option>
-        <option value="name">排序：名稱</option>
+        <option value="cat">排序：類別</option>
+        <option value="type">排序：屬性</option>
         <option value="qty">排序：張數</option>
         <option value="rarity">排序：稀有度</option>
       </select>
@@ -443,8 +444,11 @@ window.render = () => {
     if (q && !c.name.toLowerCase().includes(q) && !c.reg.toLowerCase().includes(q)) return false;
     return true;
   });
+  const catOrder = ['寶可夢','支援者','物品','道具','能量'];
+  const typeOrder = ['一般','火','水','草','電','惡','超','鬥','鋼','龍'];
   list.sort((a,b) => {
-    if (sort==='name')   return a.name.localeCompare(b.name,'zh-Hant');
+    if (sort==='cat')    return (catOrder.indexOf(a.cat)||0) - (catOrder.indexOf(b.cat)||0);
+    if (sort==='type')   return (typeOrder.indexOf(a.type||'一般')||0) - (typeOrder.indexOf(b.type||'一般')||0);
     if (sort==='qty')    return b.qty - a.qty;
     if (sort==='rarity') return (ro[a.rarity]||0) - (ro[b.rarity]||0);
     return a.reg.localeCompare(b.reg);
