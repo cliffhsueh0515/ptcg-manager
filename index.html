@@ -202,9 +202,9 @@
     <div class="field"><label>名稱</label><input type="text" id="fName" placeholder="例：皮卡丘 ex"></div>
     <div class="field-row">
       <div class="field"><label>類別</label>
-        <select id="fCat"><option>寶可夢</option><option>支援者</option><option>物品</option><option>道具</option><option>能量</option></select>
+        <select id="fCat" onchange="toggleTypeField()"><option>寶可夢</option><option>支援者</option><option>物品</option><option>道具</option><option>能量</option></select>
       </div>
-      <div class="field"><label>屬性</label>
+      <div class="field" id="typeField"><label>屬性</label>
         <select id="fType"><option>一般</option><option>火</option><option>水</option><option>草</option><option>電</option><option>惡</option><option>超</option><option>鬥</option><option>鋼</option><option>龍</option></select>
       </div>
     </div>
@@ -231,12 +231,12 @@
 //  🔧 將下方 YOUR_... 替換成你的 Firebase 設定
 // ══════════════════════════════════════════════════════
 const firebaseConfig = {
-  apiKey: "AIzaSyA7yVaW3zF1P805JlnEpHn8yhLcD2v9Orw",
-  authDomain: "ptcg-manager-4ff61.firebaseapp.com",
-  projectId: "ptcg-manager-4ff61",
-  storageBucket: "ptcg-manager-4ff61.firebasestorage.app",
+  apiKey:            "AIzaSyA7yVaW3zF1P805JlnEpHn8yhLcD2v9Orw",
+  authDomain:        "ptcg-manager-4ff61.firebaseapp.com",
+  projectId:         "ptcg-manager-4ff61",
+  storageBucket:     "ptcg-manager-4ff61.firebasestorage.app",
   messagingSenderId: "340810690111",
-  appId: "1:340810690111:web:ed9a7001e3b6f5bb00128a"
+  appId:             "1:340810690111:web:ed9a7001e3b6f5bb00128a"
 };
 // ══════════════════════════════════════════════════════
 
@@ -277,6 +277,13 @@ const RARITY_CONFIG = {
 const RARITIES = ['全部','◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
   '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)',
   '◇ ACE SPEC','♦ PR (Promo)','其他'];
+
+// ── 屬性欄位顯示控制 ──
+window.toggleTypeField = () => {
+  const isPokemon = document.getElementById('fCat').value === '寶可夢';
+  document.getElementById('typeField').style.display = isPokemon ? '' : 'none';
+  if (!isPokemon) document.getElementById('fType').value = '一般';
+};
 
 // ── Auth ──
 onAuthStateChanged(auth, user => {
@@ -354,6 +361,7 @@ window.editCard = (id) => {
   document.getElementById('fRarity').value  = c.rarity || '◆ C (Common)';
   document.getElementById('fQty').value     = c.qty;
 
+  toggleTypeField();
   document.getElementById('modalBg').classList.add('open');
 };
 
@@ -367,6 +375,7 @@ window.openModal = () => {
   document.getElementById('fRarity').value  = '◆ C (Common)';
   document.getElementById('fQty').value     = '1';
   document.getElementById('modalBg').classList.add('open');
+  toggleTypeField();
   setTimeout(() => document.getElementById('fName').focus(), 100);
 };
 
@@ -378,7 +387,7 @@ window.saveCard = async () => {
     reg:      document.getElementById('fReg').value,
     name:     document.getElementById('fName').value.trim(),
     cat:      document.getElementById('fCat').value,
-    type:     document.getElementById('fType').value,
+    type:     document.getElementById('fCat').value === '寶可夢' ? document.getElementById('fType').value : '',
     rarity:   document.getElementById('fRarity').value,
     qty:      Math.max(1, parseInt(document.getElementById('fQty').value)||1),
   };
@@ -416,6 +425,10 @@ window.buildFilters = () => {
   makeFilter('catFilter',   ['全部','寶可夢','支援者','物品','道具','能量'], filterCat,    v=>filterCat=v);
   makeFilter('typeFilter',  ['全部','一般','火','水','草','電','惡','超','鬥','鋼','龍'], filterType, v=>filterType=v);
   makeFilter('rarityFilter', RARITIES, filterRarity, v=>filterRarity=v);
+  // 若篩選類別不是寶可夢，隱藏屬性篩選列
+  const showType = filterCat === '全部' || filterCat === '寶可夢';
+  document.getElementById('typeFilter').style.display = showType ? '' : 'none';
+  if (!showType && filterType !== '全部') { filterType = '全部'; }
 };
 
 // ── Render ──
@@ -448,7 +461,7 @@ window.render = () => {
       <td><span class="reg-badge">${c.reg}</span></td>
       <td style="font-weight:600">${c.name}</td>
       <td><span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span></td>
-      <td><span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span></td>
+      <td>${c.type ? `<span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span>` : '—'}</td>
       <td><span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity||''}</span></td>
       <td><div class="qty-wrap">
         <button class="qty-btn" onclick="changeQty('${c.id}',-1)">−</button>
