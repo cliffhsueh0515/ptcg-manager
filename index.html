@@ -6,51 +6,62 @@
   <title>PTCG 卡牌管理系統</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #ffffff;
-      --bg2: #f5f5f5;
-      --bg3: #eeeeee;
-      --text: #1a1a1a;
-      --text2: #555555;
-      --border: rgba(0,0,0,0.12);
-      --border2: rgba(0,0,0,0.22);
-      --blue: #378ADD;
-      --blue-dark: #185FA5;
-      --blue-light: #E6F1FB;
-      --radius: 8px;
-      --radius-lg: 12px;
+      --bg: #ffffff; --bg2: #f5f5f5; --bg3: #eeeeee;
+      --text: #1a1a1a; --text2: #555555;
+      --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
+      --blue: #378ADD; --blue-dark: #185FA5; --blue-light: #E6F1FB;
+      --red: #E24B4A; --red-light: #FCEBEB;
+      --radius: 8px; --radius-lg: 12px;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1c1c1e;
-        --bg2: #2c2c2e;
-        --bg3: #3a3a3c;
-        --text: #f2f2f7;
-        --text2: #aeaeb2;
-        --border: rgba(255,255,255,0.12);
-        --border2: rgba(255,255,255,0.22);
-        --blue-light: #1a3352;
+        --bg: #1c1c1e; --bg2: #2c2c2e; --bg3: #3a3a3c;
+        --text: #f2f2f7; --text2: #aeaeb2;
+        --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
+        --blue-light: #1a3352; --red-light: #3a1515;
       }
     }
-
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg2); color: var(--text); min-height: 100vh; }
 
-    .topbar { background: var(--bg); border-bottom: 0.5px solid var(--border); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 50; }
-    .topbar-title { font-size: 17px; font-weight: 600; flex: 1; }
-    .topbar-sub { font-size: 12px; color: var(--text2); }
+    /* Auth */
+    .auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
+    .auth-card { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 2.5rem 2rem; width: 100%; max-width: 360px; text-align: center; }
+    .auth-logo { font-size: 52px; margin-bottom: 0.75rem; }
+    .auth-title { font-size: 22px; font-weight: 700; margin-bottom: 0.25rem; }
+    .auth-sub { font-size: 13px; color: var(--text2); margin-bottom: 2rem; }
+    .btn-google { width: 100%; padding: 12px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border2); border-radius: var(--radius); font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-google:hover { background: var(--bg2); }
+    .btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
+    .google-icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .auth-note { font-size: 12px; color: var(--text2); margin-top: 1.25rem; line-height: 1.6; }
+    .auth-error { background: var(--red-light); color: var(--red); font-size: 13px; padding: 8px 12px; border-radius: var(--radius); margin-top: 1rem; display: none; }
+    .auth-error.show { display: block; }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    /* App */
+    .app-screen { display: none; }
+    .app-screen.visible { display: block; }
+    .topbar { background: var(--bg); border-bottom: 0.5px solid var(--border); padding: 0 1.25rem; height: 54px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 50; }
+    .topbar-title { font-size: 16px; font-weight: 700; flex: 1; }
+    .user-info { display: flex; align-items: center; gap: 8px; }
+    .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+    .user-avatar-fallback { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .user-name { font-size: 13px; color: var(--text2); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-logout { padding: 5px 12px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: none; color: var(--text2); font-size: 12px; cursor: pointer; }
+    .btn-logout:hover { background: var(--bg2); }
+    .btn-add { background: var(--blue); color: white; border: none; padding: 7px 14px; border-radius: var(--radius); font-size: 13px; cursor: pointer; font-weight: 600; white-space: nowrap; }
+    .btn-add:hover { background: var(--blue-dark); }
 
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap: 10px; margin-bottom: 1.25rem; }
+    .container { max-width: 1040px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px,1fr)); gap: 10px; margin-bottom: 1.25rem; }
     .stat-card { background: var(--bg); border-radius: var(--radius); padding: 0.75rem 1rem; border: 0.5px solid var(--border); }
     .stat-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
-    .stat-val { font-size: 24px; font-weight: 600; }
+    .stat-val { font-size: 22px; font-weight: 700; }
 
     .toolbar { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 1rem; margin-bottom: 1rem; }
     .filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
     .filters:last-child { margin-bottom: 0; }
-    .filter-label { font-size: 12px; color: var(--text2); white-space: nowrap; min-width: 48px; }
+    .filter-label { font-size: 12px; color: var(--text2); white-space: nowrap; min-width: 44px; }
     .filter-btn { font-size: 12px; padding: 3px 10px; border: 0.5px solid var(--border2); border-radius: 20px; background: var(--bg); color: var(--text2); cursor: pointer; transition: all 0.15s; }
     .filter-btn.active, .filter-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
 
@@ -59,55 +70,78 @@
     .search-row input { flex: 1; min-width: 140px; }
     .search-row input:focus, .search-row select:focus { border-color: var(--blue); }
 
-    .btn-add { background: var(--blue); color: white; border: none; padding: 8px 18px; border-radius: var(--radius); font-size: 14px; cursor: pointer; font-weight: 600; white-space: nowrap; }
-    .btn-add:hover { background: var(--blue-dark); }
-
+    /* Table */
     .card-table { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); overflow: hidden; }
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
     th { font-size: 11px; color: var(--text2); font-weight: 500; padding: 10px 12px; text-align: left; border-bottom: 0.5px solid var(--border); white-space: nowrap; background: var(--bg2); }
-    td { padding: 9px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+    td { padding: 8px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--bg2); }
 
-    .reg-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white; font-size: 11px; font-weight: 600; }
+    /* Card thumbnail */
+    .card-thumb-wrap { width: 44px; height: 62px; border-radius: 5px; overflow: hidden; background: var(--bg3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .card-thumb { width: 44px; height: 62px; object-fit: cover; border-radius: 5px; display: block; cursor: pointer; transition: transform 0.15s; }
+    .card-thumb:hover { transform: scale(1.08); }
+    .card-thumb-placeholder { font-size: 22px; }
+
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); z-index: 500; align-items: center; justify-content: center; padding: 1rem; cursor: pointer; }
+    .lightbox.open { display: flex; }
+    .lightbox-img { max-width: min(380px,90vw); max-height: 88vh; border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.6); cursor: default; }
+    .lightbox-close { position: absolute; top: 1rem; right: 1.25rem; color: white; font-size: 28px; cursor: pointer; line-height: 1; opacity: 0.8; }
+    .lightbox-close:hover { opacity: 1; }
+
+    .reg-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white; font-size: 11px; font-weight: 700; }
     .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 500; white-space: nowrap; }
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-    .series-text { font-size: 12px; color: var(--text2); white-space: nowrap; }
+    .card-num-text { font-size: 11px; color: var(--text2); font-family: monospace; letter-spacing: 0.3px; }
 
     .qty-wrap { display: flex; align-items: center; gap: 6px; }
-    .qty-btn { width: 22px; height: 22px; border: 0.5px solid var(--border2); border-radius: 5px; background: var(--bg); color: var(--text); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+    .qty-btn { width: 22px; height: 22px; border: 0.5px solid var(--border2); border-radius: 5px; background: var(--bg); color: var(--text); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .qty-btn:hover { background: var(--bg3); }
-    .qty-num { min-width: 22px; text-align: center; font-size: 13px; font-weight: 600; }
-
+    .qty-num { min-width: 22px; text-align: center; font-size: 13px; font-weight: 700; }
     .action-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 3px 7px; border-radius: 5px; color: var(--text2); }
     .action-btn.edit:hover { color: var(--blue); background: var(--blue-light); }
-    .action-btn.del:hover { color: #E24B4A; background: #FCEBEB; }
-
+    .action-btn.del:hover { color: var(--red); background: var(--red-light); }
     .empty { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; }
+    .loading-msg { text-align: center; padding: 2rem; color: var(--text2); font-size: 14px; }
 
     /* Modal */
     .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
     .modal-bg.open { display: flex; }
-    .modal { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 1.5rem; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
-    .modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 1.25rem; }
+    .modal { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 1.5rem; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; }
+    .modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 1.25rem; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .field { margin-bottom: 12px; }
     .field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 5px; }
     .field input, .field select { width: 100%; padding: 8px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 14px; outline: none; }
     .field input:focus, .field select:focus { border-color: var(--blue); }
+    .field-hint { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
+    /* 卡號查詢區 */
+    .card-lookup { display: flex; gap: 6px; }
+    .card-lookup input { flex: 1; }
+    .btn-lookup { padding: 8px 11px; background: var(--bg2); border: 0.5px solid var(--border2); border-radius: var(--radius); font-size: 12px; color: var(--text); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .btn-lookup:hover { background: var(--bg3); }
+    .btn-lookup:disabled { opacity: 0.5; cursor: not-allowed; }
+    .lookup-result { margin-top: 10px; display: none; align-items: center; gap: 10px; padding: 8px; background: var(--bg2); border-radius: var(--radius); }
+    .lookup-result.show { display: flex; }
+    .lookup-img { width: 48px; border-radius: 4px; flex-shrink: 0; }
+    .lookup-info { font-size: 12px; color: var(--text2); line-height: 1.5; }
+    .lookup-info strong { color: var(--text); font-size: 13px; display: block; }
+    .lookup-error { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
+    .lookup-error.show { display: block; }
     .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
     .btn-cancel { padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: none; color: var(--text2); font-size: 14px; cursor: pointer; }
-    .btn-cancel:hover { background: var(--bg2); }
     .btn-save { padding: 8px 18px; background: var(--blue); color: white; border: none; border-radius: var(--radius); font-size: 14px; cursor: pointer; font-weight: 600; }
-    .btn-save:hover { background: var(--blue-dark); }
+    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Toast */
     .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a1a1a; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 300; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     @media (max-width: 600px) {
-      .topbar { padding: 0 1rem; }
+      .topbar { padding: 0 0.75rem; }
+      .user-name { display: none; }
       .container { padding: 1rem 0.75rem 3rem; }
       .field-row { grid-template-columns: 1fr; }
     }
@@ -115,49 +149,80 @@
 </head>
 <body>
 
-<div class="topbar">
-  <span class="topbar-title">🃏 PTCG 卡牌管理系統</span>
-  <span class="topbar-sub" id="saveStatus">資料儲存於此裝置</span>
-  <button class="btn-add" onclick="openModal()">+ 新增卡牌</button>
+<!-- 登入畫面 -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">🃏</div>
+    <div class="auth-title">PTCG 卡牌管理系統</div>
+    <div class="auth-sub">登入以管理你的個人卡牌收藏</div>
+    <button class="btn-google" id="btnGoogle" onclick="loginGoogle()">
+      <svg class="google-icon" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      使用 Google 帳號登入
+    </button>
+    <div class="auth-error" id="authError"></div>
+    <div class="auth-note">每位玩家的卡牌資料獨立保存於雲端<br>任何裝置皆可存取</div>
+  </div>
 </div>
 
-<div class="container">
-  <div class="stats-row" id="statsRow"></div>
-
-  <div class="toolbar">
-    <div class="filters" id="catFilter"></div>
-    <div class="filters" id="typeFilter"></div>
-    <div class="filters" id="rarityFilter"></div>
-  </div>
-
-  <div class="search-row">
-    <input type="text" id="searchInput" placeholder="🔍 搜尋名稱、賽場標誌或系列..." oninput="render()">
-    <select id="sortSelect" onchange="render()">
-      <option value="reg">排序：賽場標誌</option>
-      <option value="name">排序：名稱</option>
-      <option value="qty">排序：張數</option>
-      <option value="series">排序：系列別</option>
-      <option value="rarity">排序：稀有度</option>
-    </select>
-  </div>
-
-  <div class="card-table">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>賽場標誌</th><th>名稱</th><th>類別</th><th>屬性</th>
-            <th>系列別</th><th>稀有度</th><th>擁有張數</th><th></th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
+<!-- 主畫面 -->
+<div class="app-screen" id="appScreen">
+  <div class="topbar">
+    <span class="topbar-title">🃏 PTCG 卡牌管理系統</span>
+    <div class="user-info">
+      <div class="user-avatar-fallback" id="userAvatarFallback"></div>
+      <img class="user-avatar" id="userAvatar" style="display:none" alt="">
+      <span class="user-name" id="userName"></span>
     </div>
-    <div class="empty" id="emptyMsg" style="display:none">尚無符合條件的卡牌<br><small style="margin-top:6px;display:block">點選右上角「新增卡牌」開始管理你的收藏</small></div>
+    <button class="btn-logout" onclick="logout()">登出</button>
+    <button class="btn-add" onclick="openModal()">+ 新增卡牌</button>
+  </div>
+  <div class="container">
+    <div class="stats-row" id="statsRow"></div>
+    <div class="toolbar">
+      <div class="filters" id="catFilter"></div>
+      <div class="filters" id="typeFilter"></div>
+      <div class="filters" id="rarityFilter"></div>
+    </div>
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="🔍 搜尋卡牌名稱或賽場標誌..." oninput="render()">
+      <select id="sortSelect" onchange="render()">
+        <option value="reg">排序：賽場標誌</option>
+        <option value="name">排序：名稱</option>
+        <option value="qty">排序：張數</option>
+        <option value="rarity">排序：稀有度</option>
+      </select>
+    </div>
+    <div class="card-table">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>卡面</th><th>賽場標誌</th><th>名稱</th><th>類別</th><th>屬性</th>
+            <th>稀有度</th><th>卡片編號</th><th>擁有張數</th><th></th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="loading-msg" id="loadingMsg">載入卡牌資料中...</div>
+      <div class="empty" id="emptyMsg" style="display:none">
+        尚無符合條件的卡牌<br>
+        <small style="margin-top:6px;display:block">點選右上角「新增卡牌」開始管理你的收藏</small>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- 燈箱 -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<!-- 新增/編輯 Modal -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <h3 id="modalTitle">新增卡牌</h3>
@@ -174,233 +239,350 @@
         <select id="fType"><option>一般</option><option>火</option><option>水</option><option>草</option><option>電</option><option>惡</option><option>超</option><option>鬥</option><option>鋼</option><option>龍</option></select>
       </div>
     </div>
-    <div class="field"><label>系列別</label>
-      <select id="fSeries">
-        <option>SV1 朱與紫</option><option>SV2 拱廊之星</option><option>SV3 黑焰支配者</option>
-        <option>SV3a 幻之面具</option><option>SV4 古代咆哮</option><option>SV4a 未來閃光</option>
-        <option>SV5 時空奇異點</option><option>SV6 塵霧之面紗</option><option>SV6a 天蜂之假面</option>
-        <option>SV7 超電磁波的暴走</option><option>SV7a 翻滾狂歡</option><option>SV8 超越天空</option>
-        <option>SV8a 幻彩傳說</option><option>其他/促銷</option>
-      </select>
-    </div>
     <div class="field"><label>稀有度</label>
       <select id="fRarity">
         <option>◆ C (Common)</option><option>◆◆ U (Uncommon)</option><option>◆◆◆ R (Rare)</option>
         <option>◆◆◆◆ RR (Double Rare)</option><option>★ AR (Art Rare)</option>
         <option>★★ SAR (Special Art Rare)</option><option>★★★ UR (Ultra Rare)</option>
-        <option>★★★★ SR (Super Rare)</option><option>◇ ACE SPEC</option><option>♦ PR (Promo)</option>
+        <option>★★★★ SR (Super Rare)</option><option>◇ ACE SPEC</option><option>♦ PR (Promo)</option><option>其他</option>
       </select>
+    </div>
+    <!-- 卡片編號 + 查詢卡面 -->
+    <div class="field">
+      <label>卡片編號 <span style="font-weight:400;color:var(--text2)">（選填，用於顯示卡面圖片）</span></label>
+      <div class="card-lookup">
+        <input type="text" id="fCardNum" placeholder="例：sv1-25　sv4pt5-268">
+        <button class="btn-lookup" id="btnLookup" onclick="lookupCard()">查詢卡面</button>
+      </div>
+      <div class="field-hint">卡片編號印在卡牌左下角，格式如 sv4-218 或 sv3-185<br>輸入後點「查詢卡面」確認圖片正確後再儲存</div>
+      <div class="lookup-result" id="lookupResult">
+        <img class="lookup-img" id="lookupImg" src="" alt="">
+        <div class="lookup-info"><strong id="lookupName"></strong><span id="lookupSet"></span></div>
+      </div>
+      <div class="lookup-error" id="lookupError">找不到此卡片，請確認編號是否正確（區分大小寫）</div>
     </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">取消</button>
-      <button class="btn-save" onclick="saveCard()">儲存</button>
+      <button class="btn-save" id="btnSave" onclick="saveCard()">儲存</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script type="module">
+// ══════════════════════════════════════════════════════
+//  🔧 將下方 YOUR_... 替換成你的 Firebase 設定
+// ══════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyA7yVaW3zF1P805JlnEpHn8yhLcD2v9Orw",
+  authDomain: "ptcg-manager-4ff61.firebaseapp.com",
+  projectId: "ptcg-manager-4ff61",
+  storageBucket: "ptcg-manager-4ff61.firebasestorage.app",
+  messagingSenderId: "340810690111",
+  appId: "1:340810690111:web:ed9a7001e3b6f5bb00128a"
+};
+// ══════════════════════════════════════════════════════
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app       = initializeApp(firebaseConfig);
+const auth      = getAuth(app);
+const db        = getFirestore(app);
+const gProvider = new GoogleAuthProvider();
+
+const PTCG_API = 'https://api.pokemontcg.io/v2/cards';
+
+let currentUser = null, cards = [], editId = null;
+let filterCat = '全部', filterType = '全部', filterRarity = '全部';
+let pendingImageUrl = '';
+
 const TYPE_CONFIG = {
-  '一般':{bg:'#F1EFE8',color:'#444441',dot:'#888780'},
-  '火':{bg:'#FAECE7',color:'#993C1D',dot:'#EF5350'},
-  '水':{bg:'#E6F1FB',color:'#185FA5',dot:'#42A5F5'},
-  '草':{bg:'#EAF3DE',color:'#3B6D11',dot:'#66BB6A'},
-  '電':{bg:'#FAEEDA',color:'#854F0B',dot:'#FDD835'},
-  '惡':{bg:'#2C2C2A',color:'#D3D1C7',dot:'#888780'},
-  '超':{bg:'#EEEDFE',color:'#3C3489',dot:'#AB47BC'},
-  '鬥':{bg:'#FAECE7',color:'#712B13',dot:'#FF7043'},
-  '鋼':{bg:'#F1EFE8',color:'#3C3489',dot:'#78909C'},
-  '龍':{bg:'#EEEDFE',color:'#26215C',dot:'#5C6BC0'},
+  '一般':{bg:'#F1EFE8',color:'#444441',dot:'#888780'},'火':{bg:'#FAECE7',color:'#993C1D',dot:'#EF5350'},
+  '水':{bg:'#E6F1FB',color:'#185FA5',dot:'#42A5F5'},'草':{bg:'#EAF3DE',color:'#3B6D11',dot:'#66BB6A'},
+  '電':{bg:'#FAEEDA',color:'#854F0B',dot:'#FDD835'},'惡':{bg:'#2C2C2A',color:'#D3D1C7',dot:'#888780'},
+  '超':{bg:'#EEEDFE',color:'#3C3489',dot:'#AB47BC'},'鬥':{bg:'#FAECE7',color:'#712B13',dot:'#FF7043'},
+  '鋼':{bg:'#F1EFE8',color:'#3C3489',dot:'#78909C'},'龍':{bg:'#EEEDFE',color:'#26215C',dot:'#5C6BC0'},
 };
 const CAT_CONFIG = {
-  '寶可夢':{bg:'#E6F1FB',color:'#0C447C'},
-  '支援者':{bg:'#EEEDFE',color:'#3C3489'},
-  '物品':{bg:'#EAF3DE',color:'#27500A'},
-  '道具':{bg:'#FAEEDA',color:'#633806'},
-  '能量':{bg:'#FAECE7',color:'#993C1D'},
+  '寶可夢':{bg:'#E6F1FB',color:'#0C447C'},'支援者':{bg:'#EEEDFE',color:'#3C3489'},
+  '物品':{bg:'#EAF3DE',color:'#27500A'},'道具':{bg:'#FAEEDA',color:'#633806'},'能量':{bg:'#FAECE7',color:'#993C1D'},
 };
 const RARITY_CONFIG = {
-  '◆ C (Common)':{bg:'#F1EFE8',color:'#444441'},
-  '◆◆ U (Uncommon)':{bg:'#EAF3DE',color:'#3B6D11'},
-  '◆◆◆ R (Rare)':{bg:'#E6F1FB',color:'#0C447C'},
-  '◆◆◆◆ RR (Double Rare)':{bg:'#EEEDFE',color:'#3C3489'},
-  '★ AR (Art Rare)':{bg:'#FAEEDA',color:'#633806'},
-  '★★ SAR (Special Art Rare)':{bg:'#FAECE7',color:'#993C1D'},
-  '★★★ UR (Ultra Rare)':{bg:'#FAEEDA',color:'#854F0B'},
-  '★★★★ SR (Super Rare)':{bg:'#FAECE7',color:'#712B13'},
-  '◇ ACE SPEC':{bg:'#E6F1FB',color:'#185FA5'},
-  '♦ PR (Promo)':{bg:'#EEEDFE',color:'#26215C'},
+  '◆ C (Common)':{bg:'#F1EFE8',color:'#444441'},'◆◆ U (Uncommon)':{bg:'#EAF3DE',color:'#3B6D11'},
+  '◆◆◆ R (Rare)':{bg:'#E6F1FB',color:'#0C447C'},'◆◆◆◆ RR (Double Rare)':{bg:'#EEEDFE',color:'#3C3489'},
+  '★ AR (Art Rare)':{bg:'#FAEEDA',color:'#633806'},'★★ SAR (Special Art Rare)':{bg:'#FAECE7',color:'#993C1D'},
+  '★★★ UR (Ultra Rare)':{bg:'#FAEEDA',color:'#854F0B'},'★★★★ SR (Super Rare)':{bg:'#FAECE7',color:'#712B13'},
+  '◇ ACE SPEC':{bg:'#E6F1FB',color:'#185FA5'},'♦ PR (Promo)':{bg:'#EEEDFE',color:'#26215C'},
+  '其他':{bg:'#F1EFE8',color:'#888780'},
 };
-const RARITIES = ['全部','◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)','★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)','◇ ACE SPEC','♦ PR (Promo)'];
-const STORAGE_KEY = 'ptcg_cards_v1';
+const RARITIES = ['全部','◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
+  '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)',
+  '◇ ACE SPEC','♦ PR (Promo)','其他'];
 
-let cards = [], nextId = 1, editId = null;
-let filterCat = '全部', filterType = '全部', filterRarity = '全部';
+// ── Auth ──
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('appScreen').classList.add('visible');
+    if (user.photoURL) {
+      const img = document.getElementById('userAvatar');
+      img.src = user.photoURL; img.style.display = 'block';
+      document.getElementById('userAvatarFallback').style.display = 'none';
+    } else {
+      document.getElementById('userAvatarFallback').textContent = (user.displayName||'U')[0].toUpperCase();
+    }
+    document.getElementById('userName').textContent = user.displayName || user.email;
+    loadCards();
+  } else {
+    currentUser = null; cards = [];
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('appScreen').classList.remove('visible');
+  }
+});
 
-// --- Storage ---
-function loadData() {
+window.loginGoogle = async () => {
+  const btn = document.getElementById('btnGoogle');
+  btn.disabled = true; btn.textContent = '登入中...';
+  try { await signInWithPopup(auth, gProvider); }
+  catch(e) {
+    const err = document.getElementById('authError');
+    err.textContent = e.code === 'auth/popup-closed-by-user' ? '登入視窗已關閉，請再試一次' : '登入失敗，請再試一次';
+    err.classList.add('show');
+    btn.disabled = false; btn.textContent = '使用 Google 帳號登入';
+  }
+};
+window.logout = () => signOut(auth);
+
+const cardsRef = () => collection(db, 'users', currentUser.uid, 'cards');
+
+async function loadCards() {
+  document.getElementById('loadingMsg').style.display = 'block';
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) { const d = JSON.parse(raw); cards = d.cards||[]; nextId = d.nextId||(cards.length?Math.max(...cards.map(c=>c.id))+1:1); }
-  } catch(e) {}
-}
-function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({cards, nextId})); } catch(e) {}
-}
-
-// --- Toast ---
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 2000);
+    const snap = await getDocs(cardsRef());
+    cards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { showToast('❌ 載入失敗'); }
+  document.getElementById('loadingMsg').style.display = 'none';
+  buildFilters(); render();
 }
 
-// --- Init selects ---
-function initSelects() {
-  const sel = document.getElementById('fReg');
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l=>{const o=document.createElement('option');o.value=l;o.textContent=l;sel.appendChild(o);});
-}
+// ── 卡面查詢 ──
+window.lookupCard = async () => {
+  const cardId = document.getElementById('fCardNum').value.trim().replace(/\s+/g,'-');
+  const btn    = document.getElementById('btnLookup');
+  const result = document.getElementById('lookupResult');
+  const errEl  = document.getElementById('lookupError');
+  result.classList.remove('show'); errEl.classList.remove('show');
+  if (!cardId) return;
+  btn.disabled = true; btn.textContent = '查詢中...';
+  try {
+    const res  = await fetch(`${PTCG_API}/${cardId}`);
+    const data = await res.json();
+    if (data.data) {
+      const card = data.data;
+      pendingImageUrl = card.images?.small || '';
+      document.getElementById('lookupImg').src  = pendingImageUrl;
+      document.getElementById('lookupName').textContent = card.name;
+      document.getElementById('lookupSet').textContent  = card.set?.name ? ` · ${card.set.name}` : '';
+      result.classList.add('show');
+      if (!document.getElementById('fName').value) document.getElementById('fName').value = card.name;
+    } else { errEl.classList.add('show'); pendingImageUrl = ''; }
+  } catch(e) { errEl.classList.add('show'); pendingImageUrl = ''; }
+  btn.disabled = false; btn.textContent = '查詢卡面';
+};
 
-// --- Filters ---
+// ── 燈箱 ──
+window.openLightbox = (url) => {
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightbox').classList.add('open');
+};
+window.closeLightbox = () => document.getElementById('lightbox').classList.remove('open');
+
+// ── CRUD ──
+window.changeQty = async (id, delta) => {
+  const c = cards.find(x=>x.id===id); if (!c) return;
+  const qty = Math.max(1, c.qty+delta);
+  try { await updateDoc(doc(db,'users',currentUser.uid,'cards',id),{qty}); c.qty=qty; render(); }
+  catch(e) { showToast('❌ 更新失敗'); }
+};
+
+window.delCard = async (id) => {
+  if (!confirm('確定要刪除這張卡牌嗎？')) return;
+  try {
+    await deleteDoc(doc(db,'users',currentUser.uid,'cards',id));
+    cards = cards.filter(x=>x.id!==id); render(); showToast('已刪除');
+  } catch(e) { showToast('❌ 刪除失敗'); }
+};
+
+window.editCard = (id) => {
+  const c = cards.find(x=>x.id===id); if (!c) return;
+  editId = id; pendingImageUrl = c.imageUrl || '';
+  document.getElementById('modalTitle').textContent = '編輯卡牌';
+  document.getElementById('fReg').value     = c.reg;
+  document.getElementById('fName').value    = c.name;
+  document.getElementById('fCat').value     = c.cat;
+  document.getElementById('fType').value    = c.type;
+  document.getElementById('fRarity').value  = c.rarity || '◆ C (Common)';
+  document.getElementById('fCardNum').value = c.cardNum || '';
+  document.getElementById('fQty').value     = c.qty;
+  const result = document.getElementById('lookupResult');
+  result.classList.remove('show');
+  document.getElementById('lookupError').classList.remove('show');
+  if (c.imageUrl) {
+    document.getElementById('lookupImg').src  = c.imageUrl;
+    document.getElementById('lookupName').textContent = c.name;
+    document.getElementById('lookupSet').textContent  = c.cardNum ? ` · ${c.cardNum}` : '';
+    result.classList.add('show');
+  }
+  document.getElementById('modalBg').classList.add('open');
+};
+
+window.openModal = () => {
+  editId = null; pendingImageUrl = '';
+  document.getElementById('modalTitle').textContent = '新增卡牌';
+  document.getElementById('fReg').value     = 'A';
+  document.getElementById('fName').value    = '';
+  document.getElementById('fCat').value     = '寶可夢';
+  document.getElementById('fType').value    = '一般';
+  document.getElementById('fRarity').value  = '◆ C (Common)';
+  document.getElementById('fCardNum').value = '';
+  document.getElementById('fQty').value     = '1';
+  document.getElementById('lookupResult').classList.remove('show');
+  document.getElementById('lookupError').classList.remove('show');
+  document.getElementById('btnLookup').textContent = '查詢卡面';
+  document.getElementById('modalBg').classList.add('open');
+  setTimeout(() => document.getElementById('fName').focus(), 100);
+};
+
+window.closeModal = () => document.getElementById('modalBg').classList.remove('open');
+
+window.saveCard = async () => {
+  const btn = document.getElementById('btnSave');
+  const data = {
+    reg:      document.getElementById('fReg').value,
+    name:     document.getElementById('fName').value.trim(),
+    cat:      document.getElementById('fCat').value,
+    type:     document.getElementById('fType').value,
+    rarity:   document.getElementById('fRarity').value,
+    cardNum:  document.getElementById('fCardNum').value.trim(),
+    imageUrl: pendingImageUrl,
+    qty:      Math.max(1, parseInt(document.getElementById('fQty').value)||1),
+  };
+  if (!data.name) { alert('請輸入卡牌名稱'); return; }
+  btn.disabled = true; btn.textContent = '儲存中...';
+  try {
+    if (editId) {
+      await updateDoc(doc(db,'users',currentUser.uid,'cards',editId), data);
+      Object.assign(cards.find(x=>x.id===editId), data);
+      showToast('✅ 已更新');
+    } else {
+      const ref = await addDoc(cardsRef(), {...data, createdAt: serverTimestamp()});
+      cards.push({id: ref.id, ...data});
+      showToast('✅ 已新增：' + data.name);
+    }
+    closeModal(); render();
+  } catch(e) { showToast('❌ 儲存失敗'); }
+  btn.disabled = false; btn.textContent = '儲存';
+};
+
+// ── Filters ──
 function makeFilter(id, items, current, setter) {
   const el = document.getElementById(id);
-  const labels = {catFilter:'類別',typeFilter:'屬性',rarityFilter:'稀有度'};
+  const labels = {catFilter:'類別', typeFilter:'屬性', rarityFilter:'稀有度'};
   el.innerHTML = `<span class="filter-label">${labels[id]}：</span>`;
   items.forEach(item => {
     const b = document.createElement('button');
-    b.className = 'filter-btn'+(current===item?' active':'');
+    b.className = 'filter-btn' + (current===item?' active':'');
     b.textContent = item;
-    b.onclick = ()=>{ setter(item); buildFilters(); render(); };
+    b.onclick = () => { setter(item); buildFilters(); render(); };
     el.appendChild(b);
   });
 }
-function buildFilters() {
-  makeFilter('catFilter',['全部','寶可夢','支援者','物品','道具','能量'],filterCat,v=>filterCat=v);
-  makeFilter('typeFilter',['全部','一般','火','水','草','電','惡','超','鬥','鋼','龍'],filterType,v=>filterType=v);
-  makeFilter('rarityFilter',RARITIES,filterRarity,v=>filterRarity=v);
-}
+window.buildFilters = () => {
+  makeFilter('catFilter',   ['全部','寶可夢','支援者','物品','道具','能量'], filterCat,    v=>filterCat=v);
+  makeFilter('typeFilter',  ['全部','一般','火','水','草','電','惡','超','鬥','鋼','龍'], filterType, v=>filterType=v);
+  makeFilter('rarityFilter', RARITIES, filterRarity, v=>filterRarity=v);
+};
 
-// --- Stats ---
-function updateStats() {
-  const total = cards.reduce((s,c)=>s+c.qty,0);
-  const rare = cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
-  const series = new Set(cards.map(c=>c.series)).size;
+// ── Render ──
+window.render = () => {
+  const q    = document.getElementById('searchInput').value.toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+  const ro   = {}; RARITIES.slice(1).forEach((r,i) => ro[r]=i);
+  let list = cards.filter(c => {
+    if (filterCat!=='全部' && c.cat!==filterCat) return false;
+    if (filterType!=='全部' && c.type!==filterType) return false;
+    if (filterRarity!=='全部' && c.rarity!==filterRarity) return false;
+    if (q && !c.name.toLowerCase().includes(q) && !c.reg.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  list.sort((a,b) => {
+    if (sort==='name')   return a.name.localeCompare(b.name,'zh-Hant');
+    if (sort==='qty')    return b.qty - a.qty;
+    if (sort==='rarity') return (ro[a.rarity]||0) - (ro[b.rarity]||0);
+    return a.reg.localeCompare(b.reg);
+  });
+  const tbody = document.getElementById('tbody');
+  document.getElementById('emptyMsg').style.display = list.length ? 'none' : 'block';
+  tbody.innerHTML = '';
+  list.forEach(c => {
+    const tc = TYPE_CONFIG[c.type]     || TYPE_CONFIG['一般'];
+    const cc = CAT_CONFIG[c.cat]       || {bg:'#eee',color:'#333'};
+    const rc = RARITY_CONFIG[c.rarity] || {bg:'#F1EFE8',color:'#444441'};
+    const thumbHtml = c.imageUrl
+      ? `<div class="card-thumb-wrap"><img class="card-thumb" src="${c.imageUrl}" alt="${c.name}" loading="lazy" onclick="openLightbox('${c.imageUrl}')"></div>`
+      : `<div class="card-thumb-wrap"><span class="card-thumb-placeholder">🃏</span></div>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${thumbHtml}</td>
+      <td><span class="reg-badge">${c.reg}</span></td>
+      <td style="font-weight:600">${c.name}</td>
+      <td><span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span></td>
+      <td><span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span></td>
+      <td><span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity||''}</span></td>
+      <td><span class="card-num-text">${c.cardNum||'—'}</span></td>
+      <td><div class="qty-wrap">
+        <button class="qty-btn" onclick="changeQty('${c.id}',-1)">−</button>
+        <span class="qty-num">${c.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${c.id}',1)">+</button>
+      </div></td>
+      <td style="white-space:nowrap">
+        <button class="action-btn edit" onclick="editCard('${c.id}')">✎</button>
+        <button class="action-btn del"  onclick="delCard('${c.id}')">✕</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  const total   = cards.reduce((s,c)=>s+c.qty,0);
+  const rare    = cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
+  const withImg = cards.filter(c=>c.imageUrl).length;
   document.getElementById('statsRow').innerHTML = `
     <div class="stat-card"><div class="stat-label">卡牌種類</div><div class="stat-val">${cards.length}</div></div>
     <div class="stat-card"><div class="stat-label">總張數</div><div class="stat-val">${total}</div></div>
     <div class="stat-card"><div class="stat-label">寶可夢</div><div class="stat-val">${cards.filter(c=>c.cat==='寶可夢').length}</div></div>
     <div class="stat-card"><div class="stat-label">高稀有度</div><div class="stat-val">${rare}</div></div>
-    <div class="stat-card"><div class="stat-label">系列數</div><div class="stat-val">${series}</div></div>
+    <div class="stat-card"><div class="stat-label">已有卡面</div><div class="stat-val">${withImg}</div></div>
   `;
-}
+};
 
-// --- Render table ---
-function render() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const sort = document.getElementById('sortSelect').value;
-  const ro = {}; RARITIES.slice(1).forEach((r,i)=>ro[r]=i);
-  let list = cards.filter(c=>{
-    if(filterCat!=='全部'&&c.cat!==filterCat) return false;
-    if(filterType!=='全部'&&c.type!==filterType) return false;
-    if(filterRarity!=='全部'&&c.rarity!==filterRarity) return false;
-    if(q&&!c.name.toLowerCase().includes(q)&&!c.reg.toLowerCase().includes(q)&&!(c.series||'').toLowerCase().includes(q)) return false;
-    return true;
-  });
-  list.sort((a,b)=>{
-    if(sort==='name') return a.name.localeCompare(b.name,'zh-Hant');
-    if(sort==='qty') return b.qty-a.qty;
-    if(sort==='series') return (a.series||'').localeCompare(b.series||'');
-    if(sort==='rarity') return (ro[a.rarity]||0)-(ro[b.rarity]||0);
-    return a.reg.localeCompare(b.reg);
-  });
-  const tbody = document.getElementById('tbody');
-  document.getElementById('emptyMsg').style.display = list.length?'none':'block';
-  tbody.innerHTML = '';
-  list.forEach(c=>{
-    const tc=TYPE_CONFIG[c.type]||TYPE_CONFIG['一般'];
-    const cc=CAT_CONFIG[c.cat]||{bg:'#eee',color:'#333'};
-    const rc=RARITY_CONFIG[c.rarity]||{bg:'#F1EFE8',color:'#444441'};
-    const tr=document.createElement('tr');
-    tr.innerHTML=`
-      <td><span class="reg-badge">${c.reg}</span></td>
-      <td style="font-weight:600">${c.name}</td>
-      <td><span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span></td>
-      <td><span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span></td>
-      <td><span class="series-text">${c.series||''}</span></td>
-      <td><span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity||''}</span></td>
-      <td><div class="qty-wrap">
-        <button class="qty-btn" onclick="changeQty(${c.id},-1)">−</button>
-        <span class="qty-num">${c.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${c.id},1)">+</button>
-      </div></td>
-      <td style="white-space:nowrap">
-        <button class="action-btn edit" onclick="editCard(${c.id})" title="編輯">✎</button>
-        <button class="action-btn del" onclick="delCard(${c.id})" title="刪除">✕</button>
-      </td>`;
-    tbody.appendChild(tr);
-  });
-  updateStats();
-}
+let toastTimer;
+window.showToast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+};
 
-// --- Actions ---
-function changeQty(id,delta){const c=cards.find(x=>x.id===id);if(c){c.qty=Math.max(1,c.qty+delta);render();saveData();}}
-function delCard(id){if(!confirm('確定要刪除這張卡牌嗎？'))return;cards=cards.filter(x=>x.id!==id);render();saveData();showToast('已刪除');}
-
-function editCard(id){
-  const c=cards.find(x=>x.id===id);if(!c)return;
-  editId=id;
-  document.getElementById('modalTitle').textContent='編輯卡牌';
-  document.getElementById('fReg').value=c.reg;
-  document.getElementById('fName').value=c.name;
-  document.getElementById('fCat').value=c.cat;
-  document.getElementById('fType').value=c.type;
-  document.getElementById('fSeries').value=c.series||'SV1 朱與紫';
-  document.getElementById('fRarity').value=c.rarity||'◆ C (Common)';
-  document.getElementById('fQty').value=c.qty;
-  document.getElementById('modalBg').classList.add('open');
-}
-
-function openModal(){
-  editId=null;
-  document.getElementById('modalTitle').textContent='新增卡牌';
-  document.getElementById('fReg').value='A';
-  document.getElementById('fName').value='';
-  document.getElementById('fCat').value='寶可夢';
-  document.getElementById('fType').value='一般';
-  document.getElementById('fSeries').value='SV1 朱與紫';
-  document.getElementById('fRarity').value='◆ C (Common)';
-  document.getElementById('fQty').value='1';
-  document.getElementById('modalBg').classList.add('open');
-  setTimeout(()=>document.getElementById('fName').focus(),100);
-}
-
-function closeModal(){document.getElementById('modalBg').classList.remove('open');}
-
-function saveCard(){
-  const reg=document.getElementById('fReg').value;
-  const name=document.getElementById('fName').value.trim();
-  const cat=document.getElementById('fCat').value;
-  const type=document.getElementById('fType').value;
-  const series=document.getElementById('fSeries').value;
-  const rarity=document.getElementById('fRarity').value;
-  const qty=Math.max(1,parseInt(document.getElementById('fQty').value)||1);
-  if(!name){alert('請輸入卡牌名稱');return;}
-  if(editId){Object.assign(cards.find(x=>x.id===editId),{reg,name,cat,type,series,rarity,qty});showToast('已更新');}
-  else{cards.push({id:nextId++,reg,name,cat,type,series,rarity,qty});showToast('已新增：'+name);}
-  closeModal();render();saveData();
-}
-
-document.getElementById('modalBg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-
-// --- Boot ---
-loadData();
-initSelects();
-buildFilters();
-render();
+// Init
+const regSel = document.getElementById('fReg');
+'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
+  const o = document.createElement('option'); o.value=l; o.textContent=l; regSel.appendChild(o);
+});
+document.getElementById('modalBg').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') { closeModal(); closeLightbox(); } });
 </script>
 </body>
 </html>
