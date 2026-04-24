@@ -79,23 +79,10 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--bg2); }
 
-    /* Card thumbnail */
-    .card-thumb-wrap { width: 44px; height: 62px; border-radius: 5px; overflow: hidden; background: var(--bg3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .card-thumb { width: 44px; height: 62px; object-fit: cover; border-radius: 5px; display: block; cursor: pointer; transition: transform 0.15s; }
-    .card-thumb:hover { transform: scale(1.08); }
-    .card-thumb-placeholder { font-size: 22px; }
-
-    /* Lightbox */
-    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); z-index: 500; align-items: center; justify-content: center; padding: 1rem; cursor: pointer; }
-    .lightbox.open { display: flex; }
-    .lightbox-img { max-width: min(380px,90vw); max-height: 88vh; border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.6); cursor: default; }
-    .lightbox-close { position: absolute; top: 1rem; right: 1.25rem; color: white; font-size: 28px; cursor: pointer; line-height: 1; opacity: 0.8; }
-    .lightbox-close:hover { opacity: 1; }
 
     .reg-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white; font-size: 11px; font-weight: 700; }
     .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 500; white-space: nowrap; }
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-    .card-num-text { font-size: 11px; color: var(--text2); font-family: monospace; letter-spacing: 0.3px; }
 
     .qty-wrap { display: flex; align-items: center; gap: 6px; }
     .qty-btn { width: 22px; height: 22px; border: 0.5px solid var(--border2); border-radius: 5px; background: var(--bg); color: var(--text); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -118,19 +105,7 @@
     .field input, .field select { width: 100%; padding: 8px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 14px; outline: none; }
     .field input:focus, .field select:focus { border-color: var(--blue); }
     .field-hint { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
-    /* 卡號查詢區 */
-    .card-lookup { display: flex; gap: 6px; }
-    .card-lookup input { flex: 1; }
-    .btn-lookup { padding: 8px 11px; background: var(--bg2); border: 0.5px solid var(--border2); border-radius: var(--radius); font-size: 12px; color: var(--text); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-    .btn-lookup:hover { background: var(--bg3); }
-    .btn-lookup:disabled { opacity: 0.5; cursor: not-allowed; }
-    .lookup-result { margin-top: 10px; display: none; align-items: center; gap: 10px; padding: 8px; background: var(--bg2); border-radius: var(--radius); }
-    .lookup-result.show { display: flex; }
-    .lookup-img { width: 48px; border-radius: 4px; flex-shrink: 0; }
-    .lookup-info { font-size: 12px; color: var(--text2); line-height: 1.5; }
-    .lookup-info strong { color: var(--text); font-size: 13px; display: block; }
-    .lookup-error { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
-    .lookup-error.show { display: block; }
+
     .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
     .btn-cancel { padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: none; color: var(--text2); font-size: 14px; cursor: pointer; }
     .btn-save { padding: 8px 18px; background: var(--blue); color: white; border: none; border-radius: var(--radius); font-size: 14px; cursor: pointer; font-weight: 600; }
@@ -201,8 +176,8 @@
       <div class="table-wrap">
         <table>
           <thead><tr>
-            <th>卡面</th><th>賽場標誌</th><th>名稱</th><th>類別</th><th>屬性</th>
-            <th>稀有度</th><th>卡片編號</th><th>擁有張數</th><th></th>
+            <th>賽場標誌</th><th>名稱</th><th>類別</th><th>屬性</th>
+            <th>稀有度</th><th>擁有張數</th><th></th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -214,12 +189,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<!-- 燈箱 -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <span class="lightbox-close">✕</span>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 <!-- 新增/編輯 Modal -->
@@ -247,20 +216,7 @@
         <option>★★★★ SR (Super Rare)</option><option>◇ ACE SPEC</option><option>♦ PR (Promo)</option><option>其他</option>
       </select>
     </div>
-    <!-- 卡片編號 + 查詢卡面 -->
-    <div class="field">
-      <label>卡片編號 <span style="font-weight:400;color:var(--text2)">（選填，用於顯示卡面圖片）</span></label>
-      <div class="card-lookup">
-        <input type="text" id="fCardNum" placeholder="例：sv1-25　sv4pt5-268">
-        <button class="btn-lookup" id="btnLookup" onclick="lookupCard()">查詢卡面</button>
-      </div>
-      <div class="field-hint">卡片編號印在卡牌左下角，格式如 sv4-218 或 sv3-185<br>輸入後點「查詢卡面」確認圖片正確後再儲存</div>
-      <div class="lookup-result" id="lookupResult">
-        <img class="lookup-img" id="lookupImg" src="" alt="">
-        <div class="lookup-info"><strong id="lookupName"></strong><span id="lookupSet"></span></div>
-      </div>
-      <div class="lookup-error" id="lookupError">找不到此卡片，請確認編號是否正確（區分大小寫）</div>
-    </div>
+
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">取消</button>
       <button class="btn-save" id="btnSave" onclick="saveCard()">儲存</button>
@@ -295,11 +251,9 @@ const auth      = getAuth(app);
 const db        = getFirestore(app);
 const gProvider = new GoogleAuthProvider();
 
-const PTCG_API = 'https://api.pokemontcg.io/v2/cards';
 
 let currentUser = null, cards = [], editId = null;
 let filterCat = '全部', filterType = '全部', filterRarity = '全部';
-let pendingImageUrl = '';
 
 const TYPE_CONFIG = {
   '一般':{bg:'#F1EFE8',color:'#444441',dot:'#888780'},'火':{bg:'#FAECE7',color:'#993C1D',dot:'#EF5350'},
@@ -371,37 +325,7 @@ async function loadCards() {
   buildFilters(); render();
 }
 
-// ── 卡面查詢 ──
-window.lookupCard = async () => {
-  const cardId = document.getElementById('fCardNum').value.trim().replace(/\s+/g,'-');
-  const btn    = document.getElementById('btnLookup');
-  const result = document.getElementById('lookupResult');
-  const errEl  = document.getElementById('lookupError');
-  result.classList.remove('show'); errEl.classList.remove('show');
-  if (!cardId) return;
-  btn.disabled = true; btn.textContent = '查詢中...';
-  try {
-    const res  = await fetch(`${PTCG_API}/${cardId}`);
-    const data = await res.json();
-    if (data.data) {
-      const card = data.data;
-      pendingImageUrl = card.images?.small || '';
-      document.getElementById('lookupImg').src  = pendingImageUrl;
-      document.getElementById('lookupName').textContent = card.name;
-      document.getElementById('lookupSet').textContent  = card.set?.name ? ` · ${card.set.name}` : '';
-      result.classList.add('show');
-      if (!document.getElementById('fName').value) document.getElementById('fName').value = card.name;
-    } else { errEl.classList.add('show'); pendingImageUrl = ''; }
-  } catch(e) { errEl.classList.add('show'); pendingImageUrl = ''; }
-  btn.disabled = false; btn.textContent = '查詢卡面';
-};
 
-// ── 燈箱 ──
-window.openLightbox = (url) => {
-  document.getElementById('lightboxImg').src = url;
-  document.getElementById('lightbox').classList.add('open');
-};
-window.closeLightbox = () => document.getElementById('lightbox').classList.remove('open');
 
 // ── CRUD ──
 window.changeQty = async (id, delta) => {
@@ -421,40 +345,27 @@ window.delCard = async (id) => {
 
 window.editCard = (id) => {
   const c = cards.find(x=>x.id===id); if (!c) return;
-  editId = id; pendingImageUrl = c.imageUrl || '';
+  editId = id;
   document.getElementById('modalTitle').textContent = '編輯卡牌';
   document.getElementById('fReg').value     = c.reg;
   document.getElementById('fName').value    = c.name;
   document.getElementById('fCat').value     = c.cat;
   document.getElementById('fType').value    = c.type;
   document.getElementById('fRarity').value  = c.rarity || '◆ C (Common)';
-  document.getElementById('fCardNum').value = c.cardNum || '';
   document.getElementById('fQty').value     = c.qty;
-  const result = document.getElementById('lookupResult');
-  result.classList.remove('show');
-  document.getElementById('lookupError').classList.remove('show');
-  if (c.imageUrl) {
-    document.getElementById('lookupImg').src  = c.imageUrl;
-    document.getElementById('lookupName').textContent = c.name;
-    document.getElementById('lookupSet').textContent  = c.cardNum ? ` · ${c.cardNum}` : '';
-    result.classList.add('show');
-  }
+
   document.getElementById('modalBg').classList.add('open');
 };
 
 window.openModal = () => {
-  editId = null; pendingImageUrl = '';
+  editId = null;
   document.getElementById('modalTitle').textContent = '新增卡牌';
   document.getElementById('fReg').value     = 'A';
   document.getElementById('fName').value    = '';
   document.getElementById('fCat').value     = '寶可夢';
   document.getElementById('fType').value    = '一般';
   document.getElementById('fRarity').value  = '◆ C (Common)';
-  document.getElementById('fCardNum').value = '';
   document.getElementById('fQty').value     = '1';
-  document.getElementById('lookupResult').classList.remove('show');
-  document.getElementById('lookupError').classList.remove('show');
-  document.getElementById('btnLookup').textContent = '查詢卡面';
   document.getElementById('modalBg').classList.add('open');
   setTimeout(() => document.getElementById('fName').focus(), 100);
 };
@@ -469,8 +380,6 @@ window.saveCard = async () => {
     cat:      document.getElementById('fCat').value,
     type:     document.getElementById('fType').value,
     rarity:   document.getElementById('fRarity').value,
-    cardNum:  document.getElementById('fCardNum').value.trim(),
-    imageUrl: pendingImageUrl,
     qty:      Math.max(1, parseInt(document.getElementById('fQty').value)||1),
   };
   if (!data.name) { alert('請輸入卡牌名稱'); return; }
@@ -534,18 +443,13 @@ window.render = () => {
     const tc = TYPE_CONFIG[c.type]     || TYPE_CONFIG['一般'];
     const cc = CAT_CONFIG[c.cat]       || {bg:'#eee',color:'#333'};
     const rc = RARITY_CONFIG[c.rarity] || {bg:'#F1EFE8',color:'#444441'};
-    const thumbHtml = c.imageUrl
-      ? `<div class="card-thumb-wrap"><img class="card-thumb" src="${c.imageUrl}" alt="${c.name}" loading="lazy" onclick="openLightbox('${c.imageUrl}')"></div>`
-      : `<div class="card-thumb-wrap"><span class="card-thumb-placeholder">🃏</span></div>`;
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${thumbHtml}</td>
       <td><span class="reg-badge">${c.reg}</span></td>
       <td style="font-weight:600">${c.name}</td>
       <td><span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span></td>
       <td><span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span></td>
       <td><span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity||''}</span></td>
-      <td><span class="card-num-text">${c.cardNum||'—'}</span></td>
       <td><div class="qty-wrap">
         <button class="qty-btn" onclick="changeQty('${c.id}',-1)">−</button>
         <span class="qty-num">${c.qty}</span>
@@ -559,13 +463,11 @@ window.render = () => {
   });
   const total   = cards.reduce((s,c)=>s+c.qty,0);
   const rare    = cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
-  const withImg = cards.filter(c=>c.imageUrl).length;
   document.getElementById('statsRow').innerHTML = `
     <div class="stat-card"><div class="stat-label">卡牌種類</div><div class="stat-val">${cards.length}</div></div>
     <div class="stat-card"><div class="stat-label">總張數</div><div class="stat-val">${total}</div></div>
     <div class="stat-card"><div class="stat-label">寶可夢</div><div class="stat-val">${cards.filter(c=>c.cat==='寶可夢').length}</div></div>
     <div class="stat-card"><div class="stat-label">高稀有度</div><div class="stat-val">${rare}</div></div>
-    <div class="stat-card"><div class="stat-label">已有卡面</div><div class="stat-val">${withImg}</div></div>
   `;
 };
 
@@ -582,7 +484,7 @@ const regSel = document.getElementById('fReg');
   const o = document.createElement('option'); o.value=l; o.textContent=l; regSel.appendChild(o);
 });
 document.getElementById('modalBg').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
-document.addEventListener('keydown', e => { if(e.key==='Escape') { closeModal(); closeLightbox(); } });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 </script>
 </body>
 </html>
