@@ -7,131 +7,263 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #ffffff; --bg2: #f5f5f5; --bg3: #eeeeee;
-      --text: #1a1a1a; --text2: #555555;
-      --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
-      --blue: #378ADD; --blue-dark: #185FA5; --blue-light: #E6F1FB;
-      --red: #E24B4A; --red-light: #FCEBEB;
-      --radius: 8px; --radius-lg: 12px;
+      --bg: #ffffff; --bg2: #f4f4f6; --bg3: #e8e8ec;
+      --text: #1a1a1a; --text2: #666666; --text3: #999999;
+      --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.20);
+      --blue: #378ADD; --blue-dk: #185FA5; --blue-lt: #E6F1FB;
+      --red: #E24B4A; --red-lt: #FCEBEB;
+      --green: #3A9A4A; --green-lt: #EAF5EC;
+      --radius: 8px; --radius-lg: 14px;
+      --sidebar: 320px;
+      --topbar: 52px;
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #1c1c1e; --bg2: #2c2c2e; --bg3: #3a3a3c;
-        --text: #f2f2f7; --text2: #aeaeb2;
-        --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
-        --blue-light: #1a3352; --red-light: #3a1515;
+        --text: #f2f2f7; --text2: #aeaeb2; --text3: #636366;
+        --border: rgba(255,255,255,0.10); --border2: rgba(255,255,255,0.20);
+        --blue-lt: #1a3352; --red-lt: #3a1515; --green-lt: #1a2e1f;
       }
     }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg2); color: var(--text); min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: var(--bg2); color: var(--text); min-height: 100vh; overflow: hidden; }
 
-    /* Auth */
-    .auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
-    .auth-card { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 2.5rem 2rem; width: 100%; max-width: 360px; text-align: center; }
+    /* ══ AUTH ══ */
+    .auth-screen { display: flex; align-items: center; justify-content: center;
+                   min-height: 100vh; padding: 1rem; }
+    .auth-card { background: var(--bg); border-radius: var(--radius-lg);
+                 border: 0.5px solid var(--border); padding: 2.5rem 2rem;
+                 width: 100%; max-width: 360px; text-align: center; }
     .auth-logo { font-size: 52px; margin-bottom: 0.75rem; }
     .auth-title { font-size: 22px; font-weight: 700; margin-bottom: 0.25rem; }
     .auth-sub { font-size: 13px; color: var(--text2); margin-bottom: 2rem; }
-    .btn-google { width: 100%; padding: 12px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border2); border-radius: var(--radius); font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-google { width: 100%; padding: 12px; background: var(--bg); color: var(--text);
+                  border: 0.5px solid var(--border2); border-radius: var(--radius);
+                  font-size: 15px; font-weight: 500; cursor: pointer;
+                  display: flex; align-items: center; justify-content: center; gap: 10px; }
     .btn-google:hover { background: var(--bg2); }
     .btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
-    .google-icon { width: 20px; height: 20px; flex-shrink: 0; }
-    .auth-note { font-size: 12px; color: var(--text2); margin-top: 1.25rem; line-height: 1.6; }
-    .auth-error { background: var(--red-light); color: var(--red); font-size: 13px; padding: 8px 12px; border-radius: var(--radius); margin-top: 1rem; display: none; }
+    .gicon { width: 20px; height: 20px; flex-shrink: 0; }
+    .auth-error { background: var(--red-lt); color: var(--red); font-size: 13px;
+                  padding: 8px 12px; border-radius: var(--radius); margin-top: 1rem; display: none; }
     .auth-error.show { display: block; }
+    .auth-note { font-size: 12px; color: var(--text2); margin-top: 1.25rem; line-height: 1.6; }
 
-    /* App */
-    .app-screen { display: none; }
-    .app-screen.visible { display: block; }
-    .topbar { background: var(--bg); border-bottom: 0.5px solid var(--border); padding: 0 1.25rem; height: 54px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 50; }
+    /* ══ APP SHELL ══ */
+    .app { display: none; flex-direction: column; height: 100vh; }
+    .app.visible { display: flex; }
+
+    /* Topbar */
+    .topbar { height: var(--topbar); background: var(--bg); border-bottom: 0.5px solid var(--border);
+              display: flex; align-items: center; gap: 10px; padding: 0 1.25rem; flex-shrink: 0; z-index: 40; }
     .topbar-title { font-size: 16px; font-weight: 700; flex: 1; }
     .user-info { display: flex; align-items: center; gap: 8px; }
-    .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-    .user-avatar-fallback { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-    .user-name { font-size: 13px; color: var(--text2); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .btn-logout { padding: 5px 12px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: none; color: var(--text2); font-size: 12px; cursor: pointer; }
-    .btn-logout:hover { background: var(--bg2); }
-    .btn-add { background: var(--blue); color: white; border: none; padding: 7px 14px; border-radius: var(--radius); font-size: 13px; cursor: pointer; font-weight: 600; white-space: nowrap; }
-    .btn-add:hover { background: var(--blue-dark); }
+    .uav { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+    .uav-fb { width: 28px; height: 28px; border-radius: 50%; background: var(--blue);
+              color: white; font-size: 12px; font-weight: 700;
+              display: flex; align-items: center; justify-content: center; }
+    .uname { font-size: 13px; color: var(--text2); max-width: 130px;
+             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-sm { padding: 5px 12px; border: 0.5px solid var(--border2); border-radius: var(--radius);
+              background: none; color: var(--text2); font-size: 12px; cursor: pointer; }
+    .btn-sm:hover { background: var(--bg2); }
+    .btn-primary { background: var(--blue); color: white; border: none; padding: 6px 14px;
+                   border-radius: var(--radius); font-size: 13px; cursor: pointer; font-weight: 600; }
+    .btn-primary:hover { background: var(--blue-dk); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .container { max-width: 1040px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px,1fr)); gap: 10px; margin-bottom: 1.25rem; }
-    .stat-card { background: var(--bg); border-radius: var(--radius); padding: 0.75rem 1rem; border: 0.5px solid var(--border); }
-    .stat-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
-    .stat-val { font-size: 22px; font-weight: 700; }
+    /* Stats bar */
+    .stats-bar { display: flex; gap: 0; border-bottom: 0.5px solid var(--border);
+                 background: var(--bg); flex-shrink: 0; overflow-x: auto; }
+    .stat-item { padding: 8px 20px; text-align: center; border-right: 0.5px solid var(--border); white-space: nowrap; }
+    .stat-item:last-child { border-right: none; }
+    .si-label { font-size: 10px; color: var(--text2); margin-bottom: 2px; }
+    .si-val { font-size: 18px; font-weight: 700; }
 
-    .toolbar { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 1rem; margin-bottom: 1rem; }
-    .filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
-    .filters:last-child { margin-bottom: 0; }
-    .filter-label { font-size: 12px; color: var(--text2); white-space: nowrap; min-width: 44px; }
-    .filter-btn { font-size: 12px; padding: 3px 10px; border: 0.5px solid var(--border2); border-radius: 20px; background: var(--bg); color: var(--text2); cursor: pointer; transition: all 0.15s; }
-    .filter-btn.active, .filter-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    /* ══ MAIN LAYOUT ══ */
+    .main { display: flex; flex: 1; overflow: hidden; }
 
-    .search-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
-    .search-row input, .search-row select { padding: 8px 12px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 14px; outline: none; }
-    .search-row input { flex: 1; min-width: 140px; }
-    .search-row input:focus, .search-row select:focus { border-color: var(--blue); }
+    /* ── LEFT PANEL ── */
+    .left-panel { width: var(--sidebar); flex-shrink: 0; display: flex; flex-direction: column;
+                  border-right: 0.5px solid var(--border); background: var(--bg); overflow: hidden; }
+    .lp-head { padding: 12px; border-bottom: 0.5px solid var(--border); flex-shrink: 0; }
+    .lp-head h2 { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .search-box { position: relative; margin-bottom: 8px; }
+    .search-box input { width: 100%; padding: 8px 12px 8px 32px; border: 0.5px solid var(--border2);
+                        border-radius: var(--radius); background: var(--bg2); color: var(--text);
+                        font-size: 13px; outline: none; }
+    .search-box input:focus { border-color: var(--blue); background: var(--bg); }
+    .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+                   font-size: 13px; color: var(--text3); pointer-events: none; }
+    .filter-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+    .chip { font-size: 11px; padding: 3px 9px; border: 0.5px solid var(--border2);
+            border-radius: 20px; background: var(--bg); color: var(--text2);
+            cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+    .chip.on, .chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+    .filter-section { margin-bottom: 8px; }
+    .filter-section-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* Table */
-    .card-table { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); overflow: hidden; }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
-    th { font-size: 11px; color: var(--text2); font-weight: 500; padding: 10px 12px; text-align: left; border-bottom: 0.5px solid var(--border); white-space: nowrap; background: var(--bg2); }
-    td { padding: 8px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--bg2); }
+    /* Card list */
+    .card-list { flex: 1; overflow-y: auto; }
+    .card-list-empty { padding: 2rem 1rem; text-align: center; color: var(--text2); font-size: 13px; }
+    .card-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+                border-bottom: 0.5px solid var(--border); cursor: pointer;
+                transition: background 0.12s; }
+    .card-row:hover { background: var(--bg2); }
+    .card-row.selected { background: var(--blue-lt); border-left: 3px solid var(--blue); }
+    .card-row.selected .cr-name { color: var(--blue); }
+    .cr-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--blue);
+                color: white; font-size: 11px; font-weight: 700;
+                display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cr-info { flex: 1; min-width: 0; }
+    .cr-name { font-size: 13px; font-weight: 600; white-space: nowrap;
+               overflow: hidden; text-overflow: ellipsis; }
+    .cr-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
+    .cr-qty { flex-shrink: 0; }
+    .qty-badge { min-width: 24px; height: 24px; border-radius: 12px; background: var(--blue);
+                 color: white; font-size: 12px; font-weight: 700;
+                 display: flex; align-items: center; justify-content: center; padding: 0 6px; }
+    .qty-badge.zero { background: var(--bg3); color: var(--text3); }
 
+    /* Add card button */
+    .lp-foot { padding: 10px 12px; border-top: 0.5px solid var(--border); flex-shrink: 0; }
+    .btn-add-card { width: 100%; padding: 9px; background: var(--blue); color: white; border: none;
+                    border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-add-card:hover { background: var(--blue-dk); }
 
-    .reg-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white; font-size: 11px; font-weight: 700; }
-    .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 500; white-space: nowrap; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    /* ── RIGHT PANEL ── */
+    .right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg2); }
 
-    .qty-wrap { display: flex; align-items: center; gap: 6px; }
-    .qty-btn { width: 22px; height: 22px; border: 0.5px solid var(--border2); border-radius: 5px; background: var(--bg); color: var(--text); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .qty-btn:hover { background: var(--bg3); }
-    .qty-num { min-width: 22px; text-align: center; font-size: 13px; font-weight: 700; }
-    .action-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 3px 7px; border-radius: 5px; color: var(--text2); }
-    .action-btn.edit:hover { color: var(--blue); background: var(--blue-light); }
-    .action-btn.del:hover { color: var(--red); background: var(--red-light); }
-    .empty { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; }
-    .loading-msg { text-align: center; padding: 2rem; color: var(--text2); font-size: 14px; }
+    /* Empty state */
+    .rp-empty { flex: 1; display: flex; flex-direction: column; align-items: center;
+                justify-content: center; color: var(--text2); gap: 12px; }
+    .rp-empty-icon { font-size: 56px; }
+    .rp-empty-text { font-size: 15px; font-weight: 500; }
+    .rp-empty-sub { font-size: 13px; color: var(--text3); }
 
-    /* Modal */
-    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+    /* Detail view */
+    .rp-detail { flex: 1; overflow-y: auto; padding: 2rem; display: none; }
+    .rp-detail.show { display: block; }
+    .detail-card { background: var(--bg); border-radius: var(--radius-lg);
+                   border: 0.5px solid var(--border); overflow: hidden; max-width: 560px; margin: 0 auto; }
+    .detail-header { padding: 1.5rem; border-bottom: 0.5px solid var(--border); }
+    .detail-reg { display: inline-flex; align-items: center; justify-content: center;
+                  width: 36px; height: 36px; border-radius: 50%; background: var(--blue);
+                  color: white; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .detail-name { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .detail-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
+            border-radius: 12px; font-size: 12px; font-weight: 500; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Qty control */
+    .detail-qty { padding: 1.5rem; border-bottom: 0.5px solid var(--border); }
+    .qty-label { font-size: 12px; color: var(--text2); margin-bottom: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+    .qty-control { display: flex; align-items: center; gap: 16px; }
+    .qty-big-btn { width: 48px; height: 48px; border-radius: 50%;
+                   border: 0.5px solid var(--border2); background: var(--bg2);
+                   color: var(--text); font-size: 24px; cursor: pointer;
+                   display: flex; align-items: center; justify-content: center;
+                   transition: all 0.12s; font-weight: 300; }
+    .qty-big-btn:hover { background: var(--bg3); border-color: var(--blue); color: var(--blue); }
+    .qty-big-btn.add:hover { background: var(--blue); color: white; border-color: var(--blue); }
+    .qty-big-num { font-size: 42px; font-weight: 700; min-width: 60px; text-align: center; }
+    .qty-unit { font-size: 14px; color: var(--text2); }
+
+    /* Detail fields */
+    .detail-fields { padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .df-item { }
+    .df-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .df-val { font-size: 14px; font-weight: 500; }
+
+    /* Detail actions */
+    .detail-actions { padding: 1rem 1.5rem; display: flex; gap: 8px; border-top: 0.5px solid var(--border); }
+    .btn-edit { flex: 1; padding: 9px; border: 0.5px solid var(--border2); border-radius: var(--radius);
+                background: none; color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; }
+    .btn-edit:hover { background: var(--bg2); }
+    .btn-del { padding: 9px 16px; border: 0.5px solid var(--red); border-radius: var(--radius);
+               background: none; color: var(--red); font-size: 13px; cursor: pointer; }
+    .btn-del:hover { background: var(--red-lt); }
+
+    /* ══ MODAL ══ */
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+                z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
     .modal-bg.open { display: flex; }
-    .modal { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 1.5rem; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; }
+    .modal { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border);
+             padding: 1.5rem; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; }
     .modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 1.25rem; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .field { margin-bottom: 12px; }
     .field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 5px; }
-    .field input, .field select { width: 100%; padding: 8px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 14px; outline: none; }
+    .field input, .field select { width: 100%; padding: 8px 10px; border: 0.5px solid var(--border2);
+                                   border-radius: var(--radius); background: var(--bg);
+                                   color: var(--text); font-size: 14px; outline: none; }
     .field input:focus, .field select:focus { border-color: var(--blue); }
-    .field-hint { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
-
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
-    .btn-cancel { padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: none; color: var(--text2); font-size: 14px; cursor: pointer; }
-    .btn-save { padding: 8px 18px; background: var(--blue); color: white; border: none; border-radius: var(--radius); font-size: 14px; cursor: pointer; font-weight: 600; }
+    .btn-cancel { padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius);
+                  background: none; color: var(--text2); font-size: 14px; cursor: pointer; }
+    .btn-save { padding: 8px 18px; background: var(--blue); color: white; border: none;
+                border-radius: var(--radius); font-size: 14px; cursor: pointer; font-weight: 600; }
     .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a1a1a; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 300; white-space: nowrap; }
+    /* Autocomplete */
+    .ac-wrap { position: relative; }
+    .ac-list { position: absolute; top: calc(100% + 3px); left: 0; right: 0; background: var(--bg);
+               border: 0.5px solid var(--border2); border-radius: var(--radius); z-index: 400;
+               max-height: 200px; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.13); display: none; }
+    .ac-list.show { display: block; }
+    .ac-item { padding: 8px 12px; font-size: 13px; cursor: pointer; color: var(--text);
+               border-bottom: 0.5px solid var(--border); }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item.hi { background: var(--blue-lt); color: var(--blue); }
+
+    /* Reg grid */
+    .reg-grid { display: grid; grid-template-columns: repeat(9,1fr); gap: 4px; margin-top: 4px; }
+    .reg-cell { padding: 5px 2px; border: 0.5px solid var(--border2); border-radius: 5px;
+                background: var(--bg2); color: var(--text2); font-size: 12px; font-weight: 600;
+                text-align: center; cursor: pointer; transition: all 0.12s; }
+    .reg-cell:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+    .reg-cell.on { background: var(--blue); color: white; border-color: var(--blue); }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
+             background: #1a1a1a; color: white; padding: 10px 20px; border-radius: 20px;
+             font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 500; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    @media (max-width: 600px) {
-      .topbar { padding: 0 0.75rem; }
-      .user-name { display: none; }
-      .container { padding: 1rem 0.75rem 3rem; }
+    /* Loading */
+    .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+                       z-index: 600; align-items: center; justify-content: center; }
+    .loading-overlay.show { display: flex; }
+    .loading-spinner { background: var(--bg); padding: 1.5rem 2rem; border-radius: var(--radius-lg);
+                       font-size: 14px; color: var(--text2); }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      body { overflow: auto; }
+      .app { height: auto; overflow: auto; }
+      .main { flex-direction: column; overflow: auto; }
+      .left-panel { width: 100%; border-right: none; border-bottom: 0.5px solid var(--border);
+                    max-height: 55vh; }
+      .right-panel { min-height: 45vh; }
+      .rp-detail { padding: 1rem; }
+      .detail-fields { grid-template-columns: 1fr 1fr; }
+      .uname { display: none; }
       .field-row { grid-template-columns: 1fr; }
+      .stats-bar { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- 登入畫面 -->
+<!-- ══ AUTH ══ -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-card">
     <div class="auth-logo">🃏</div>
     <div class="auth-title">PTCG 卡牌管理系統</div>
     <div class="auth-sub">登入以管理你的個人卡牌收藏</div>
     <button class="btn-google" id="btnGoogle" onclick="loginGoogle()">
-      <svg class="google-icon" viewBox="0 0 48 48">
+      <svg class="gicon" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
         <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -140,84 +272,147 @@
       使用 Google 帳號登入
     </button>
     <div class="auth-error" id="authError"></div>
-    <div class="auth-note">每位玩家的卡牌資料獨立保存於雲端<br>任何裝置皆可存取</div>
+    <div class="auth-note">每位玩家的資料獨立保存於雲端<br>任何裝置皆可存取</div>
   </div>
 </div>
 
-<!-- 主畫面 -->
-<div class="app-screen" id="appScreen">
+<!-- ══ APP ══ -->
+<div class="app" id="app">
+
+  <!-- Topbar -->
   <div class="topbar">
-    <span class="topbar-title">🃏 PTCG 卡牌管理系統</span>
+    <span class="topbar-title">🃏 PTCG 卡牌管理</span>
     <div class="user-info">
-      <div class="user-avatar-fallback" id="userAvatarFallback"></div>
-      <img class="user-avatar" id="userAvatar" style="display:none" alt="">
-      <span class="user-name" id="userName"></span>
+      <div class="uav-fb" id="uavFb"></div>
+      <img class="uav" id="uav" style="display:none" alt="">
+      <span class="uname" id="uname"></span>
     </div>
-    <button class="btn-logout" onclick="logout()">登出</button>
-    <button class="btn-add" onclick="openModal()">+ 新增卡牌</button>
+    <button class="btn-sm" onclick="logout()">登出</button>
   </div>
-  <div class="container">
-    <div class="stats-row" id="statsRow"></div>
-    <div class="toolbar">
-      <div class="filters" id="catFilter"></div>
-      <div class="filters" id="typeFilter"></div>
-      <div class="filters" id="rarityFilter"></div>
-    </div>
-    <div class="search-row">
-      <input type="text" id="searchInput" placeholder="🔍 搜尋卡牌名稱或賽場標誌..." oninput="render()">
-      <select id="sortSelect" onchange="render()">
-        <option value="reg">排序：賽場標誌</option>
-        <option value="cat">排序：類別</option>
-        <option value="type">排序：屬性</option>
-        <option value="qty">排序：張數</option>
-        <option value="rarity">排序：稀有度</option>
-      </select>
-    </div>
-    <div class="card-table">
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>賽場標誌</th><th>名稱</th><th>類別</th><th>屬性</th>
-            <th>稀有度</th><th>擁有張數</th><th></th>
-          </tr></thead>
-          <tbody id="tbody"></tbody>
-        </table>
+
+  <!-- Stats bar -->
+  <div class="stats-bar" id="statsBar"></div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- ── LEFT PANEL ── -->
+    <div class="left-panel">
+      <div class="lp-head">
+        <h2>搜尋卡牌</h2>
+        <!-- Search -->
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchQ" placeholder="輸入卡牌名稱..." autocomplete="off"
+            oninput="onSearchInput()" onkeydown="onSearchKeydown(event)">
+          <div class="ac-list" id="searchAcList"></div>
+        </div>
+        <!-- Filters -->
+        <div class="filter-section">
+          <div class="filter-section-label">卡牌種類</div>
+          <div class="filter-chips" id="chipCat"></div>
+        </div>
+        <div class="filter-section" id="chipTypeSection">
+          <div class="filter-section-label">屬性</div>
+          <div class="filter-chips" id="chipType"></div>
+        </div>
+        <div class="filter-section">
+          <div class="filter-section-label">稀有度</div>
+          <div class="filter-chips" id="chipRarity"></div>
+        </div>
       </div>
-      <div class="loading-msg" id="loadingMsg">載入卡牌資料中...</div>
-      <div class="empty" id="emptyMsg" style="display:none">
-        尚無符合條件的卡牌<br>
-        <small style="margin-top:6px;display:block">點選右上角「新增卡牌」開始管理你的收藏</small>
+
+      <!-- Card list -->
+      <div class="card-list" id="cardList"></div>
+
+      <!-- Add button -->
+      <div class="lp-foot">
+        <button class="btn-add-card" onclick="openAddModal()">＋ 新增卡牌到收藏</button>
+      </div>
+    </div>
+
+    <!-- ── RIGHT PANEL ── -->
+    <div class="right-panel">
+      <!-- Empty -->
+      <div class="rp-empty" id="rpEmpty">
+        <div class="rp-empty-icon">👈</div>
+        <div class="rp-empty-text">從左側選擇一張卡牌</div>
+        <div class="rp-empty-sub">可搜尋名稱或依類別篩選</div>
+      </div>
+      <!-- Detail -->
+      <div class="rp-detail" id="rpDetail">
+        <div class="detail-card">
+          <div class="detail-header">
+            <div class="detail-reg" id="dReg"></div>
+            <div class="detail-name" id="dName"></div>
+            <div class="detail-pills" id="dPills"></div>
+          </div>
+          <div class="detail-qty">
+            <div class="qty-label">擁有張數</div>
+            <div class="qty-control">
+              <button class="qty-big-btn" onclick="adjustQty(-1)">−</button>
+              <div class="qty-big-num" id="dQty">0</div>
+              <button class="qty-big-btn add" onclick="adjustQty(1)">＋</button>
+              <span class="qty-unit">張</span>
+            </div>
+          </div>
+          <div class="detail-fields" id="dFields"></div>
+          <div class="detail-actions">
+            <button class="btn-edit" onclick="openEditModal()">✎ 編輯卡牌資訊</button>
+            <button class="btn-del" onclick="deleteSelected()">刪除</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 新增/編輯 Modal -->
+<!-- ══ ADD / EDIT MODAL ══ -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <h3 id="modalTitle">新增卡牌</h3>
-    <div class="field-row">
-      <div class="field"><label>賽場標誌 (A–Z)</label><select id="fReg"></select></div>
-      <div class="field"><label>擁有張數</label><input type="number" id="fQty" min="1" max="99" value="1"></div>
+    <!-- 賽場標誌 -->
+    <div class="field">
+      <label>賽場標誌 — 目前選擇：<strong id="regLabel" style="color:var(--blue)">A</strong></label>
+      <div class="reg-grid" id="regGrid"></div>
     </div>
-    <div class="field"><label>名稱</label><input type="text" id="fName" placeholder="例：皮卡丘 ex"></div>
-    <div class="field-row">
-      <div class="field"><label>類別</label>
-        <select id="fCat" onchange="toggleTypeField()"><option>寶可夢</option><option>支援者</option><option>物品</option><option>道具</option><option>能量</option></select>
-      </div>
-      <div class="field" id="typeField"><label>屬性</label>
-        <select id="fType"><option>一般</option><option>火</option><option>水</option><option>草</option><option>電</option><option>惡</option><option>超</option><option>鬥</option><option>鋼</option><option>龍</option></select>
+    <!-- 名稱 -->
+    <div class="field">
+      <label>名稱</label>
+      <div class="ac-wrap">
+        <input type="text" id="fName" placeholder="例：皮卡丘 ex" autocomplete="off"
+          oninput="onNameAcInput()" onkeydown="onNameAcKeydown(event)">
+        <div class="ac-list" id="nameAcList"></div>
       </div>
     </div>
-    <div class="field"><label>稀有度</label>
+    <!-- 類別 + 屬性 -->
+    <div class="field-row">
+      <div class="field">
+        <label>類別</label>
+        <select id="fCat" onchange="onCatChange()">
+          <option>寶可夢</option><option>支援者</option><option>物品</option><option>道具</option><option>能量</option>
+        </select>
+      </div>
+      <div class="field" id="fTypeWrap">
+        <label>屬性</label>
+        <div class="ac-wrap">
+          <input type="text" id="fType" placeholder="選擇屬性..." autocomplete="off" readonly
+            onfocus="onTypeAcFocus()" onkeydown="onTypeAcKeydown(event)">
+          <div class="ac-list" id="typeAcList"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 稀有度 -->
+    <div class="field">
+      <label>稀有度</label>
       <select id="fRarity">
         <option>◆ C (Common)</option><option>◆◆ U (Uncommon)</option><option>◆◆◆ R (Rare)</option>
         <option>◆◆◆◆ RR (Double Rare)</option><option>★ AR (Art Rare)</option>
         <option>★★ SAR (Special Art Rare)</option><option>★★★ UR (Ultra Rare)</option>
-        <option>★★★★ SR (Super Rare)</option><option>◇ ACE SPEC</option><option>♦ PR (Promo)</option><option>其他</option>
+        <option>★★★★ SR (Super Rare)</option><option>◇ ACE SPEC</option><option>♦ PR (Promo)</option>
+        <option>其他</option>
       </select>
     </div>
-
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">取消</button>
       <button class="btn-save" id="btnSave" onclick="saveCard()">儲存</button>
@@ -225,12 +420,11 @@
   </div>
 </div>
 
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner">載入中...</div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
-// ══════════════════════════════════════════════════════
-//  🔧 將下方 YOUR_... 替換成你的 Firebase 設定
-// ══════════════════════════════════════════════════════
+// ══ Firebase Config ══
 const firebaseConfig = {
   apiKey:            "AIzaSyA7yVaW3zF1P805JlnEpHn8yhLcD2v9Orw",
   authDomain:        "ptcg-manager-4ff61.firebaseapp.com",
@@ -239,7 +433,6 @@ const firebaseConfig = {
   messagingSenderId: "340810690111",
   appId:             "1:340810690111:web:ed9a7001e3b6f5bb00128a"
 };
-// ══════════════════════════════════════════════════════
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut }
@@ -247,27 +440,30 @@ import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signO
 import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const app       = initializeApp(firebaseConfig);
-const auth      = getAuth(app);
-const db        = getFirestore(app);
-const gProvider = new GoogleAuthProvider();
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const gp   = new GoogleAuthProvider();
 
+// ══ Constants ══
+const CATS    = ['寶可夢','支援者','物品','道具','能量'];
+const TYPES   = ['一般','火','水','草','電','惡','超','鬥','鋼','龍'];
+const RARITIES= ['◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
+                 '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)',
+                 '★★★★ SR (Super Rare)','◇ ACE SPEC','♦ PR (Promo)','其他'];
 
-let currentUser = null, cards = [], editId = null;
-let filterCat = '全部', filterType = '全部', filterRarity = '全部';
-
-const TYPE_CONFIG = {
+const TYPE_CFG = {
   '一般':{bg:'#F1EFE8',color:'#444441',dot:'#888780'},'火':{bg:'#FAECE7',color:'#993C1D',dot:'#EF5350'},
   '水':{bg:'#E6F1FB',color:'#185FA5',dot:'#42A5F5'},'草':{bg:'#EAF3DE',color:'#3B6D11',dot:'#66BB6A'},
   '電':{bg:'#FAEEDA',color:'#854F0B',dot:'#FDD835'},'惡':{bg:'#2C2C2A',color:'#D3D1C7',dot:'#888780'},
   '超':{bg:'#EEEDFE',color:'#3C3489',dot:'#AB47BC'},'鬥':{bg:'#FAECE7',color:'#712B13',dot:'#FF7043'},
   '鋼':{bg:'#F1EFE8',color:'#3C3489',dot:'#78909C'},'龍':{bg:'#EEEDFE',color:'#26215C',dot:'#5C6BC0'},
 };
-const CAT_CONFIG = {
+const CAT_CFG = {
   '寶可夢':{bg:'#E6F1FB',color:'#0C447C'},'支援者':{bg:'#EEEDFE',color:'#3C3489'},
   '物品':{bg:'#EAF3DE',color:'#27500A'},'道具':{bg:'#FAEEDA',color:'#633806'},'能量':{bg:'#FAECE7',color:'#993C1D'},
 };
-const RARITY_CONFIG = {
+const RAR_CFG = {
   '◆ C (Common)':{bg:'#F1EFE8',color:'#444441'},'◆◆ U (Uncommon)':{bg:'#EAF3DE',color:'#3B6D11'},
   '◆◆◆ R (Rare)':{bg:'#E6F1FB',color:'#0C447C'},'◆◆◆◆ RR (Double Rare)':{bg:'#EEEDFE',color:'#3C3489'},
   '★ AR (Art Rare)':{bg:'#FAEEDA',color:'#633806'},'★★ SAR (Special Art Rare)':{bg:'#FAECE7',color:'#993C1D'},
@@ -275,233 +471,447 @@ const RARITY_CONFIG = {
   '◇ ACE SPEC':{bg:'#E6F1FB',color:'#185FA5'},'♦ PR (Promo)':{bg:'#EEEDFE',color:'#26215C'},
   '其他':{bg:'#F1EFE8',color:'#888780'},
 };
-const RARITIES = ['全部','◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
-  '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)',
-  '◇ ACE SPEC','♦ PR (Promo)','其他'];
 
-// ── 屬性欄位顯示控制 ──
-window.toggleTypeField = () => {
-  const isPokemon = document.getElementById('fCat').value === '寶可夢';
-  document.getElementById('typeField').style.display = isPokemon ? '' : 'none';
-  if (!isPokemon) document.getElementById('fType').value = '一般';
-};
+const POKEMON_ZH = [
+  '妙蛙種子','妙蛙草','妙蛙花','小火龍','火恐龍','噴火龍','傑尼龜','卡咪龜','水箭龜',
+  '綠毛蟲','鐵甲蛹','巴大蝶','獨角蟲','刀螂蛹','大針蜂','波波','比比鳥','大比鳥',
+  '皮丘','皮卡丘','雷丘','小拉達','拉達','烈雀','大嘴雀','阿柏蛇','阿柏怪',
+  '沙瓦克','穿山王','尼多蘭','尼多娜','尼多王','尼多后','可愛寶貝','大惡花',
+  '走路草','臭臭花','喇叭芽','大食花','爆香螺','磁螺','小電球','三合一磁怪',
+  '嘟嘟','嘟嘟利','可達鴨','哥達鴨','猴怪','火爆猴','多多','多多嘴',
+  '迷你龍','哈克龍','快龍','伊布','水精靈','雷精靈','火精靈','超能力者',
+  '葉精靈','太陽精靈','月亮精靈','仙子精靈','冰精靈','冰晶靈','幸福蛋',
+  '夢夢蛋','目目魚','墨海馬','海馬龍','迷唇姐','迷唇娜','化石盔','始祖翼龍',
+  '電擊獸','胖丁','胖可丁','吃吃','大吃吃','小拳石','隆隆石','隆隆岩',
+  '腕力','豪力','怪力','呆呆獸','呆殼獸','呆呆王','快速球','巢穴球',
+  '菊草葉','月桂葉','大竺葵','火球鼠','火岩鼠','火爆獸','波克比','波克基古',
+  '菠蘿花','強棘球','棘刺球','臭泥娃娃','毒臭泥','吉利蛋','幸福蛋',
+  '超音蝠','叉字蝠','山貓丁','勇士貓','刀刀鱗','大锹甲','飛天螳螂',
+  '燈籠魚','翠絲螺','殼盔龜','磁動龜','大磁炮','快樂蛋',
+  '木守宮','長舌葉','蜥蜴王','火稚雞','力壯雞','火焰雞','水躍魚','流氷人','海魔獸',
+  '貓鼬','布比娜','九尾貓','滾滾寶','鐵皮球','爆炸球','心蝙蝠','大心蝙蝠',
+  '孢子蘑菇','毒蘑菇','溶溶鯊','巨顎鯊','沙漠蜻蜓','飛天蜻蜓',
+  '炎武王','大劍鬼','風速狗','超夢','夢幻','急凍鳥','閃電鳥','盔甲鳥',
+  '木守宮ex','蜥蜴王ex','火焰雞ex','海魔獸ex',
+  '毛草貓','長草貓','大草貓','小火鱷','中火鱷','大火鱷','波波鴨','大波鴨','波鴨爺',
+  '皮卡丘ex','雷丘ex','噴火龍ex','超夢ex','夢幻ex','伊布ex',
+  '帝牙盧卡','帕路奇亞','騎拉帝納','帝牙盧卡ex','帕路奇亞ex','騎拉帝納ex',
+  '蓋歐卡','固拉多','烈空坐','捷拉奧拉','無極汰那',
+  '古拉頓ex','蓋歐卡ex','烈空坐ex','捷拉奧拉ex',
+  '湯圓熊貓','湯圓熊貓ex','鐵格寶','鐵格寶ex','可多拉ex','沙奈朵ex',
+  '達克萊伊ex','花炰獸ex','源紋鵝ex','霜奔ex',
+  '歐尼雷斯ex','碧璽拉吉拉ex','帕底亞土王','帕底亞地獄犬',
+  '雪拉比','史鐸奇','塞爾達','嗡嗡歌基','基格爾德','薩戮達',
+  '格鬥巢姆','鋼鐵葉冠','古代巢姆','未來謝米','鐵荊棘','鐵頭蛇','古代刺甲',
+  '博士的研究','瑪俐的決心','查哈利的練習','納奈的心意','拉丁的指引',
+  '山椒媽媽的愛','莉莉艾的幹勁','梅花的決心','尤里卡的救援',
+  '精靈球','超級球','高級球','大師球','起源球','快速球','巢穴球','古代快球','古代快速球',
+  '修復機','復活草','全復活藥','力量頭帶','訓練器','特殊能量',
+  '基本草能量','基本火能量','基本水能量','基本電能量','基本超能量',
+  '基本鬥能量','基本惡能量','基本鋼能量','雙色能量','加速能量',
+];
 
-// ── Auth ──
-onAuthStateChanged(auth, user => {
-  if (user) {
-    currentUser = user;
+// ══ State ══
+let user = null, cards = [], selectedId = null, editId = null;
+let selectedReg = 'A';
+let filterCat = '', filterType = '', filterRarity = '';
+let searchQ = '';
+
+// ══ Auth ══
+onAuthStateChanged(auth, u => {
+  if (u) {
+    user = u;
     document.getElementById('authScreen').style.display = 'none';
-    document.getElementById('appScreen').classList.add('visible');
-    if (user.photoURL) {
-      const img = document.getElementById('userAvatar');
-      img.src = user.photoURL; img.style.display = 'block';
-      document.getElementById('userAvatarFallback').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    if (u.photoURL) {
+      document.getElementById('uav').src = u.photoURL;
+      document.getElementById('uav').style.display = 'block';
+      document.getElementById('uavFb').style.display = 'none';
     } else {
-      document.getElementById('userAvatarFallback').textContent = (user.displayName||'U')[0].toUpperCase();
+      document.getElementById('uavFb').textContent = (u.displayName||'U')[0].toUpperCase();
     }
-    document.getElementById('userName').textContent = user.displayName || user.email;
+    document.getElementById('uname').textContent = u.displayName || u.email;
     loadCards();
   } else {
-    currentUser = null; cards = [];
+    user = null; cards = []; selectedId = null;
     document.getElementById('authScreen').style.display = 'flex';
-    document.getElementById('appScreen').classList.remove('visible');
+    document.getElementById('app').classList.remove('visible');
   }
 });
 
 window.loginGoogle = async () => {
   const btn = document.getElementById('btnGoogle');
   btn.disabled = true; btn.textContent = '登入中...';
-  try { await signInWithPopup(auth, gProvider); }
+  try { await signInWithPopup(auth, gp); }
   catch(e) {
-    const err = document.getElementById('authError');
-    err.textContent = e.code === 'auth/popup-closed-by-user' ? '登入視窗已關閉，請再試一次' : '登入失敗，請再試一次';
-    err.classList.add('show');
+    const el = document.getElementById('authError');
+    el.textContent = e.code==='auth/popup-closed-by-user' ? '視窗已關閉，請再試' : '登入失敗，請再試';
+    el.classList.add('show');
     btn.disabled = false; btn.textContent = '使用 Google 帳號登入';
   }
 };
 window.logout = () => signOut(auth);
 
-const cardsRef = () => collection(db, 'users', currentUser.uid, 'cards');
+// ══ Firestore ══
+const ref = () => collection(db, 'users', user.uid, 'cards');
 
 async function loadCards() {
-  document.getElementById('loadingMsg').style.display = 'block';
+  showLoading(true);
   try {
-    const snap = await getDocs(cardsRef());
+    const snap = await getDocs(ref());
     cards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  } catch(e) { showToast('❌ 載入失敗'); }
-  document.getElementById('loadingMsg').style.display = 'none';
-  buildFilters(); render();
+  } catch(e) { toast('❌ 載入失敗'); }
+  showLoading(false);
+  renderAll();
 }
 
-
-
-// ── CRUD ──
-window.changeQty = async (id, delta) => {
-  const c = cards.find(x=>x.id===id); if (!c) return;
-  const qty = Math.max(1, c.qty+delta);
-  try { await updateDoc(doc(db,'users',currentUser.uid,'cards',id),{qty}); c.qty=qty; render(); }
-  catch(e) { showToast('❌ 更新失敗'); }
-};
-
-window.delCard = async (id) => {
-  if (!confirm('確定要刪除這張卡牌嗎？')) return;
-  try {
-    await deleteDoc(doc(db,'users',currentUser.uid,'cards',id));
-    cards = cards.filter(x=>x.id!==id); render(); showToast('已刪除');
-  } catch(e) { showToast('❌ 刪除失敗'); }
-};
-
-window.editCard = (id) => {
-  const c = cards.find(x=>x.id===id); if (!c) return;
-  editId = id;
-  document.getElementById('modalTitle').textContent = '編輯卡牌';
-  document.getElementById('fReg').value     = c.reg;
-  document.getElementById('fName').value    = c.name;
-  document.getElementById('fCat').value     = c.cat;
-  document.getElementById('fType').value    = c.type;
-  document.getElementById('fRarity').value  = c.rarity || '◆ C (Common)';
-  document.getElementById('fQty').value     = c.qty;
-
-  toggleTypeField();
-  document.getElementById('modalBg').classList.add('open');
-};
-
-window.openModal = () => {
-  editId = null;
-  document.getElementById('modalTitle').textContent = '新增卡牌';
-  document.getElementById('fReg').value     = 'A';
-  document.getElementById('fName').value    = '';
-  document.getElementById('fCat').value     = '寶可夢';
-  document.getElementById('fType').value    = '一般';
-  document.getElementById('fRarity').value  = '◆ C (Common)';
-  document.getElementById('fQty').value     = '1';
-  document.getElementById('modalBg').classList.add('open');
-  toggleTypeField();
-  setTimeout(() => document.getElementById('fName').focus(), 100);
-};
-
-window.closeModal = () => document.getElementById('modalBg').classList.remove('open');
-
-window.saveCard = async () => {
-  const btn = document.getElementById('btnSave');
-  const data = {
-    reg:      document.getElementById('fReg').value,
-    name:     document.getElementById('fName').value.trim(),
-    cat:      document.getElementById('fCat').value,
-    type:     document.getElementById('fCat').value === '寶可夢' ? document.getElementById('fType').value : '',
-    rarity:   document.getElementById('fRarity').value,
-    qty:      Math.max(1, parseInt(document.getElementById('fQty').value)||1),
-  };
-  if (!data.name) { alert('請輸入卡牌名稱'); return; }
-  btn.disabled = true; btn.textContent = '儲存中...';
-  try {
-    if (editId) {
-      await updateDoc(doc(db,'users',currentUser.uid,'cards',editId), data);
-      Object.assign(cards.find(x=>x.id===editId), data);
-      showToast('✅ 已更新');
-    } else {
-      const ref = await addDoc(cardsRef(), {...data, createdAt: serverTimestamp()});
-      cards.push({id: ref.id, ...data});
-      showToast('✅ 已新增：' + data.name);
-    }
-    closeModal(); render();
-  } catch(e) { showToast('❌ 儲存失敗'); }
-  btn.disabled = false; btn.textContent = '儲存';
-};
-
-// ── Filters ──
-function makeFilter(id, items, current, setter) {
-  const el = document.getElementById(id);
-  const labels = {catFilter:'類別', typeFilter:'屬性', rarityFilter:'稀有度'};
-  el.innerHTML = `<span class="filter-label">${labels[id]}：</span>`;
-  items.forEach(item => {
-    const b = document.createElement('button');
-    b.className = 'filter-btn' + (current===item?' active':'');
-    b.textContent = item;
-    b.onclick = () => { setter(item); buildFilters(); render(); };
-    el.appendChild(b);
+// ══ Filters ══
+function buildChips() {
+  // Cat
+  const cc = document.getElementById('chipCat');
+  cc.innerHTML = '';
+  CATS.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'chip' + (filterCat===c?' on':'');
+    el.textContent = c;
+    el.onclick = () => { filterCat = filterCat===c ? '' : c; if(filterCat!=='寶可夢') filterType=''; buildChips(); renderList(); };
+    cc.appendChild(el);
+  });
+  // Type (only show if cat is 寶可夢 or no filter)
+  const ts = document.getElementById('chipTypeSection');
+  ts.style.display = (filterCat===''||filterCat==='寶可夢') ? '' : 'none';
+  const tc = document.getElementById('chipType');
+  tc.innerHTML = '';
+  TYPES.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'chip' + (filterType===t?' on':'');
+    el.textContent = t;
+    el.onclick = () => { filterType = filterType===t ? '' : t; buildChips(); renderList(); };
+    tc.appendChild(el);
+  });
+  // Rarity
+  const rc = document.getElementById('chipRarity');
+  rc.innerHTML = '';
+  RARITIES.forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'chip' + (filterRarity===r?' on':'');
+    el.textContent = r;
+    el.onclick = () => { filterRarity = filterRarity===r ? '' : r; buildChips(); renderList(); };
+    rc.appendChild(el);
   });
 }
-window.buildFilters = () => {
-  makeFilter('catFilter',   ['全部','寶可夢','支援者','物品','道具','能量'], filterCat,    v=>filterCat=v);
-  makeFilter('typeFilter',  ['全部','一般','火','水','草','電','惡','超','鬥','鋼','龍'], filterType, v=>filterType=v);
-  makeFilter('rarityFilter', RARITIES, filterRarity, v=>filterRarity=v);
-  // 若篩選類別不是寶可夢，隱藏屬性篩選列
-  const showType = filterCat === '全部' || filterCat === '寶可夢';
-  document.getElementById('typeFilter').style.display = showType ? '' : 'none';
-  if (!showType && filterType !== '全部') { filterType = '全部'; }
-};
 
-// ── Render ──
-window.render = () => {
-  const q    = document.getElementById('searchInput').value.toLowerCase();
-  const sort = document.getElementById('sortSelect').value;
-  const ro   = {}; RARITIES.slice(1).forEach((r,i) => ro[r]=i);
-  let list = cards.filter(c => {
-    if (filterCat!=='全部' && c.cat!==filterCat) return false;
-    if (filterType!=='全部' && c.type!==filterType) return false;
-    if (filterRarity!=='全部' && c.rarity!==filterRarity) return false;
+function getFiltered() {
+  const q = searchQ.toLowerCase();
+  return cards.filter(c => {
+    if (filterCat && c.cat !== filterCat) return false;
+    if (filterType && c.type !== filterType) return false;
+    if (filterRarity && c.rarity !== filterRarity) return false;
     if (q && !c.name.toLowerCase().includes(q) && !c.reg.toLowerCase().includes(q)) return false;
     return true;
   });
-  const catOrder = ['寶可夢','支援者','物品','道具','能量'];
-  const typeOrder = ['一般','火','水','草','電','惡','超','鬥','鋼','龍'];
-  list.sort((a,b) => {
-    if (sort==='cat')    return (catOrder.indexOf(a.cat)||0) - (catOrder.indexOf(b.cat)||0);
-    if (sort==='type')   return (typeOrder.indexOf(a.type||'一般')||0) - (typeOrder.indexOf(b.type||'一般')||0);
-    if (sort==='qty')    return b.qty - a.qty;
-    if (sort==='rarity') return (ro[a.rarity]||0) - (ro[b.rarity]||0);
-    return a.reg.localeCompare(b.reg);
+}
+
+// ══ Render ══
+function renderAll() { buildChips(); renderList(); renderStats(); }
+
+function renderList() {
+  const list = document.getElementById('cardList');
+  const filtered = getFiltered();
+  if (!filtered.length) {
+    list.innerHTML = `<div class="card-list-empty">${cards.length ? '沒有符合條件的卡牌' : '尚無卡牌，點下方新增'}</div>`;
+    return;
+  }
+  list.innerHTML = '';
+  filtered.forEach(c => {
+    const row = document.createElement('div');
+    row.className = 'card-row' + (c.id===selectedId?' selected':'');
+    row.onclick = () => selectCard(c.id);
+    const cc = CAT_CFG[c.cat]||{bg:'#eee',color:'#333'};
+    const metaParts = [c.cat];
+    if (c.type) metaParts.push(c.type);
+    metaParts.push(c.rarity||'');
+    row.innerHTML = `
+      <div class="cr-badge">${c.reg}</div>
+      <div class="cr-info">
+        <div class="cr-name">${c.name}</div>
+        <div class="cr-meta">${metaParts.filter(Boolean).join(' · ')}</div>
+      </div>
+      <div class="cr-qty">
+        <div class="qty-badge${c.qty>0?'':' zero'}">${c.qty}</div>
+      </div>`;
+    list.appendChild(row);
   });
-  const tbody = document.getElementById('tbody');
-  document.getElementById('emptyMsg').style.display = list.length ? 'none' : 'block';
-  tbody.innerHTML = '';
-  list.forEach(c => {
-    const tc = TYPE_CONFIG[c.type]     || TYPE_CONFIG['一般'];
-    const cc = CAT_CONFIG[c.cat]       || {bg:'#eee',color:'#333'};
-    const rc = RARITY_CONFIG[c.rarity] || {bg:'#F1EFE8',color:'#444441'};
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><span class="reg-badge">${c.reg}</span></td>
-      <td style="font-weight:600">${c.name}</td>
-      <td><span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span></td>
-      <td>${c.type ? `<span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span>` : '—'}</td>
-      <td><span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity||''}</span></td>
-      <td><div class="qty-wrap">
-        <button class="qty-btn" onclick="changeQty('${c.id}',-1)">−</button>
-        <span class="qty-num">${c.qty}</span>
-        <button class="qty-btn" onclick="changeQty('${c.id}',1)">+</button>
-      </div></td>
-      <td style="white-space:nowrap">
-        <button class="action-btn edit" onclick="editCard('${c.id}')">✎</button>
-        <button class="action-btn del"  onclick="delCard('${c.id}')">✕</button>
-      </td>`;
-    tbody.appendChild(tr);
-  });
-  const total   = cards.reduce((s,c)=>s+c.qty,0);
-  const rare    = cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
-  document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card"><div class="stat-label">卡牌種類</div><div class="stat-val">${cards.length}</div></div>
-    <div class="stat-card"><div class="stat-label">總張數</div><div class="stat-val">${total}</div></div>
-    <div class="stat-card"><div class="stat-label">寶可夢</div><div class="stat-val">${cards.filter(c=>c.cat==='寶可夢').length}</div></div>
-    <div class="stat-card"><div class="stat-label">高稀有度</div><div class="stat-val">${rare}</div></div>
-  `;
+}
+
+function renderStats() {
+  const total = cards.reduce((s,c)=>s+c.qty,0);
+  const rare  = cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
+  document.getElementById('statsBar').innerHTML = [
+    ['種類', cards.length],
+    ['總張數', total],
+    ['寶可夢', cards.filter(c=>c.cat==='寶可夢').length],
+    ['訓練家', cards.filter(c=>['支援者','物品','道具'].includes(c.cat)).length],
+    ['高稀有', rare],
+  ].map(([l,v])=>`<div class="stat-item"><div class="si-label">${l}</div><div class="si-val">${v}</div></div>`).join('');
+}
+
+function selectCard(id) {
+  selectedId = id;
+  renderList();
+  renderDetail();
+}
+
+function renderDetail() {
+  const c = cards.find(x=>x.id===selectedId);
+  document.getElementById('rpEmpty').style.display  = c ? 'none' : 'flex';
+  document.getElementById('rpDetail').classList.toggle('show', !!c);
+  if (!c) return;
+
+  document.getElementById('dReg').textContent  = c.reg;
+  document.getElementById('dName').textContent = c.name;
+  document.getElementById('dQty').textContent  = c.qty;
+
+  // Pills
+  const pills = document.getElementById('dPills');
+  pills.innerHTML = '';
+  const cc = CAT_CFG[c.cat]||{bg:'#eee',color:'#333'};
+  pills.innerHTML += `<span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span>`;
+  if (c.type) {
+    const tc = TYPE_CFG[c.type]||TYPE_CFG['一般'];
+    pills.innerHTML += `<span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span>`;
+  }
+  if (c.rarity) {
+    const rc = RAR_CFG[c.rarity]||{bg:'#eee',color:'#333'};
+    pills.innerHTML += `<span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity}</span>`;
+  }
+
+  // Fields
+  document.getElementById('dFields').innerHTML = [
+    ['賽場標誌', c.reg],
+    ['類別', c.cat],
+    ['屬性', c.type||'—'],
+    ['稀有度', c.rarity||'—'],
+  ].map(([l,v])=>`<div class="df-item"><div class="df-label">${l}</div><div class="df-val">${v}</div></div>`).join('');
+}
+
+// ══ Qty adjust ══
+window.adjustQty = async (delta) => {
+  const c = cards.find(x=>x.id===selectedId); if (!c) return;
+  const qty = Math.max(0, c.qty + delta);
+  try {
+    await updateDoc(doc(db,'users',user.uid,'cards',selectedId),{qty});
+    c.qty = qty; renderList(); renderDetail(); renderStats();
+  } catch(e) { toast('❌ 更新失敗'); }
 };
 
-let toastTimer;
-window.showToast = (msg) => {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+// ══ Delete ══
+window.deleteSelected = async () => {
+  const c = cards.find(x=>x.id===selectedId); if (!c) return;
+  if (!confirm(`確定要從收藏中刪除「${c.name}」嗎？`)) return;
+  try {
+    await deleteDoc(doc(db,'users',user.uid,'cards',selectedId));
+    cards = cards.filter(x=>x.id!==selectedId);
+    selectedId = null; renderAll(); renderDetail();
+    toast('已刪除');
+  } catch(e) { toast('❌ 刪除失敗'); }
 };
 
-// Init
-const regSel = document.getElementById('fReg');
-'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
-  const o = document.createElement('option'); o.value=l; o.textContent=l; regSel.appendChild(o);
+// ══ Modal ══
+window.openAddModal = () => {
+  editId = null; selectedReg = 'A';
+  document.getElementById('modalTitle').textContent = '新增卡牌';
+  document.getElementById('fName').value   = '';
+  document.getElementById('fCat').value    = '寶可夢';
+  document.getElementById('fType').value   = '一般';
+  document.getElementById('fRarity').value = '◆ C (Common)';
+  document.getElementById('fTypeWrap').style.display = '';
+  initRegGrid(); updateRegLabel();
+  document.getElementById('modalBg').classList.add('open');
+  setTimeout(() => document.getElementById('fName').focus(), 100);
+};
+
+window.openEditModal = () => {
+  const c = cards.find(x=>x.id===selectedId); if (!c) return;
+  editId = selectedId; selectedReg = c.reg;
+  document.getElementById('modalTitle').textContent = '編輯卡牌';
+  document.getElementById('fName').value   = c.name;
+  document.getElementById('fCat').value    = c.cat;
+  document.getElementById('fType').value   = c.type || '一般';
+  document.getElementById('fRarity').value = c.rarity || '◆ C (Common)';
+  document.getElementById('fTypeWrap').style.display = c.cat==='寶可夢' ? '' : 'none';
+  initRegGrid(); updateRegLabel();
+  document.getElementById('modalBg').classList.add('open');
+};
+
+window.closeModal = () => {
+  document.getElementById('modalBg').classList.remove('open');
+  document.getElementById('nameAcList').classList.remove('show');
+  document.getElementById('typeAcList').classList.remove('show');
+};
+
+window.onCatChange = () => {
+  const isPokemon = document.getElementById('fCat').value === '寶可夢';
+  document.getElementById('fTypeWrap').style.display = isPokemon ? '' : 'none';
+  if (!isPokemon) document.getElementById('fType').value = '一般';
+};
+
+window.saveCard = async () => {
+  const btn  = document.getElementById('btnSave');
+  const name = document.getElementById('fName').value.trim();
+  if (!name) { alert('請輸入卡牌名稱'); return; }
+  const cat  = document.getElementById('fCat').value;
+  const data = {
+    reg:    selectedReg,
+    name,
+    cat,
+    type:   cat==='寶可夢' ? document.getElementById('fType').value : '',
+    rarity: document.getElementById('fRarity').value,
+    qty:    editId ? cards.find(x=>x.id===editId)?.qty||0 : 0,
+  };
+  btn.disabled = true; btn.textContent = '儲存中...';
+  try {
+    if (editId) {
+      await updateDoc(doc(db,'users',user.uid,'cards',editId), data);
+      Object.assign(cards.find(x=>x.id===editId), data);
+      selectedId = editId; toast('✅ 已更新');
+    } else {
+      const r = await addDoc(ref(), {...data, createdAt: serverTimestamp()});
+      const newCard = {id: r.id, ...data};
+      cards.push(newCard); selectedId = r.id; toast('✅ 已新增：' + name);
+    }
+    closeModal(); renderAll(); renderDetail();
+  } catch(e) { toast('❌ 儲存失敗'); }
+  btn.disabled = false; btn.textContent = '儲存';
+};
+
+// ══ Reg Grid ══
+function initRegGrid() {
+  const grid = document.getElementById('regGrid');
+  grid.innerHTML = '';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
+    const cell = document.createElement('div');
+    cell.className = 'reg-cell' + (l===selectedReg?' on':'');
+    cell.textContent = l;
+    cell.onclick = () => { selectedReg = l; initRegGrid(); updateRegLabel(); };
+    grid.appendChild(cell);
+  });
+}
+function updateRegLabel() {
+  document.getElementById('regLabel').textContent = selectedReg;
+}
+
+// ══ Search Autocomplete ══
+let searchAcIdx = -1;
+window.onSearchInput = () => {
+  searchQ = document.getElementById('searchQ').value.trim();
+  const q = searchQ.toLowerCase();
+  searchAcIdx = -1;
+  const list = document.getElementById('searchAcList');
+  if (!q) { list.classList.remove('show'); renderList(); return; }
+  const fromCards = [...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
+  const fromDB    = POKEMON_ZH.filter(n=>n.includes(searchQ)&&!fromCards.includes(n));
+  const matches   = [...fromCards,...fromDB].slice(0,10);
+  list.innerHTML  = '';
+  if (!matches.length) { list.classList.remove('show'); renderList(); return; }
+  matches.forEach(name => {
+    const item = document.createElement('div');
+    item.className = 'ac-item'; item.textContent = name;
+    item.onmousedown = e => { e.preventDefault(); document.getElementById('searchQ').value=name; searchQ=name; list.classList.remove('show'); renderList(); };
+    list.appendChild(item);
+  });
+  list.classList.add('show');
+  renderList();
+};
+window.onSearchKeydown = e => {
+  const list = document.getElementById('searchAcList');
+  const items = list.querySelectorAll('.ac-item');
+  if (!list.classList.contains('show')) return;
+  if (e.key==='ArrowDown') { e.preventDefault(); searchAcIdx=Math.min(searchAcIdx+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('hi',i===searchAcIdx)); }
+  else if (e.key==='ArrowUp') { e.preventDefault(); searchAcIdx=Math.max(searchAcIdx-1,-1); items.forEach((el,i)=>el.classList.toggle('hi',i===searchAcIdx)); }
+  else if (e.key==='Enter'&&searchAcIdx>=0) { e.preventDefault(); const n=items[searchAcIdx].textContent; document.getElementById('searchQ').value=n; searchQ=n; list.classList.remove('show'); renderList(); }
+  else if (e.key==='Escape') list.classList.remove('show');
+};
+
+// ══ Name Autocomplete (in modal) ══
+let nameAcIdx = -1;
+window.onNameAcInput = () => {
+  const val = document.getElementById('fName').value.trim();
+  const list = document.getElementById('nameAcList');
+  nameAcIdx = -1;
+  if (!val) { list.classList.remove('show'); return; }
+  const q = val.toLowerCase();
+  const fromCards = [...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
+  const fromDB    = POKEMON_ZH.filter(n=>n.includes(val)&&!fromCards.includes(n));
+  const matches   = [...fromCards,...fromDB].slice(0,10);
+  list.innerHTML  = '';
+  if (!matches.length) { list.classList.remove('show'); return; }
+  matches.forEach(name => {
+    const item = document.createElement('div');
+    item.className='ac-item'; item.textContent=name;
+    item.onmousedown = e => { e.preventDefault(); document.getElementById('fName').value=name; list.classList.remove('show'); };
+    list.appendChild(item);
+  });
+  list.classList.add('show');
+};
+window.onNameAcKeydown = e => {
+  const list  = document.getElementById('nameAcList');
+  const items = list.querySelectorAll('.ac-item');
+  if (!list.classList.contains('show')) return;
+  if (e.key==='ArrowDown') { e.preventDefault(); nameAcIdx=Math.min(nameAcIdx+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('hi',i===nameAcIdx)); }
+  else if (e.key==='ArrowUp') { e.preventDefault(); nameAcIdx=Math.max(nameAcIdx-1,-1); items.forEach((el,i)=>el.classList.toggle('hi',i===nameAcIdx)); }
+  else if (e.key==='Enter'&&nameAcIdx>=0) { e.preventDefault(); document.getElementById('fName').value=items[nameAcIdx].textContent; list.classList.remove('show'); }
+  else if (e.key==='Escape') list.classList.remove('show');
+};
+
+// ══ Type Autocomplete (in modal) ══
+let typeAcIdx = -1;
+window.onTypeAcFocus = () => showTypeAc('');
+window.onTypeAcKeydown = e => {
+  const list  = document.getElementById('typeAcList');
+  const items = list.querySelectorAll('.ac-item');
+  if (!list.classList.contains('show')&&e.key==='ArrowDown') { showTypeAc(''); return; }
+  if (e.key==='ArrowDown') { e.preventDefault(); typeAcIdx=Math.min(typeAcIdx+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('hi',i===typeAcIdx)); }
+  else if (e.key==='ArrowUp') { e.preventDefault(); typeAcIdx=Math.max(typeAcIdx-1,-1); items.forEach((el,i)=>el.classList.toggle('hi',i===typeAcIdx)); }
+  else if (e.key==='Enter'&&typeAcIdx>=0) { e.preventDefault(); document.getElementById('fType').value=items[typeAcIdx].textContent; list.classList.remove('show'); }
+  else if (e.key==='Escape') list.classList.remove('show');
+};
+function showTypeAc(q) {
+  const list = document.getElementById('typeAcList');
+  typeAcIdx = -1;
+  const matches = q ? TYPES.filter(t=>t.includes(q)) : TYPES;
+  list.innerHTML = '';
+  matches.forEach(t => {
+    const item = document.createElement('div');
+    item.className='ac-item'; item.textContent=t;
+    item.onmousedown = e => { e.preventDefault(); document.getElementById('fType').value=t; list.classList.remove('show'); };
+    list.appendChild(item);
+  });
+  list.classList.add('show');
+}
+
+// ══ Global click to close autocomplete ══
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-box'))  document.getElementById('searchAcList').classList.remove('show');
+  if (!e.target.closest('#fName')&&!e.target.closest('#nameAcList')) document.getElementById('nameAcList').classList.remove('show');
+  if (!e.target.closest('#fTypeWrap'))   document.getElementById('typeAcList').classList.remove('show');
 });
-document.getElementById('modalBg').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+// ══ Keyboard ══
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
+document.getElementById('modalBg').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
+
+// ══ Utils ══
+function showLoading(v) { document.getElementById('loadingOverlay').classList.toggle('show', v); }
+let toastTimer;
+window.toast = msg => {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+};
+
+// Boot
+renderDetail();
 </script>
 </body>
 </html>
