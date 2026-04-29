@@ -7,41 +7,37 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #ffffff; --bg2: #f4f4f6; --bg3: #e8e8ec;
-      --text: #1a1a1a; --text2: #666; --text3: #aaa;
-      --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.20);
-      --blue: #378ADD; --blue-dk: #185FA5; --blue-lt: #E6F1FB;
-      --red: #E24B4A; --red-lt: #FCEBEB;
-      --radius: 8px; --radius-lg: 14px;
-      --sidebar: 300px; --topbar: 52px;
+      --bg:#ffffff; --bg2:#f4f4f6; --bg3:#e8e8ec;
+      --text:#1a1a1a; --text2:#666; --text3:#aaa;
+      --border:rgba(0,0,0,0.10); --border2:rgba(0,0,0,0.20);
+      --blue:#378ADD; --blue-dk:#185FA5; --blue-lt:#E6F1FB;
+      --red:#E24B4A; --red-lt:#FCEBEB;
+      --green:#3A9A4A; --green-lt:#EAF5EC;
+      --orange:#E07A10; --orange-lt:#FEF3E2;
+      --radius:8px; --radius-lg:14px;
+      --sidebar:300px; --topbar:52px;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
+    @media(prefers-color-scheme:dark){
+      :root{
         --bg:#1c1c1e; --bg2:#2c2c2e; --bg3:#3a3a3c;
         --text:#f2f2f7; --text2:#aeaeb2; --text3:#636366;
         --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.20);
-        --blue-lt:#1a3352; --red-lt:#3a1515;
+        --blue-lt:#1a3352; --red-lt:#3a1515; --green-lt:#1a2e1f; --orange-lt:#2e1f08;
       }
     }
-    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-           background:var(--bg2); color:var(--text); }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg2); color:var(--text); }
 
     /* ── AUTH ── */
     .auth-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:1rem; }
-    .auth-card { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border);
-                 padding:2.5rem 2rem; width:100%; max-width:360px; text-align:center; }
+    .auth-card { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border); padding:2.5rem 2rem; width:100%; max-width:360px; text-align:center; }
     .auth-logo { font-size:52px; margin-bottom:.75rem; }
     .auth-title { font-size:22px; font-weight:700; margin-bottom:.25rem; }
     .auth-sub { font-size:13px; color:var(--text2); margin-bottom:2rem; }
-    .btn-google { width:100%; padding:12px; background:var(--bg); color:var(--text);
-                  border:0.5px solid var(--border2); border-radius:var(--radius);
-                  font-size:15px; font-weight:500; cursor:pointer;
-                  display:flex; align-items:center; justify-content:center; gap:10px; }
+    .btn-google { width:100%; padding:12px; background:var(--bg); color:var(--text); border:0.5px solid var(--border2); border-radius:var(--radius); font-size:15px; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; }
     .btn-google:hover { background:var(--bg2); }
     .btn-google:disabled { opacity:.6; cursor:not-allowed; }
     .gico { width:20px; height:20px; flex-shrink:0; }
-    .auth-err { background:var(--red-lt); color:var(--red); font-size:13px;
-                padding:8px 12px; border-radius:var(--radius); margin-top:1rem; display:none; }
+    .auth-err { background:var(--red-lt); color:var(--red); font-size:13px; padding:8px 12px; border-radius:var(--radius); margin-top:1rem; display:none; }
     .auth-err.show { display:block; }
     .auth-note { font-size:12px; color:var(--text2); margin-top:1.25rem; line-height:1.6; }
 
@@ -50,22 +46,18 @@
     .app.on { display:flex; }
 
     /* Topbar */
-    .topbar { height:var(--topbar); background:var(--bg); border-bottom:0.5px solid var(--border);
-              display:flex; align-items:center; gap:10px; padding:0 1.25rem; flex-shrink:0; z-index:30; }
+    .topbar { height:var(--topbar); background:var(--bg); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:10px; padding:0 1.25rem; flex-shrink:0; z-index:30; }
     .tb-title { font-size:16px; font-weight:700; flex:1; }
     .uinfo { display:flex; align-items:center; gap:8px; }
     .uav { width:28px; height:28px; border-radius:50%; object-fit:cover; }
-    .uav-fb { width:28px; height:28px; border-radius:50%; background:var(--blue); color:white;
-              font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .uav-fb { width:28px; height:28px; border-radius:50%; background:var(--blue); color:white; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
     .uname { font-size:13px; color:var(--text2); max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .btn-sm { padding:5px 12px; border:0.5px solid var(--border2); border-radius:var(--radius);
-              background:none; color:var(--text2); font-size:12px; cursor:pointer; }
+    .btn-sm { padding:5px 12px; border:0.5px solid var(--border2); border-radius:var(--radius); background:none; color:var(--text2); font-size:12px; cursor:pointer; }
     .btn-sm:hover { background:var(--bg2); }
 
     /* Stats */
-    .stats-bar { display:flex; background:var(--bg); border-bottom:0.5px solid var(--border);
-                 flex-shrink:0; overflow-x:auto; }
-    .si { padding:7px 18px; text-align:center; border-right:0.5px solid var(--border); white-space:nowrap; }
+    .stats-bar { display:flex; background:var(--bg); border-bottom:0.5px solid var(--border); flex-shrink:0; overflow-x:auto; }
+    .si { padding:7px 18px; text-align:center; border-right:0.5px solid var(--border); white-space:nowrap; flex-shrink:0; }
     .si:last-child { border-right:none; }
     .si-l { font-size:10px; color:var(--text2); margin-bottom:1px; }
     .si-v { font-size:17px; font-weight:700; }
@@ -73,227 +65,217 @@
     /* ── MAIN ── */
     .main { display:flex; flex:1; overflow:hidden; }
 
-    /* LEFT */
-    .lp { width:var(--sidebar); flex-shrink:0; display:flex; flex-direction:column;
-          border-right:0.5px solid var(--border); background:var(--bg); overflow:hidden; }
-    .lp-head { padding:10px; border-bottom:0.5px solid var(--border); flex-shrink:0; }
-    .lp-head h2 { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase;
-                  letter-spacing:.5px; margin-bottom:8px; }
-    /* search */
-    .sb { position:relative; margin-bottom:8px; }
-    .sb input { width:100%; padding:8px 12px 8px 30px; border:0.5px solid var(--border2);
-                border-radius:var(--radius); background:var(--bg2); color:var(--text);
-                font-size:13px; outline:none; }
+    /* ── LEFT PANEL ── */
+    .lp { width:var(--sidebar); flex-shrink:0; display:flex; flex-direction:column; border-right:0.5px solid var(--border); background:var(--bg); overflow:hidden; }
+
+    /* Search + Sort row */
+    .lp-search { padding:10px; border-bottom:0.5px solid var(--border); flex-shrink:0; display:flex; gap:6px; align-items:center; }
+    .sb { position:relative; flex:1; }
+    .sb input { width:100%; padding:8px 12px 8px 30px; border:0.5px solid var(--border2); border-radius:var(--radius); background:var(--bg2); color:var(--text); font-size:13px; outline:none; }
     .sb input:focus { border-color:var(--blue); background:var(--bg); }
-    .sb-ico { position:absolute; left:9px; top:50%; transform:translateY(-50%);
-              font-size:13px; color:var(--text3); pointer-events:none; }
-    /* filter chips */
-    .f-sec { margin-bottom:7px; }
+    .sb-ico { position:absolute; left:9px; top:50%; transform:translateY(-50%); font-size:13px; color:var(--text3); pointer-events:none; }
+    .sort-btn { flex-shrink:0; padding:7px 10px; border:0.5px solid var(--border2); border-radius:var(--radius); background:var(--bg); color:var(--text2); font-size:11px; cursor:pointer; white-space:nowrap; }
+    .sort-btn:hover { background:var(--bg2); border-color:var(--blue); color:var(--blue); }
+    .sort-btn.on { background:var(--blue-lt); border-color:var(--blue); color:var(--blue); }
+
+    /* Filter panel – collapsible */
+    .lp-filter { border-bottom:0.5px solid var(--border); flex-shrink:0; overflow:hidden; transition:max-height .25s ease; }
+    .lp-filter.collapsed { max-height:0; }
+    .lp-filter.expanded { max-height:400px; }
+    .lp-filter-inner { padding:8px 10px 10px; }
+    .f-sec { margin-bottom:8px; }
+    .f-sec:last-child { margin-bottom:0; }
     .f-sec-lbl { font-size:10px; color:var(--text3); margin-bottom:3px; text-transform:uppercase; letter-spacing:.5px; }
+
+    /* CHIPS – shortened rarity labels */
     .chips { display:flex; gap:4px; flex-wrap:wrap; }
-    .chip { font-size:11px; padding:3px 8px; border:0.5px solid var(--border2); border-radius:20px;
-            background:var(--bg); color:var(--text2); cursor:pointer; transition:all .12s; white-space:nowrap; }
+    .chip { font-size:11px; padding:3px 8px; border:0.5px solid var(--border2); border-radius:20px; background:var(--bg); color:var(--text2); cursor:pointer; transition:all .12s; white-space:nowrap; }
     .chip.on, .chip:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-lt); }
-    /* card list */
+    .chip-clear { font-size:11px; padding:3px 8px; border:none; border-radius:20px; background:var(--red-lt); color:var(--red); cursor:pointer; white-space:nowrap; display:none; }
+    .chip-clear.show { display:inline-block; }
+
+    /* Filter toggle bar */
+    .filter-toggle { display:flex; align-items:center; padding:6px 10px; cursor:pointer; border-bottom:0.5px solid var(--border); flex-shrink:0; user-select:none; }
+    .filter-toggle-lbl { font-size:11px; color:var(--text2); flex:1; }
+    .filter-active-count { font-size:10px; background:var(--blue); color:white; border-radius:10px; padding:1px 7px; margin-left:6px; display:none; }
+    .filter-active-count.show { display:inline-block; }
+    .filter-chevron { font-size:12px; color:var(--text3); transition:transform .2s; }
+    .filter-chevron.up { transform:rotate(180deg); }
+
+    /* Card list */
     .cl { flex:1; overflow-y:auto; }
-    .cl-empty { padding:2rem 1rem; text-align:center; color:var(--text2); font-size:13px; }
-    .cr { display:flex; align-items:center; gap:9px; padding:9px 10px;
-          border-bottom:0.5px solid var(--border); cursor:pointer; transition:background .12s; }
+    .cl-empty { padding:2rem 1rem; text-align:center; color:var(--text2); font-size:13px; line-height:1.7; }
+    .cl-empty .cl-empty-icon { font-size:36px; margin-bottom:.5rem; }
+    .cr { display:flex; align-items:center; gap:9px; padding:9px 10px; border-bottom:0.5px solid var(--border); cursor:pointer; transition:background .12s; }
     .cr:hover { background:var(--bg2); }
     .cr.sel { background:var(--blue-lt); border-left:3px solid var(--blue); }
     .cr.sel .cr-name { color:var(--blue); }
-    /* card thumb in list */
     .cr-img { width:32px; height:44px; border-radius:3px; object-fit:cover; flex-shrink:0; background:var(--bg3); }
-    .cr-img-ph { width:32px; height:44px; border-radius:3px; background:var(--bg3);
-                 display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-    .cr-reg { width:24px; height:24px; border-radius:50%; background:var(--blue); color:white;
-              font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cr-img-ph { width:32px; height:44px; border-radius:3px; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+    .cr-reg { width:22px; height:22px; border-radius:50%; background:var(--blue); color:white; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .cr-info { flex:1; min-width:0; }
     .cr-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .cr-meta { font-size:11px; color:var(--text2); margin-top:1px; }
-    .cr-qb { min-width:22px; height:22px; border-radius:11px; background:var(--blue); color:white;
-              font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 5px; flex-shrink:0; }
-    .cr-qb.z { background:var(--bg3); color:var(--text3); }
-    /* lp foot */
+    .cr-meta { font-size:11px; color:var(--text2); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    /* qty badge */
+    .cr-qb { min-width:22px; height:22px; border-radius:11px; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 5px; flex-shrink:0; }
+    .cr-qb.has { background:var(--blue); color:white; }
+    .cr-qb.zero { background:var(--orange-lt); color:var(--orange); border:0.5px solid var(--orange); }
+
+    /* Add button */
     .lp-foot { padding:8px 10px; border-top:0.5px solid var(--border); flex-shrink:0; }
-    .btn-add { width:100%; padding:9px; background:var(--blue); color:white; border:none;
-               border-radius:var(--radius); font-size:13px; font-weight:600; cursor:pointer; }
+    .btn-add { width:100%; padding:9px; background:var(--blue); color:white; border:none; border-radius:var(--radius); font-size:13px; font-weight:600; cursor:pointer; }
     .btn-add:hover { background:var(--blue-dk); }
 
-    /* RIGHT */
+    /* ── RIGHT PANEL ── */
     .rp { flex:1; display:flex; flex-direction:column; overflow:hidden; background:var(--bg2); }
-    .rp-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-                color:var(--text2); gap:10px; }
-    .rp-empty-ico { font-size:52px; }
-    .rp-empty-txt { font-size:15px; font-weight:500; }
-    .rp-empty-sub { font-size:13px; color:var(--text3); }
+
+    /* Empty state – improved guidance */
+    .rp-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--text2); gap:10px; padding:2rem; text-align:center; }
+    .rp-empty-ico { font-size:56px; }
+    .rp-empty-txt { font-size:16px; font-weight:600; color:var(--text); }
+    .rp-empty-sub { font-size:13px; color:var(--text2); line-height:1.6; max-width:260px; }
+    .rp-empty-hint { display:flex; flex-direction:column; gap:8px; margin-top:8px; width:100%; max-width:260px; }
+    .rp-hint-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text2); background:var(--bg); border-radius:var(--radius); padding:8px 12px; border:0.5px solid var(--border); }
+    .rp-hint-ico { font-size:18px; flex-shrink:0; }
+
+    /* Detail */
     .rp-detail { flex:1; overflow-y:auto; padding:1.5rem; display:none; }
     .rp-detail.on { display:block; }
-    .dc { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border);
-          overflow:hidden; max-width:520px; margin:0 auto; }
-
-    /* detail header */
+    .dc { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border); overflow:hidden; max-width:520px; margin:0 auto; }
     .dc-header { display:flex; gap:1rem; padding:1.25rem; border-bottom:0.5px solid var(--border); }
     .dc-img-wrap { flex-shrink:0; }
     .dc-img { width:100px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,.15); display:block; cursor:pointer; transition:transform .15s; }
     .dc-img:hover { transform:scale(1.04); }
-    .dc-img-ph { width:100px; height:140px; border-radius:8px; background:var(--bg3);
-                 display:flex; align-items:center; justify-content:center; font-size:36px; }
+    .dc-img-ph { width:100px; height:140px; border-radius:8px; background:var(--bg3); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; cursor:pointer; transition:background .15s; }
+    .dc-img-ph:hover { background:var(--bg2); }
+    .dc-img-ph-ico { font-size:32px; }
+    .dc-img-ph-txt { font-size:10px; color:var(--text3); text-align:center; }
     .dc-header-info { flex:1; min-width:0; padding-top:4px; }
-    .dc-reg { width:32px; height:32px; border-radius:50%; background:var(--blue); color:white;
-              font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
+    .dc-reg { width:32px; height:32px; border-radius:50%; background:var(--blue); color:white; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
     .dc-name { font-size:20px; font-weight:700; margin-bottom:8px; }
     .dc-pills { display:flex; gap:5px; flex-wrap:wrap; }
     .pill { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:12px; font-size:11px; font-weight:500; }
     .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 
-    /* qty */
+    /* Qty – with zero warning */
     .dc-qty { padding:1.25rem; border-bottom:0.5px solid var(--border); }
-    .qty-lbl { font-size:11px; color:var(--text2); margin-bottom:10px; text-transform:uppercase; letter-spacing:.4px; }
+    .qty-lbl { font-size:11px; color:var(--text2); margin-bottom:10px; text-transform:uppercase; letter-spacing:.4px; display:flex; align-items:center; gap:8px; }
+    .qty-warn { font-size:11px; background:var(--orange-lt); color:var(--orange); padding:2px 8px; border-radius:10px; display:none; }
+    .qty-warn.show { display:inline-block; }
     .qty-ctrl { display:flex; align-items:center; gap:14px; }
-    .qty-big-btn { width:46px; height:46px; border-radius:50%; border:0.5px solid var(--border2);
-                   background:var(--bg2); color:var(--text); font-size:22px; cursor:pointer;
-                   display:flex; align-items:center; justify-content:center; transition:all .12s; }
+    .qty-big-btn { width:46px; height:46px; border-radius:50%; border:0.5px solid var(--border2); background:var(--bg2); color:var(--text); font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .12s; }
     .qty-big-btn:hover { background:var(--bg3); }
     .qty-big-btn.add:hover { background:var(--blue); color:white; border-color:var(--blue); }
-    .qty-big-num { font-size:40px; font-weight:700; min-width:56px; text-align:center; }
+    .qty-big-btn:disabled { opacity:.3; cursor:not-allowed; }
+    .qty-big-num { font-size:40px; font-weight:700; min-width:56px; text-align:center; transition:color .2s; }
+    .qty-big-num.zero { color:var(--orange); }
     .qty-unit { font-size:13px; color:var(--text2); }
 
-    /* detail fields */
+    /* Detail fields */
     .dc-fields { padding:1rem 1.25rem; display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
     .df-l { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
     .df-v { font-size:14px; font-weight:500; }
 
-    /* actions */
-    .dc-acts { padding:1rem 1.25rem; display:flex; gap:8px; border-top:0.5px solid var(--border); }
-    .btn-edit { flex:1; padding:8px; border:0.5px solid var(--border2); border-radius:var(--radius);
-                background:none; color:var(--text); font-size:13px; cursor:pointer; font-weight:500; }
+    /* Actions */
+    .dc-acts { padding:1rem 1.25rem; display:flex; gap:8px; border-top:0.5px solid var(--border); flex-wrap:wrap; }
+    .btn-edit { flex:1; min-width:80px; padding:8px; border:0.5px solid var(--border2); border-radius:var(--radius); background:none; color:var(--text); font-size:13px; cursor:pointer; font-weight:500; }
     .btn-edit:hover { background:var(--bg2); }
-    .btn-lnk { flex:1; padding:8px; border:0.5px solid var(--blue); border-radius:var(--radius);
-               background:none; color:var(--blue); font-size:13px; cursor:pointer; font-weight:500; }
+    .btn-lnk { flex:1; min-width:80px; padding:8px; border:0.5px solid var(--blue); border-radius:var(--radius); background:none; color:var(--blue); font-size:13px; cursor:pointer; font-weight:500; }
     .btn-lnk:hover { background:var(--blue-lt); }
-    .btn-del { padding:8px 14px; border:0.5px solid var(--red); border-radius:var(--radius);
-               background:none; color:var(--red); font-size:13px; cursor:pointer; }
+    .btn-del { padding:8px 14px; border:0.5px solid var(--red); border-radius:var(--radius); background:none; color:var(--red); font-size:13px; cursor:pointer; }
     .btn-del:hover { background:var(--red-lt); }
 
     /* ── MODALS ── */
-    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100;
-                align-items:center; justify-content:center; padding:1rem; }
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; align-items:center; justify-content:center; padding:1rem; }
     .modal-bg.open { display:flex; }
-    .modal { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border);
-             padding:1.5rem; width:100%; max-width:820px; max-height:90vh; overflow-y:auto; }
+    .modal { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border); padding:1.5rem; width:100%; max-width:820px; max-height:90vh; overflow-y:auto; }
     .modal h3 { font-size:17px; font-weight:700; margin-bottom:1.25rem; }
     .field { margin-bottom:12px; }
     .field label { font-size:12px; color:var(--text2); display:block; margin-bottom:4px; }
-    .field input,.field select { width:100%; padding:8px 10px; border:0.5px solid var(--border2);
-                                  border-radius:var(--radius); background:var(--bg); color:var(--text);
-                                  font-size:14px; outline:none; }
+    .field input,.field select { width:100%; padding:8px 10px; border:0.5px solid var(--border2); border-radius:var(--radius); background:var(--bg); color:var(--text); font-size:14px; outline:none; }
     .field input:focus,.field select:focus { border-color:var(--blue); }
     .field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .field-hint { font-size:11px; color:var(--text2); margin-top:3px; }
     .modal-btns { display:flex; gap:8px; justify-content:flex-end; margin-top:1.25rem; }
-    .btn-cancel { padding:8px 18px; border:0.5px solid var(--border2); border-radius:var(--radius);
-                  background:none; color:var(--text2); font-size:14px; cursor:pointer; }
-    .btn-save { padding:8px 18px; background:var(--blue); color:white; border:none;
-                border-radius:var(--radius); font-size:14px; cursor:pointer; font-weight:600; }
+    .btn-cancel { padding:8px 18px; border:0.5px solid var(--border2); border-radius:var(--radius); background:none; color:var(--text2); font-size:14px; cursor:pointer; }
+    .btn-save { padding:8px 18px; background:var(--blue); color:white; border:none; border-radius:var(--radius); font-size:14px; cursor:pointer; font-weight:600; }
     .btn-save:disabled { opacity:.6; cursor:not-allowed; }
 
-
-    /* ── Modal two-col layout ── */
+    /* Modal two-col */
     .modal-inner { display:flex; gap:1.25rem; }
     .modal-form { flex:0 0 340px; min-width:0; }
     .modal-suggest { flex:1; min-width:0; display:flex; flex-direction:column; }
-    .suggest-hd { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase;
-                  letter-spacing:.5px; margin-bottom:8px; }
-    .suggest-status { font-size:12px; color:var(--text3); margin-bottom:8px; }
-    .suggest-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
-                    gap:8px; overflow-y:auto; flex:1; max-height:380px; }
-    .sc { border-radius:8px; border:2px solid transparent; cursor:pointer;
-          transition:all .15s; overflow:hidden; background:var(--bg2); }
+    .suggest-hd { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .suggest-status { font-size:12px; color:var(--text3); margin-bottom:8px; min-height:18px; }
+    .suggest-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:8px; overflow-y:auto; flex:1; max-height:380px; }
+    .sc { border-radius:8px; border:2px solid transparent; cursor:pointer; transition:all .15s; overflow:hidden; background:var(--bg2); }
     .sc:hover { border-color:var(--blue); transform:scale(1.03); }
     .sc.picked { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-lt); }
     .sc img { width:100%; display:block; border-radius:6px 6px 0 0; }
-    .sc-ph { width:100%; height:112px; display:flex; align-items:center; justify-content:center;
-             font-size:28px; background:var(--bg3); border-radius:6px 6px 0 0; }
+    .sc-ph { width:100%; height:112px; display:flex; align-items:center; justify-content:center; font-size:28px; background:var(--bg3); border-radius:6px 6px 0 0; }
     .sc-info { padding:3px 4px 5px; font-size:9px; color:var(--text2); line-height:1.3; }
     .sc-info strong { display:block; color:var(--text); font-size:10px; }
-    @media(max-width:700px){
-      .modal-inner { flex-direction:column; }
-      .modal-form { flex:none; }
-      .suggest-grid { max-height:220px; }
-      .modal { max-width:98vw !important; }
-    }
 
     /* Reg grid */
     .reg-grid { display:grid; grid-template-columns:repeat(9,1fr); gap:4px; margin-top:4px; }
-    .reg-cell { padding:5px 2px; border:0.5px solid var(--border2); border-radius:5px;
-                background:var(--bg2); color:var(--text2); font-size:12px; font-weight:600;
-                text-align:center; cursor:pointer; transition:all .12s; }
+    .reg-cell { padding:5px 2px; border:0.5px solid var(--border2); border-radius:5px; background:var(--bg2); color:var(--text2); font-size:12px; font-weight:600; text-align:center; cursor:pointer; transition:all .12s; }
     .reg-cell:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-lt); }
     .reg-cell.on { background:var(--blue); color:white; border-color:var(--blue); }
 
     /* Autocomplete */
     .ac-wrap { position:relative; }
-    .ac-list { position:absolute; top:calc(100% + 3px); left:0; right:0; background:var(--bg);
-               border:0.5px solid var(--border2); border-radius:var(--radius); z-index:400;
-               max-height:200px; overflow-y:auto; box-shadow:0 6px 20px rgba(0,0,0,.13); display:none; }
+    .ac-list { position:absolute; top:calc(100% + 3px); left:0; right:0; background:var(--bg); border:0.5px solid var(--border2); border-radius:var(--radius); z-index:400; max-height:200px; overflow-y:auto; box-shadow:0 6px 20px rgba(0,0,0,.13); display:none; }
     .ac-list.show { display:block; }
     .ac-item { padding:8px 12px; font-size:13px; cursor:pointer; border-bottom:0.5px solid var(--border); }
     .ac-item:last-child { border-bottom:none; }
     .ac-item:hover,.ac-item.hi { background:var(--blue-lt); color:var(--blue); }
 
-    /* ── IMAGE PICKER MODAL ── */
+    /* Image picker */
     .img-modal { max-width:560px; }
     .img-search-row { display:flex; gap:8px; margin-bottom:1rem; }
-    .img-search-row input { flex:1; padding:8px 12px; border:0.5px solid var(--border2);
-                             border-radius:var(--radius); background:var(--bg); color:var(--text);
-                             font-size:14px; outline:none; }
+    .img-search-row input { flex:1; padding:8px 12px; border:0.5px solid var(--border2); border-radius:var(--radius); background:var(--bg); color:var(--text); font-size:14px; outline:none; }
     .img-search-row input:focus { border-color:var(--blue); }
-    .btn-search { padding:8px 16px; background:var(--blue); color:white; border:none;
-                  border-radius:var(--radius); font-size:13px; cursor:pointer; font-weight:600; white-space:nowrap; }
+    .btn-search { padding:8px 16px; background:var(--blue); color:white; border:none; border-radius:var(--radius); font-size:13px; cursor:pointer; font-weight:600; white-space:nowrap; }
     .btn-search:disabled { opacity:.6; cursor:not-allowed; }
-    .img-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:10px;
-                max-height:340px; overflow-y:auto; }
-    .img-cell { border-radius:8px; overflow:hidden; border:2px solid transparent; cursor:pointer;
-                transition:all .15s; position:relative; }
+    .img-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:10px; max-height:340px; overflow-y:auto; }
+    .img-cell { border-radius:8px; overflow:hidden; border:2px solid transparent; cursor:pointer; transition:all .15s; position:relative; }
     .img-cell:hover { border-color:var(--blue); transform:scale(1.03); }
     .img-cell.picked { border-color:var(--blue); }
-    .img-cell.picked::after { content:'✓'; position:absolute; top:4px; right:4px; width:20px; height:20px;
-                               border-radius:50%; background:var(--blue); color:white; font-size:12px;
-                               display:flex; align-items:center; justify-content:center; font-weight:700; }
+    .img-cell.picked::after { content:'✓'; position:absolute; top:4px; right:4px; width:20px; height:20px; border-radius:50%; background:var(--blue); color:white; font-size:12px; display:flex; align-items:center; justify-content:center; font-weight:700; }
     .img-cell img { width:100%; display:block; border-radius:6px; }
     .img-cell-name { font-size:10px; color:var(--text2); padding:2px 4px 4px; text-align:center; }
     .img-empty { padding:2rem; text-align:center; color:var(--text2); font-size:13px; }
-    .img-loading { padding:2rem; text-align:center; color:var(--text2); font-size:13px; }
     .img-modal-btns { display:flex; gap:8px; justify-content:space-between; margin-top:1rem; }
-    .btn-no-img { padding:8px 14px; border:0.5px solid var(--border2); border-radius:var(--radius);
-                  background:none; color:var(--text2); font-size:13px; cursor:pointer; }
+    .btn-no-img { padding:8px 14px; border:0.5px solid var(--border2); border-radius:var(--radius); background:none; color:var(--text2); font-size:13px; cursor:pointer; }
 
     /* Lightbox */
-    .lbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:600;
-            align-items:center; justify-content:center; cursor:pointer; }
+    .lbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:600; align-items:center; justify-content:center; cursor:pointer; }
     .lbox.open { display:flex; }
-    .lbox img { max-width:min(380px,90vw); max-height:88vh; border-radius:14px; cursor:default;
-                box-shadow:0 24px 64px rgba(0,0,0,.6); }
+    .lbox img { max-width:min(380px,90vw); max-height:88vh; border-radius:14px; cursor:default; box-shadow:0 24px 64px rgba(0,0,0,.6); }
     .lbox-close { position:absolute; top:1rem; right:1.25rem; color:white; font-size:28px; cursor:pointer; }
 
     /* Toast / Loading */
-    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(80px);
-             background:#1a1a1a; color:white; padding:10px 20px; border-radius:20px;
-             font-size:13px; opacity:0; transition:all .3s; z-index:700; white-space:nowrap; }
+    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(80px); background:#1a1a1a; color:white; padding:10px 20px; border-radius:20px; font-size:13px; opacity:0; transition:all .3s; z-index:700; white-space:nowrap; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-    .loading-ov { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3);
-                  z-index:800; align-items:center; justify-content:center; }
+    .loading-ov { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3); z-index:800; align-items:center; justify-content:center; }
     .loading-ov.show { display:flex; }
     .loading-box { background:var(--bg); padding:1.25rem 2rem; border-radius:var(--radius-lg); font-size:14px; color:var(--text2); }
+
+    /* Sort dropdown */
+    .sort-dropdown { position:relative; }
+    .sort-menu { display:none; position:absolute; top:calc(100% + 4px); right:0; background:var(--bg); border:0.5px solid var(--border2); border-radius:var(--radius); box-shadow:0 6px 20px rgba(0,0,0,.13); z-index:200; min-width:130px; }
+    .sort-menu.open { display:block; }
+    .sort-opt { padding:8px 14px; font-size:13px; cursor:pointer; border-bottom:0.5px solid var(--border); color:var(--text); }
+    .sort-opt:last-child { border-bottom:none; }
+    .sort-opt:hover { background:var(--blue-lt); color:var(--blue); }
+    .sort-opt.active { color:var(--blue); font-weight:600; }
 
     /* Mobile */
     @media(max-width:700px){
       body { overflow:auto; }
       .app { height:auto; overflow:auto; }
       .main { flex-direction:column; }
-      .lp { width:100%; border-right:none; border-bottom:0.5px solid var(--border); max-height:50vh; }
-      .rp { min-height:50vh; }
+      .lp { width:100%; border-right:none; border-bottom:0.5px solid var(--border); max-height:55vh; }
+      .rp { min-height:45vh; }
       .rp-detail { padding:1rem; }
       .dc-header { flex-direction:column; align-items:center; text-align:center; }
       .dc-pills { justify-content:center; }
@@ -301,6 +283,10 @@
       .uname { display:none; }
       .stats-bar { display:none; }
       .field-row { grid-template-columns:1fr; }
+      .modal-inner { flex-direction:column; }
+      .modal-form { flex:none; }
+      .suggest-grid { max-height:220px; }
+      .modal { max-width:98vw !important; }
     }
   </style>
 </head>
@@ -338,31 +324,58 @@
     <button class="btn-sm" onclick="logout()">登出</button>
   </div>
   <div class="stats-bar" id="statsBar"></div>
-  <div class="main">
 
+  <div class="main">
     <!-- LEFT -->
     <div class="lp">
-      <div class="lp-head">
-        <h2>搜尋卡牌</h2>
+      <!-- Search + Sort -->
+      <div class="lp-search">
         <div class="sb">
           <span class="sb-ico">🔍</span>
-          <input id="searchQ" type="text" placeholder="輸入名稱搜尋..." autocomplete="off"
+          <input id="searchQ" type="text" placeholder="搜尋卡牌名稱..." autocomplete="off"
             oninput="onSearch()" onkeydown="onSearchKd(event)">
           <div class="ac-list" id="searchAc"></div>
         </div>
-        <div class="f-sec">
-          <div class="f-sec-lbl">卡牌種類</div>
-          <div class="chips" id="chipCat"></div>
-        </div>
-        <div class="f-sec" id="fTypeSec">
-          <div class="f-sec-lbl">屬性</div>
-          <div class="chips" id="chipType"></div>
-        </div>
-        <div class="f-sec">
-          <div class="f-sec-lbl">稀有度</div>
-          <div class="chips" id="chipRar"></div>
+        <div class="sort-dropdown">
+          <button class="sort-btn" id="sortBtn" onclick="toggleSortMenu()">排序 ▾</button>
+          <div class="sort-menu" id="sortMenu">
+            <div class="sort-opt active" data-sort="reg" onclick="setSort('reg')">賽場標誌</div>
+            <div class="sort-opt" data-sort="name" onclick="setSort('name')">名稱</div>
+            <div class="sort-opt" data-sort="qty-desc" onclick="setSort('qty-desc')">張數（多→少）</div>
+            <div class="sort-opt" data-sort="qty-asc" onclick="setSort('qty-asc')">張數（少→多）</div>
+            <div class="sort-opt" data-sort="cat" onclick="setSort('cat')">類別</div>
+            <div class="sort-opt" data-sort="rarity" onclick="setSort('rarity')">稀有度</div>
+          </div>
         </div>
       </div>
+
+      <!-- Filter toggle -->
+      <div class="filter-toggle" onclick="toggleFilter()">
+        <span class="filter-toggle-lbl">篩選條件</span>
+        <span class="filter-active-count" id="filterCount"></span>
+        <span class="filter-chevron" id="filterChevron">▼</span>
+      </div>
+
+      <!-- Filter panel -->
+      <div class="lp-filter collapsed" id="filterPanel">
+        <div class="lp-filter-inner">
+          <div class="f-sec">
+            <div class="f-sec-lbl">卡牌種類</div>
+            <div class="chips" id="chipCat"></div>
+          </div>
+          <div class="f-sec" id="fTypeSec">
+            <div class="f-sec-lbl">屬性</div>
+            <div class="chips" id="chipType"></div>
+          </div>
+          <div class="f-sec">
+            <!-- Short rarity labels -->
+            <div class="f-sec-lbl">稀有度</div>
+            <div class="chips" id="chipRar"></div>
+          </div>
+          <button class="chip-clear" id="chipClearBtn" onclick="clearFilters()">✕ 清除所有篩選</button>
+        </div>
+      </div>
+
       <div class="cl" id="cardList"></div>
       <div class="lp-foot">
         <button class="btn-add" onclick="openAddModal()">＋ 新增卡牌到收藏</button>
@@ -372,9 +385,14 @@
     <!-- RIGHT -->
     <div class="rp">
       <div class="rp-empty" id="rpEmpty">
-        <div class="rp-empty-ico">👈</div>
-        <div class="rp-empty-txt">從左側選擇一張卡牌</div>
-        <div class="rp-empty-sub">可依名稱、種類、屬性、稀有度篩選</div>
+        <div class="rp-empty-ico">🃏</div>
+        <div class="rp-empty-txt">歡迎使用 PTCG 卡牌管理</div>
+        <div class="rp-empty-sub">從左側選擇一張卡牌，即可查看詳細資訊並管理張數</div>
+        <div class="rp-empty-hint">
+          <div class="rp-hint-item"><span class="rp-hint-ico">🔍</span>輸入名稱快速搜尋</div>
+          <div class="rp-hint-item"><span class="rp-hint-ico">🏷</span>點選篩選條件分類瀏覽</div>
+          <div class="rp-hint-item"><span class="rp-hint-ico">＋</span>點下方按鈕新增卡牌</div>
+        </div>
       </div>
       <div class="rp-detail" id="rpDetail">
         <div class="dc">
@@ -387,9 +405,12 @@
             </div>
           </div>
           <div class="dc-qty">
-            <div class="qty-lbl">擁有張數</div>
+            <div class="qty-lbl">
+              擁有張數
+              <span class="qty-warn" id="qtyWarn">⚠ 目前為 0 張</span>
+            </div>
             <div class="qty-ctrl">
-              <button class="qty-big-btn" onclick="adjQty(-1)">−</button>
+              <button class="qty-big-btn" id="btnMinus" onclick="adjQty(-1)">−</button>
               <div class="qty-big-num" id="dQty">0</div>
               <button class="qty-big-btn add" onclick="adjQty(1)">＋</button>
               <span class="qty-unit">張</span>
@@ -407,12 +428,11 @@
   </div>
 </div>
 
-<!-- ADD / EDIT MODAL -->
+<!-- ADD/EDIT MODAL -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <h3 id="modalTitle">新增卡牌</h3>
     <div class="modal-inner">
-      <!-- 左：表單 -->
       <div class="modal-form">
         <div class="field">
           <label>賽場標誌 — 目前：<strong id="regLbl" style="color:var(--blue)">A</strong></label>
@@ -457,22 +477,21 @@
           <button class="btn-save" id="btnSave" onclick="saveCard()">儲存</button>
         </div>
       </div>
-      <!-- 右：建議卡牌 -->
       <div class="modal-suggest">
         <div class="suggest-hd">符合的卡牌建議</div>
-        <div class="suggest-status" id="suggestStatus">填寫左側欄位後自動搜尋...</div>
+        <div class="suggest-status" id="suggestStatus">填寫名稱後自動搜尋...</div>
         <div class="suggest-grid" id="suggestGrid"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- IMAGE PICKER MODAL -->
+<!-- IMAGE PICKER -->
 <div class="modal-bg" id="imgModalBg">
   <div class="modal img-modal">
     <h3>選擇卡面圖片</h3>
     <div class="img-search-row">
-      <input id="imgQ" type="text" placeholder="輸入中文或英文名稱搜尋（如 皮卡丘）"
+      <input id="imgQ" type="text" placeholder="輸入中文或英文名稱（如 皮卡丘）"
         onkeydown="if(event.key==='Enter') searchImg()">
       <button class="btn-search" id="btnImgSearch" onclick="searchImg()">搜尋</button>
     </div>
@@ -521,9 +540,10 @@ const TCGAPI = 'https://api.tcgdex.net/v2/zh-Hant/cards';
 // ══ Constants ══
 const CATS  = ['寶可夢','支援者','物品','道具','能量'];
 const TYPES = ['一般','火','水','草','電','惡','超','鬥','鋼','龍'];
-const RARS  = ['◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
-               '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)',
-               '★★★★ SR (Super Rare)','◇ ACE SPEC','♦ PR (Promo)','其他'];
+const RARS  = ['◆ C','◆◆ U','◆◆◆ R','◆◆◆◆ RR','★ AR','★★ SAR','★★★ UR','★★★★ SR','◇ ACE','♦ PR','其他'];
+const RARS_FULL = ['◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
+  '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)',
+  '★★★★ SR (Super Rare)','◇ ACE SPEC','♦ PR (Promo)','其他'];
 
 const TC = { '一般':{bg:'#F1EFE8',c:'#444441',dot:'#888780'},'火':{bg:'#FAECE7',c:'#993C1D',dot:'#EF5350'},
   '水':{bg:'#E6F1FB',c:'#185FA5',dot:'#42A5F5'},'草':{bg:'#EAF3DE',c:'#3B6D11',dot:'#66BB6A'},
@@ -537,6 +557,14 @@ const RC = { '◆ C (Common)':{bg:'#F1EFE8',c:'#444441'},'◆◆ U (Uncommon)':{
   '★ AR (Art Rare)':{bg:'#FAEEDA',c:'#633806'},'★★ SAR (Special Art Rare)':{bg:'#FAECE7',c:'#993C1D'},
   '★★★ UR (Ultra Rare)':{bg:'#FAEEDA',c:'#854F0B'},'★★★★ SR (Super Rare)':{bg:'#FAECE7',c:'#712B13'},
   '◇ ACE SPEC':{bg:'#E6F1FB',c:'#185FA5'},'♦ PR (Promo)':{bg:'#EEEDFE',c:'#26215C'},'其他':{bg:'#F1EFE8',c:'#888780'} };
+const RAR_API_MAP = {
+  '◆ C (Common)':'Common','◆◆ U (Uncommon)':'Uncommon','◆◆◆ R (Rare)':'Rare',
+  '◆◆◆◆ RR (Double Rare)':'Double Rare','★ AR (Art Rare)':'Illustration Rare',
+  '★★ SAR (Special Art Rare)':'Special Illustration Rare','★★★ UR (Ultra Rare)':'Hyper Rare',
+  '★★★★ SR (Super Rare)':'Ultra Rare','◇ ACE SPEC':'ACE SPEC Rare','♦ PR (Promo)':'Promo',
+};
+const CAT_ORDER = ['寶可夢','支援者','物品','道具','能量'];
+const RAR_ORDER = RARS_FULL;
 
 const POKEMON_ZH = [
   '妙蛙種子','妙蛙草','妙蛙花','小火龍','火恐龍','噴火龍','傑尼龜','卡咪龜','水箭龜',
@@ -573,20 +601,23 @@ const POKEMON_ZH = [
 // ══ State ══
 let user=null, cards=[], selId=null, editId=null, selReg='A';
 let fCat='', fType='', fRar='', searchQ='';
-// img picker state
+let sortMode='reg';
+let filterOpen=false;
 let imgPickerForEdit=false, pickedImgUrl='', imgResults=[];
+let pickedSuggest=null;
+let suggestTimer=null;
+
+function tcgImg(card, q='low') { return card.image ? card.image+'/'+q+'.webp' : ''; }
 
 // ══ Auth ══
 onAuthStateChanged(auth, u => {
   if (u) {
-    user = u;
-    document.getElementById('authScreen').style.display = 'none';
+    user=u;
+    document.getElementById('authScreen').style.display='none';
     document.getElementById('app').classList.add('on');
-    if (u.photoURL) {
-      document.getElementById('uav').src=u.photoURL; document.getElementById('uav').style.display='block';
-      document.getElementById('uavFb').style.display='none';
-    } else { document.getElementById('uavFb').textContent=(u.displayName||'U')[0].toUpperCase(); }
-    document.getElementById('uname').textContent = u.displayName || u.email;
+    if(u.photoURL){ document.getElementById('uav').src=u.photoURL; document.getElementById('uav').style.display='block'; document.getElementById('uavFb').style.display='none'; }
+    else { document.getElementById('uavFb').textContent=(u.displayName||'U')[0].toUpperCase(); }
+    document.getElementById('uname').textContent=u.displayName||u.email;
     loadCards();
   } else {
     user=null; cards=[]; selId=null;
@@ -594,16 +625,10 @@ onAuthStateChanged(auth, u => {
     document.getElementById('app').classList.remove('on');
   }
 });
-
 window.loginGoogle = async () => {
-  const b = document.getElementById('btnGoogle');
-  b.disabled=true; b.textContent='登入中...';
-  try { await signInWithPopup(auth, gp); }
-  catch(e) {
-    const el=document.getElementById('authErr');
-    el.textContent = e.code==='auth/popup-closed-by-user'?'視窗已關閉，請再試':'登入失敗，請再試';
-    el.classList.add('show'); b.disabled=false; b.textContent='使用 Google 帳號登入';
-  }
+  const b=document.getElementById('btnGoogle'); b.disabled=true; b.textContent='登入中...';
+  try { await signInWithPopup(auth,gp); }
+  catch(e) { const el=document.getElementById('authErr'); el.textContent=e.code==='auth/popup-closed-by-user'?'視窗已關閉，請再試':'登入失敗，請再試'; el.classList.add('show'); b.disabled=false; b.textContent='使用 Google 帳號登入'; }
 };
 window.logout = () => signOut(auth);
 
@@ -612,18 +637,67 @@ const ref = () => collection(db,'users',user.uid,'cards');
 async function loadCards() {
   showLoad(true);
   try { const s=await getDocs(ref()); cards=s.docs.map(d=>({id:d.id,...d.data()})); }
-  catch(e) { toast('❌ 載入失敗'); }
+  catch(e){ toast('❌ 載入失敗'); }
   showLoad(false); renderAll();
 }
 
-// ══ Filters ══
-function buildChips() {
-  mk('chipCat', CATS, fCat, v=>{ fCat=fCat===v?'':v; if(fCat!=='寶可夢') fType=''; buildChips(); renderList(); });
-  document.getElementById('fTypeSec').style.display = (!fCat||fCat==='寶可夢')?'':'none';
-  mk('chipType', TYPES, fType, v=>{ fType=fType===v?'':v; buildChips(); renderList(); });
-  mk('chipRar', RARS, fRar, v=>{ fRar=fRar===v?'':v; buildChips(); renderList(); });
+// ══ Sort ══
+window.toggleSortMenu = () => {
+  document.getElementById('sortMenu').classList.toggle('open');
+};
+window.setSort = mode => {
+  sortMode=mode;
+  document.querySelectorAll('.sort-opt').forEach(o=>o.classList.toggle('active', o.dataset.sort===mode));
+  document.getElementById('sortMenu').classList.remove('open');
+  const labels={'reg':'賽場','name':'名稱','qty-desc':'張數↓','qty-asc':'張數↑','cat':'類別','rarity':'稀有'};
+  document.getElementById('sortBtn').textContent=(labels[mode]||'排序')+' ▾';
+  renderList();
+};
+function getSorted(list) {
+  return [...list].sort((a,b)=>{
+    if(sortMode==='name') return a.name.localeCompare(b.name,'zh-Hant');
+    if(sortMode==='qty-desc') return b.qty-a.qty;
+    if(sortMode==='qty-asc') return a.qty-b.qty;
+    if(sortMode==='cat') return CAT_ORDER.indexOf(a.cat)-CAT_ORDER.indexOf(b.cat);
+    if(sortMode==='rarity') return RAR_ORDER.indexOf(a.rarity)-RAR_ORDER.indexOf(b.rarity);
+    return a.reg.localeCompare(b.reg);
+  });
 }
-function mk(id, items, cur, fn) {
+
+// ══ Filter ══
+window.toggleFilter = () => {
+  filterOpen=!filterOpen;
+  document.getElementById('filterPanel').className='lp-filter '+(filterOpen?'expanded':'collapsed');
+  document.getElementById('filterChevron').className='filter-chevron '+(filterOpen?'up':'');
+};
+window.clearFilters = () => { fCat=''; fType=''; fRar=''; buildChips(); renderList(); };
+
+function countActiveFilters() { return [fCat,fType,fRar].filter(Boolean).length; }
+
+function buildChips() {
+  // Cat chips
+  mk('chipCat', CATS, fCat, v=>{ fCat=fCat===v?'':v; if(fCat!=='寶可夢') fType=''; buildChips(); renderList(); });
+  document.getElementById('fTypeSec').style.display=(!fCat||fCat==='寶可夢')?'':'none';
+  mk('chipType', TYPES, fType, v=>{ fType=fType===v?'':v; buildChips(); renderList(); });
+  // Short rarity chips mapped to full names
+  const rc=document.getElementById('chipRar'); rc.innerHTML='';
+  RARS.forEach((short,i)=>{
+    const full=RARS_FULL[i];
+    const c=document.createElement('div');
+    c.className='chip'+(fRar===full?' on':'');
+    c.textContent=short; c.title=full;
+    c.onclick=()=>{ fRar=fRar===full?'':full; buildChips(); renderList(); };
+    rc.appendChild(c);
+  });
+  // Active filter count badge
+  const n=countActiveFilters();
+  const badge=document.getElementById('filterCount');
+  badge.textContent=n; badge.classList.toggle('show',n>0);
+  document.getElementById('chipClearBtn').classList.toggle('show',n>0);
+  // auto open filter panel if filters are set
+  if(n>0 && !filterOpen) { filterOpen=true; document.getElementById('filterPanel').className='lp-filter expanded'; document.getElementById('filterChevron').className='filter-chevron up'; }
+}
+function mk(id,items,cur,fn){
   const el=document.getElementById(id); el.innerHTML='';
   items.forEach(i=>{ const c=document.createElement('div'); c.className='chip'+(cur===i?' on':''); c.textContent=i; c.onclick=()=>fn(i); el.appendChild(c); });
 }
@@ -642,20 +716,22 @@ function getFiltered() {
 
 function renderList() {
   const cl=document.getElementById('cardList');
-  const list=getFiltered();
-  if(!list.length){ cl.innerHTML=`<div class="cl-empty">${cards.length?'沒有符合條件的卡牌':'尚無卡牌，點下方新增'}</div>`; return; }
+  const list=getSorted(getFiltered());
+  if(!list.length){
+    cl.innerHTML=`<div class="cl-empty"><div class="cl-empty-icon">${cards.length?'🔍':'📦'}</div>${cards.length?'沒有符合條件的卡牌<br><small>試著調整篩選條件或搜尋關鍵字</small>':'尚未新增任何卡牌<br><small>點下方「新增卡牌到收藏」開始管理</small>'}</div>`;
+    return;
+  }
   cl.innerHTML='';
   list.forEach(c=>{
     const row=document.createElement('div');
     row.className='cr'+(c.id===selId?' sel':'');
     row.onclick=()=>selCard(c.id);
-    const imgHtml = c.imageUrl
-      ? `<img class="cr-img" src="${c.imageUrl}" alt="" loading="lazy">`
-      : `<div class="cr-img-ph">🃏</div>`;
+    const imgHtml=c.imageUrl?`<img class="cr-img" src="${c.imageUrl}" alt="" loading="lazy">`:`<div class="cr-img-ph">🃏</div>`;
     const meta=[c.cat,c.type,c.rarity].filter(Boolean).join(' · ');
+    const qbClass=c.qty>0?'has':'zero';
     row.innerHTML=`${imgHtml}<div class="cr-reg">${c.reg}</div>
       <div class="cr-info"><div class="cr-name">${c.name}</div><div class="cr-meta">${meta}</div></div>
-      <div class="cr-qb${c.qty>0?'':' z'}">${c.qty}</div>`;
+      <div class="cr-qb ${qbClass}">${c.qty}</div>`;
     cl.appendChild(row);
   });
 }
@@ -667,7 +743,7 @@ function renderStats() {
     ['種類',cards.length],['總張數',tot],
     ['寶可夢',cards.filter(c=>c.cat==='寶可夢').length],
     ['訓練家',cards.filter(c=>['支援者','物品','道具'].includes(c.cat)).length],
-    ['高稀有',rare],['已有卡面',cards.filter(c=>c.imageUrl).length],
+    ['高稀有',rare],['有卡面',cards.filter(c=>c.imageUrl).length],
   ].map(([l,v])=>`<div class="si"><div class="si-l">${l}</div><div class="si-v">${v}</div></div>`).join('');
 }
 
@@ -683,32 +759,41 @@ function renderDetail() {
   if(!c) return;
   document.getElementById('dReg').textContent=c.reg;
   document.getElementById('dName').textContent=c.name;
-  document.getElementById('dQty').textContent=c.qty;
-  // image
+  updateQtyDisplay(c.qty);
+  // Image – clicking placeholder opens picker
   const iw=document.getElementById('dcImgWrap');
-  if(c.imageUrl) {
+  if(c.imageUrl){
     iw.innerHTML=`<img class="dc-img" src="${c.imageUrl}" alt="${c.name}" onclick="openLbox('${c.imageUrl}')">`;
   } else {
-    iw.innerHTML=`<div class="dc-img-ph">🃏</div>`;
+    iw.innerHTML=`<div class="dc-img-ph" onclick="openImgPicker(true)"><span class="dc-img-ph-ico">🖼</span><span class="dc-img-ph-txt">點擊選擇卡面</span></div>`;
   }
-  // pills
-  const pills=document.getElementById('dPills');
+  // Pills
+  const pp=document.getElementById('dPills');
   const cc2=CC[c.cat]||{bg:'#eee',c:'#333'};
   let ph=`<span class="pill" style="background:${cc2.bg};color:${cc2.c}">${c.cat}</span>`;
   if(c.type){const t=TC[c.type]||TC['一般'];ph+=`<span class="pill" style="background:${t.bg};color:${t.c}"><span class="dot" style="background:${t.dot}"></span>${c.type}</span>`;}
   if(c.rarity){const r=RC[c.rarity]||{bg:'#eee',c:'#333'};ph+=`<span class="pill" style="background:${r.bg};color:${r.c}">${c.rarity}</span>`;}
-  pills.innerHTML=ph;
-  // fields
+  pp.innerHTML=ph;
   document.getElementById('dFields').innerHTML=[['賽場標誌',c.reg],['類別',c.cat],['屬性',c.type||'—'],['稀有度',c.rarity||'—']]
     .map(([l,v])=>`<div><div class="df-l">${l}</div><div class="df-v">${v}</div></div>`).join('');
+}
+
+function updateQtyDisplay(qty) {
+  const el=document.getElementById('dQty');
+  el.textContent=qty;
+  el.classList.toggle('zero', qty===0);
+  document.getElementById('qtyWarn').classList.toggle('show', qty===0);
+  document.getElementById('btnMinus').disabled = qty===0;
 }
 
 // ══ Qty ══
 window.adjQty = async delta => {
   const c=cards.find(x=>x.id===selId); if(!c) return;
   const qty=Math.max(0,c.qty+delta);
-  try { await updateDoc(doc(db,'users',user.uid,'cards',selId),{qty}); c.qty=qty; renderList(); renderDetail(); renderStats(); }
-  catch(e){ toast('❌ 更新失敗'); }
+  try {
+    await updateDoc(doc(db,'users',user.uid,'cards',selId),{qty});
+    c.qty=qty; updateQtyDisplay(qty); renderList(); renderStats();
+  } catch(e){ toast('❌ 更新失敗'); }
 };
 
 // ══ Delete ══
@@ -721,144 +806,35 @@ window.delSelected = async () => {
   } catch(e){ toast('❌ 刪除失敗'); }
 };
 
-
-// ══ SUGGEST PANEL ══
-// Map rarity names to TCG API rarity strings (partial match)
-const RAR_API_MAP = {
-  '◆ C (Common)':            'Common',
-  '◆◆ U (Uncommon)':         'Uncommon',
-  '◆◆◆ R (Rare)':            'Rare',
-  '◆◆◆◆ RR (Double Rare)':   'Double Rare',
-  '★ AR (Art Rare)':         'Illustration Rare',
-  '★★ SAR (Special Art Rare)':'Special Illustration Rare',
-  '★★★ UR (Ultra Rare)':     'Hyper Rare',
-  '★★★★ SR (Super Rare)':    'Ultra Rare',
-  '◇ ACE SPEC':              'ACE SPEC Rare',
-  '♦ PR (Promo)':            'Promo',
-};
-
-// TCGdex image helper: card.image is base URL, append quality suffix
-function tcgImg(card, quality='low') {
-  if (!card.image) return '';
-  return card.image + '/' + quality + '.webp';
-}
-
-let suggestTimer = null;
-let pickedSuggest = null; // { imageUrl, name, rarity, setName }
-
-window.triggerSuggest = () => {
-  clearTimeout(suggestTimer);
-  suggestTimer = setTimeout(runSuggest, 600);
-};
-
-async function runSuggest() {
-  const name   = document.getElementById('fName').value.trim();
-  const rarKey = document.getElementById('fRar').value;
-  const status = document.getElementById('suggestStatus');
-  const grid   = document.getElementById('suggestGrid');
-
-  if (!name) {
-    status.textContent = '填寫名稱後自動搜尋...';
-    grid.innerHTML = '';
-    return;
-  }
-
-  status.textContent = '搜尋中...';
-  grid.innerHTML = '';
-  pickedSuggest = null;
-
-  // Build TCGdex query params
-  const apiRar = RAR_API_MAP[rarKey];
-  let url = `${TCGAPI}?name=${encodeURIComponent(name)}&itemsPerPage=30`;
-  if (apiRar) url += `&rarity=${encodeURIComponent(apiRar)}`;
-
-  try {
-    const res  = await fetch(url);
-    const data = await res.json();
-    let results = Array.isArray(data) ? data : [];
-
-    if (!results.length && apiRar) {
-      // Fallback: search by name only (ignore rarity)
-      const res2  = await fetch(`${TCGAPI}?name=${encodeURIComponent(name)}&itemsPerPage=30`);
-      const data2 = await res2.json();
-      results = Array.isArray(data2) ? data2 : [];
-    }
-    renderSuggest(results, name);
-  } catch(e) {
-    status.textContent = '搜尋失敗，請確認網路連線';
-  }
-}
-
-function renderSuggest(results, name) {
-  const status = document.getElementById('suggestStatus');
-  const grid   = document.getElementById('suggestGrid');
-  grid.innerHTML = '';
-
-  if (!results.length) {
-    status.textContent = `找不到「${name}」，可直接手動填寫後儲存`;
-    return;
-  }
-  status.textContent = `找到 ${results.length} 張符合的卡牌，點選即可套用`;
-
-  results.forEach(card => {
-    const imgUrl = tcgImg(card, 'low');
-    const cell   = document.createElement('div');
-    cell.className = 'sc';
-    cell.innerHTML = imgUrl
-      ? `<img src="${imgUrl}" alt="${card.name}" loading="lazy">`
-      : `<div class="sc-ph">🃏</div>`;
-    cell.innerHTML += `<div class="sc-info"><strong>${card.name}</strong>${card.set?.name||''}<br>${card.rarity||''}</div>`;
-    cell.onclick = () => applySuggest(card);
-    grid.appendChild(cell);
-  });
-}
-
-function applySuggest(card) {
-  // Highlight selected
-  document.querySelectorAll('.sc').forEach(c => c.classList.remove('picked'));
-  event.currentTarget.classList.add('picked');
-  // TCGdex: use high quality for stored image
-  const imgUrl = tcgImg(card, 'high');
-  pickedSuggest = { imageUrl: imgUrl, name: card.name, rarity: card.rarity||'', setName: card.set?.name||'' };
-  // Fill in name
-  document.getElementById('fName').value = card.name;
-  // Try to match rarity
-  const tcgRar = card.rarity || '';
-  const matched = Object.entries(RAR_API_MAP).find(([k,v]) => tcgRar.toLowerCase().includes(v.toLowerCase()));
-  if (matched) document.getElementById('fRar').value = matched[0];
-}
-
 // ══ ADD/EDIT MODAL ══
 window.openAddModal = () => {
-  editId=null; selReg='A';
+  editId=null; selReg='A'; pickedSuggest=null;
   document.getElementById('modalTitle').textContent='新增卡牌';
   document.getElementById('fName').value='';
   document.getElementById('fCat').value='寶可夢';
   document.getElementById('fType').value='一般';
   document.getElementById('fRar').value='◆ C (Common)';
   document.getElementById('fTypeWrap').style.display='';
-  initRegGrid(); updRegLbl();
-  pickedSuggest=null;
   document.getElementById('suggestGrid').innerHTML='';
   document.getElementById('suggestStatus').textContent='填寫名稱後自動搜尋...';
+  initRegGrid(); updRegLbl();
   document.getElementById('modalBg').classList.add('open');
   setTimeout(()=>document.getElementById('fName').focus(),100);
 };
 window.openEditModal = () => {
   const c=cards.find(x=>x.id===selId); if(!c) return;
-  editId=selId; selReg=c.reg;
+  editId=selId; selReg=c.reg; pickedSuggest=null;
   document.getElementById('modalTitle').textContent='編輯卡牌';
   document.getElementById('fName').value=c.name;
   document.getElementById('fCat').value=c.cat;
   document.getElementById('fType').value=c.type||'一般';
   document.getElementById('fRar').value=c.rarity||'◆ C (Common)';
   document.getElementById('fTypeWrap').style.display=c.cat==='寶可夢'?'':'none';
-  initRegGrid(); updRegLbl();
-  pickedSuggest=null;
   document.getElementById('suggestGrid').innerHTML='';
   document.getElementById('suggestStatus').textContent='填寫名稱後自動搜尋...';
+  initRegGrid(); updRegLbl();
   document.getElementById('modalBg').classList.add('open');
-  setTimeout(()=>triggerSuggest(), 100);
+  setTimeout(()=>triggerSuggest(),150);
 };
 window.closeModal = () => {
   document.getElementById('modalBg').classList.remove('open');
@@ -877,10 +853,10 @@ window.saveCard = async () => {
   const cat=document.getElementById('fCat').value;
   const data={
     reg:selReg, name, cat,
-    type: cat==='寶可夢'?document.getElementById('fType').value:'',
-    rarity: document.getElementById('fRar').value,
-    qty: editId?cards.find(x=>x.id===editId)?.qty||0:0,
-    imageUrl: editId ? (cards.find(x=>x.id===editId)?.imageUrl||'') : (pickedSuggest?.imageUrl||''),
+    type:cat==='寶可夢'?document.getElementById('fType').value:'',
+    rarity:document.getElementById('fRar').value,
+    qty:editId?cards.find(x=>x.id===editId)?.qty||0:0,
+    imageUrl:editId?(cards.find(x=>x.id===editId)?.imageUrl||''):(pickedSuggest?.imageUrl||''),
   };
   btn.disabled=true; btn.textContent='儲存中...';
   try {
@@ -893,17 +869,61 @@ window.saveCard = async () => {
       const nc={id:r.id,...data}; cards.push(nc); selId=r.id; toast('✅ 已新增：'+name);
     }
     closeModal(); renderAll(); renderDetail();
-    // auto open img picker only if no image was picked via suggest
-    if(!editId && !pickedSuggest?.imageUrl) setTimeout(()=>openImgPicker(false,name),300);
+    // scroll newly added card into view
+    setTimeout(()=>{ const el=document.querySelector('.cr.sel'); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); }, 100);
+    if(!editId && !pickedSuggest?.imageUrl) setTimeout(()=>openImgPicker(false,name),350);
   } catch(e){ toast('❌ 儲存失敗'); }
   btn.disabled=false; btn.textContent='儲存';
 };
 
+// ══ SUGGEST PANEL ══
+window.triggerSuggest = () => { clearTimeout(suggestTimer); suggestTimer=setTimeout(runSuggest,600); };
+async function runSuggest() {
+  const name=document.getElementById('fName').value.trim();
+  const rarKey=document.getElementById('fRar').value;
+  const status=document.getElementById('suggestStatus');
+  const grid=document.getElementById('suggestGrid');
+  if(!name){ status.textContent='填寫名稱後自動搜尋...'; grid.innerHTML=''; return; }
+  status.textContent='搜尋中...'; grid.innerHTML=''; pickedSuggest=null;
+  const apiRar=RAR_API_MAP[rarKey];
+  let url=`${TCGAPI}?name=${encodeURIComponent(name)}&itemsPerPage=30`;
+  if(apiRar) url+=`&rarity=${encodeURIComponent(apiRar)}`;
+  try {
+    const res=await fetch(url); const data=await res.json();
+    let results=Array.isArray(data)?data:[];
+    if(!results.length&&apiRar){ const r2=await fetch(`${TCGAPI}?name=${encodeURIComponent(name)}&itemsPerPage=30`); const d2=await r2.json(); results=Array.isArray(d2)?d2:[]; }
+    renderSuggest(results,name);
+  } catch(e){ status.textContent='搜尋失敗，請確認網路連線'; }
+}
+function renderSuggest(results,name) {
+  const status=document.getElementById('suggestStatus');
+  const grid=document.getElementById('suggestGrid');
+  grid.innerHTML='';
+  if(!results.length){ status.textContent=`找不到「${name}」，可直接手動填寫後儲存`; return; }
+  status.textContent=`找到 ${results.length} 張符合的卡牌，點選套用`;
+  results.forEach(card=>{
+    const imgUrl=tcgImg(card,'low');
+    const cell=document.createElement('div'); cell.className='sc';
+    cell.innerHTML=(imgUrl?`<img src="${imgUrl}" alt="${card.name}" loading="lazy">`:`<div class="sc-ph">🃏</div>`)+
+      `<div class="sc-info"><strong>${card.name}</strong>${card.set?.name||''}<br>${card.rarity||''}</div>`;
+    cell.onclick=()=>applySuggest(card,cell);
+    grid.appendChild(cell);
+  });
+}
+function applySuggest(card,cellEl) {
+  document.querySelectorAll('.sc').forEach(c=>c.classList.remove('picked'));
+  cellEl.classList.add('picked');
+  pickedSuggest={imageUrl:tcgImg(card,'high'),name:card.name,rarity:card.rarity||''};
+  document.getElementById('fName').value=card.name;
+  const matched=Object.entries(RAR_API_MAP).find(([k,v])=>(card.rarity||'').toLowerCase().includes(v.toLowerCase()));
+  if(matched) document.getElementById('fRar').value=matched[0];
+}
+
 // ══ IMAGE PICKER ══
-window.openImgPicker = (forEdit=true, suggestName='') => {
+window.openImgPicker = (forEdit=true,suggestName='') => {
   imgPickerForEdit=forEdit; pickedImgUrl=''; imgResults=[];
   const c=cards.find(x=>x.id===selId);
-  const qVal = suggestName || (c?c.name:'');
+  const qVal=suggestName||(c?c.name:'');
   document.getElementById('imgQ').value=qVal;
   document.getElementById('imgGrid').innerHTML='';
   document.getElementById('btnImgApply').disabled=true;
@@ -911,46 +931,32 @@ window.openImgPicker = (forEdit=true, suggestName='') => {
   if(qVal) searchImg();
 };
 window.closeImgModal = () => document.getElementById('imgModalBg').classList.remove('open');
-
 window.searchImg = async () => {
-  const q=document.getElementById('imgQ').value.trim();
-  if(!q) return;
+  const q=document.getElementById('imgQ').value.trim(); if(!q) return;
   const btn=document.getElementById('btnImgSearch');
   btn.disabled=true; btn.textContent='搜尋中...';
-  document.getElementById('imgGrid').innerHTML=`<div class="img-loading" style="grid-column:1/-1">搜尋中...</div>`;
-  pickedImgUrl=''; imgResults=[];
-  document.getElementById('btnImgApply').disabled=true;
+  document.getElementById('imgGrid').innerHTML='<div class="img-empty" style="grid-column:1/-1">搜尋中...</div>';
+  pickedImgUrl=''; imgResults=[]; document.getElementById('btnImgApply').disabled=true;
   try {
     const res=await fetch(`${TCGAPI}?name=${encodeURIComponent(q)}&itemsPerPage=30`);
-    const data=await res.json();
-    imgResults=data.data||[];
+    const data=await res.json(); imgResults=Array.isArray(data)?data:[];
     renderImgGrid();
-  } catch(e){
-    document.getElementById('imgGrid').innerHTML=`<div class="img-empty" style="grid-column:1/-1">搜尋失敗，請確認網路連線</div>`;
-  }
+  } catch(e){ document.getElementById('imgGrid').innerHTML='<div class="img-empty" style="grid-column:1/-1">搜尋失敗，請確認網路連線</div>'; }
   btn.disabled=false; btn.textContent='搜尋';
 };
-
 function renderImgGrid() {
   const grid=document.getElementById('imgGrid');
-  if(!imgResults.length){
-    grid.innerHTML=`<div class="img-empty" style="grid-column:1/-1">找不到符合的卡牌<br><small>請嘗試輸入中文名稱（如 皮卡丘、噴火龍）</small></div>`;
-    return;
-  }
+  if(!imgResults.length){ grid.innerHTML='<div class="img-empty" style="grid-column:1/-1">找不到符合的卡牌<br><small>請嘗試中文名稱（如 皮卡丘、噴火龍）</small></div>'; return; }
   grid.innerHTML='';
   imgResults.forEach(card=>{
-    const url=tcgImg(card,'low');
-    const highUrl=tcgImg(card,'high');
-    if(!url) return;
+    const url=tcgImg(card,'low'); const highUrl=tcgImg(card,'high'); if(!url) return;
     const cell=document.createElement('div');
     cell.className='img-cell'+(pickedImgUrl===highUrl?' picked':'');
-    cell.innerHTML=`<img src="${url}" alt="${card.name}" loading="lazy">
-      <div class="img-cell-name">${card.set?.name||''}</div>`;
+    cell.innerHTML=`<img src="${url}" alt="${card.name}" loading="lazy"><div class="img-cell-name">${card.set?.name||''}</div>`;
     cell.onclick=()=>{ pickedImgUrl=highUrl; renderImgGrid(); document.getElementById('btnImgApply').disabled=false; };
     grid.appendChild(cell);
   });
 }
-
 window.applyImg = async () => {
   if(!pickedImgUrl||!selId) return;
   try {
@@ -969,36 +975,31 @@ window.applyNoImg = async () => {
 };
 
 // ══ LIGHTBOX ══
-window.openLbox = url => { document.getElementById('lboxImg').src=url; document.getElementById('lbox').classList.add('open'); };
-window.closeLbox = () => document.getElementById('lbox').classList.remove('open');
+window.openLbox = url=>{ document.getElementById('lboxImg').src=url; document.getElementById('lbox').classList.add('open'); };
+window.closeLbox = ()=>document.getElementById('lbox').classList.remove('open');
 
 // ══ REG GRID ══
 function initRegGrid() {
   const g=document.getElementById('regGrid'); g.innerHTML='';
   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l=>{
-    const c=document.createElement('div');
-    c.className='reg-cell'+(l===selReg?' on':'');
-    c.textContent=l;
-    c.onclick=()=>{ selReg=l; initRegGrid(); updRegLbl(); };
-    g.appendChild(c);
+    const c=document.createElement('div'); c.className='reg-cell'+(l===selReg?' on':''); c.textContent=l;
+    c.onclick=()=>{ selReg=l; initRegGrid(); updRegLbl(); }; g.appendChild(c);
   });
 }
-function updRegLbl() { document.getElementById('regLbl').textContent=selReg; }
+function updRegLbl(){ document.getElementById('regLbl').textContent=selReg; }
 
 // ══ AUTOCOMPLETE: Search ══
 let srchIdx=-1;
 window.onSearch = () => {
   searchQ=document.getElementById('searchQ').value.trim();
-  const q=searchQ.toLowerCase(), ac=document.getElementById('searchAc');
-  srchIdx=-1;
+  const q=searchQ.toLowerCase(), ac=document.getElementById('searchAc'); srchIdx=-1;
   if(!q){ ac.classList.remove('show'); renderList(); return; }
   const fm=[...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
   const fd=POKEMON_ZH.filter(n=>n.includes(searchQ)&&!fm.includes(n));
   const m=[...fm,...fd].slice(0,10);
-  ac.innerHTML=''; if(!m.length){ac.classList.remove('show');renderList();return;}
-  m.forEach(n=>{const i=document.createElement('div');i.className='ac-item';i.textContent=n;
-    i.onmousedown=e=>{e.preventDefault();document.getElementById('searchQ').value=n;searchQ=n;ac.classList.remove('show');renderList();};
-    ac.appendChild(i);});
+  ac.innerHTML=''; if(!m.length){ ac.classList.remove('show'); renderList(); return; }
+  m.forEach(n=>{ const i=document.createElement('div'); i.className='ac-item'; i.textContent=n;
+    i.onmousedown=e=>{ e.preventDefault(); document.getElementById('searchQ').value=n; searchQ=n; ac.classList.remove('show'); renderList(); }; ac.appendChild(i); });
   ac.classList.add('show'); renderList();
 };
 window.onSearchKd = e => {
@@ -1013,16 +1014,15 @@ window.onSearchKd = e => {
 // ══ AUTOCOMPLETE: Name ══
 let nameIdx=-1;
 window.onNameAc = () => {
-  const v=document.getElementById('fName').value.trim(), ac=document.getElementById('nameAc');
-  nameIdx=-1; if(!v){ac.classList.remove('show');return;}
+  const v=document.getElementById('fName').value.trim(), ac=document.getElementById('nameAc'); nameIdx=-1;
+  if(!v){ ac.classList.remove('show'); return; }
   const q=v.toLowerCase();
   const fm=[...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
   const fd=POKEMON_ZH.filter(n=>n.includes(v)&&!fm.includes(n));
   const m=[...fm,...fd].slice(0,10);
-  ac.innerHTML=''; if(!m.length){ac.classList.remove('show');return;}
-  m.forEach(n=>{const i=document.createElement('div');i.className='ac-item';i.textContent=n;
-    i.onmousedown=e=>{e.preventDefault();document.getElementById('fName').value=n;ac.classList.remove('show');};
-    ac.appendChild(i);});
+  ac.innerHTML=''; if(!m.length){ ac.classList.remove('show'); return; }
+  m.forEach(n=>{ const i=document.createElement('div'); i.className='ac-item'; i.textContent=n;
+    i.onmousedown=e=>{ e.preventDefault(); document.getElementById('fName').value=n; ac.classList.remove('show'); }; ac.appendChild(i); });
   ac.classList.add('show');
 };
 window.onNameKd = e => {
@@ -1038,9 +1038,8 @@ window.onNameKd = e => {
 let typeIdx=-1;
 window.showTypeAc = () => {
   const ac=document.getElementById('typeAc'); typeIdx=-1; ac.innerHTML='';
-  TYPES.forEach(t=>{const i=document.createElement('div');i.className='ac-item';i.textContent=t;
-    i.onmousedown=e=>{e.preventDefault();document.getElementById('fType').value=t;ac.classList.remove('show');};
-    ac.appendChild(i);});
+  TYPES.forEach(t=>{ const i=document.createElement('div'); i.className='ac-item'; i.textContent=t;
+    i.onmousedown=e=>{ e.preventDefault(); document.getElementById('fType').value=t; ac.classList.remove('show'); }; ac.appendChild(i); });
   ac.classList.add('show');
 };
 window.onTypeKd = e => {
@@ -1052,15 +1051,14 @@ window.onTypeKd = e => {
   else if(e.key==='Escape') ac.classList.remove('show');
 };
 
-// ══ CLOSE DROPDOWNS ON OUTSIDE CLICK ══
+// ══ CLOSE ON OUTSIDE CLICK ══
 document.addEventListener('click', e=>{
-  if(!e.target.closest('.sb'))       document.getElementById('searchAc').classList.remove('show');
+  if(!e.target.closest('.sb')) document.getElementById('searchAc').classList.remove('show');
   if(!e.target.closest('#fName')&&!e.target.closest('#nameAc')) document.getElementById('nameAc').classList.remove('show');
   if(!e.target.closest('#fTypeWrap')) document.getElementById('typeAc').classList.remove('show');
+  if(!e.target.closest('.sort-dropdown')) document.getElementById('sortMenu').classList.remove('open');
 });
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape'){ closeModal(); closeImgModal(); closeLbox(); }
-});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeImgModal(); closeLbox(); } });
 document.getElementById('modalBg').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeModal(); });
 document.getElementById('imgModalBg').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeImgModal(); });
 
