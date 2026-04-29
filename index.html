@@ -8,262 +8,286 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #ffffff; --bg2: #f4f4f6; --bg3: #e8e8ec;
-      --text: #1a1a1a; --text2: #666666; --text3: #999999;
+      --text: #1a1a1a; --text2: #666; --text3: #aaa;
       --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.20);
       --blue: #378ADD; --blue-dk: #185FA5; --blue-lt: #E6F1FB;
       --red: #E24B4A; --red-lt: #FCEBEB;
-      --green: #3A9A4A; --green-lt: #EAF5EC;
       --radius: 8px; --radius-lg: 14px;
-      --sidebar: 320px;
-      --topbar: 52px;
+      --sidebar: 300px; --topbar: 52px;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1c1c1e; --bg2: #2c2c2e; --bg3: #3a3a3c;
-        --text: #f2f2f7; --text2: #aeaeb2; --text3: #636366;
-        --border: rgba(255,255,255,0.10); --border2: rgba(255,255,255,0.20);
-        --blue-lt: #1a3352; --red-lt: #3a1515; --green-lt: #1a2e1f;
+        --bg:#1c1c1e; --bg2:#2c2c2e; --bg3:#3a3a3c;
+        --text:#f2f2f7; --text2:#aeaeb2; --text3:#636366;
+        --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.20);
+        --blue-lt:#1a3352; --red-lt:#3a1515;
       }
     }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-           background: var(--bg2); color: var(--text); min-height: 100vh; overflow: hidden; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+           background:var(--bg2); color:var(--text); }
 
-    /* ══ AUTH ══ */
-    .auth-screen { display: flex; align-items: center; justify-content: center;
-                   min-height: 100vh; padding: 1rem; }
-    .auth-card { background: var(--bg); border-radius: var(--radius-lg);
-                 border: 0.5px solid var(--border); padding: 2.5rem 2rem;
-                 width: 100%; max-width: 360px; text-align: center; }
-    .auth-logo { font-size: 52px; margin-bottom: 0.75rem; }
-    .auth-title { font-size: 22px; font-weight: 700; margin-bottom: 0.25rem; }
-    .auth-sub { font-size: 13px; color: var(--text2); margin-bottom: 2rem; }
-    .btn-google { width: 100%; padding: 12px; background: var(--bg); color: var(--text);
-                  border: 0.5px solid var(--border2); border-radius: var(--radius);
-                  font-size: 15px; font-weight: 500; cursor: pointer;
-                  display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .btn-google:hover { background: var(--bg2); }
-    .btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
-    .gicon { width: 20px; height: 20px; flex-shrink: 0; }
-    .auth-error { background: var(--red-lt); color: var(--red); font-size: 13px;
-                  padding: 8px 12px; border-radius: var(--radius); margin-top: 1rem; display: none; }
-    .auth-error.show { display: block; }
-    .auth-note { font-size: 12px; color: var(--text2); margin-top: 1.25rem; line-height: 1.6; }
+    /* ── AUTH ── */
+    .auth-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:1rem; }
+    .auth-card { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border);
+                 padding:2.5rem 2rem; width:100%; max-width:360px; text-align:center; }
+    .auth-logo { font-size:52px; margin-bottom:.75rem; }
+    .auth-title { font-size:22px; font-weight:700; margin-bottom:.25rem; }
+    .auth-sub { font-size:13px; color:var(--text2); margin-bottom:2rem; }
+    .btn-google { width:100%; padding:12px; background:var(--bg); color:var(--text);
+                  border:0.5px solid var(--border2); border-radius:var(--radius);
+                  font-size:15px; font-weight:500; cursor:pointer;
+                  display:flex; align-items:center; justify-content:center; gap:10px; }
+    .btn-google:hover { background:var(--bg2); }
+    .btn-google:disabled { opacity:.6; cursor:not-allowed; }
+    .gico { width:20px; height:20px; flex-shrink:0; }
+    .auth-err { background:var(--red-lt); color:var(--red); font-size:13px;
+                padding:8px 12px; border-radius:var(--radius); margin-top:1rem; display:none; }
+    .auth-err.show { display:block; }
+    .auth-note { font-size:12px; color:var(--text2); margin-top:1.25rem; line-height:1.6; }
 
-    /* ══ APP SHELL ══ */
-    .app { display: none; flex-direction: column; height: 100vh; }
-    .app.visible { display: flex; }
+    /* ── APP SHELL ── */
+    .app { display:none; flex-direction:column; height:100vh; overflow:hidden; }
+    .app.on { display:flex; }
 
     /* Topbar */
-    .topbar { height: var(--topbar); background: var(--bg); border-bottom: 0.5px solid var(--border);
-              display: flex; align-items: center; gap: 10px; padding: 0 1.25rem; flex-shrink: 0; z-index: 40; }
-    .topbar-title { font-size: 16px; font-weight: 700; flex: 1; }
-    .user-info { display: flex; align-items: center; gap: 8px; }
-    .uav { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-    .uav-fb { width: 28px; height: 28px; border-radius: 50%; background: var(--blue);
-              color: white; font-size: 12px; font-weight: 700;
-              display: flex; align-items: center; justify-content: center; }
-    .uname { font-size: 13px; color: var(--text2); max-width: 130px;
-             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .btn-sm { padding: 5px 12px; border: 0.5px solid var(--border2); border-radius: var(--radius);
-              background: none; color: var(--text2); font-size: 12px; cursor: pointer; }
-    .btn-sm:hover { background: var(--bg2); }
-    .btn-primary { background: var(--blue); color: white; border: none; padding: 6px 14px;
-                   border-radius: var(--radius); font-size: 13px; cursor: pointer; font-weight: 600; }
-    .btn-primary:hover { background: var(--blue-dk); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .topbar { height:var(--topbar); background:var(--bg); border-bottom:0.5px solid var(--border);
+              display:flex; align-items:center; gap:10px; padding:0 1.25rem; flex-shrink:0; z-index:30; }
+    .tb-title { font-size:16px; font-weight:700; flex:1; }
+    .uinfo { display:flex; align-items:center; gap:8px; }
+    .uav { width:28px; height:28px; border-radius:50%; object-fit:cover; }
+    .uav-fb { width:28px; height:28px; border-radius:50%; background:var(--blue); color:white;
+              font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .uname { font-size:13px; color:var(--text2); max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .btn-sm { padding:5px 12px; border:0.5px solid var(--border2); border-radius:var(--radius);
+              background:none; color:var(--text2); font-size:12px; cursor:pointer; }
+    .btn-sm:hover { background:var(--bg2); }
 
-    /* Stats bar */
-    .stats-bar { display: flex; gap: 0; border-bottom: 0.5px solid var(--border);
-                 background: var(--bg); flex-shrink: 0; overflow-x: auto; }
-    .stat-item { padding: 8px 20px; text-align: center; border-right: 0.5px solid var(--border); white-space: nowrap; }
-    .stat-item:last-child { border-right: none; }
-    .si-label { font-size: 10px; color: var(--text2); margin-bottom: 2px; }
-    .si-val { font-size: 18px; font-weight: 700; }
+    /* Stats */
+    .stats-bar { display:flex; background:var(--bg); border-bottom:0.5px solid var(--border);
+                 flex-shrink:0; overflow-x:auto; }
+    .si { padding:7px 18px; text-align:center; border-right:0.5px solid var(--border); white-space:nowrap; }
+    .si:last-child { border-right:none; }
+    .si-l { font-size:10px; color:var(--text2); margin-bottom:1px; }
+    .si-v { font-size:17px; font-weight:700; }
 
-    /* ══ MAIN LAYOUT ══ */
-    .main { display: flex; flex: 1; overflow: hidden; }
+    /* ── MAIN ── */
+    .main { display:flex; flex:1; overflow:hidden; }
 
-    /* ── LEFT PANEL ── */
-    .left-panel { width: var(--sidebar); flex-shrink: 0; display: flex; flex-direction: column;
-                  border-right: 0.5px solid var(--border); background: var(--bg); overflow: hidden; }
-    .lp-head { padding: 12px; border-bottom: 0.5px solid var(--border); flex-shrink: 0; }
-    .lp-head h2 { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .search-box { position: relative; margin-bottom: 8px; }
-    .search-box input { width: 100%; padding: 8px 12px 8px 32px; border: 0.5px solid var(--border2);
-                        border-radius: var(--radius); background: var(--bg2); color: var(--text);
-                        font-size: 13px; outline: none; }
-    .search-box input:focus { border-color: var(--blue); background: var(--bg); }
-    .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-                   font-size: 13px; color: var(--text3); pointer-events: none; }
-    .filter-chips { display: flex; gap: 5px; flex-wrap: wrap; }
-    .chip { font-size: 11px; padding: 3px 9px; border: 0.5px solid var(--border2);
-            border-radius: 20px; background: var(--bg); color: var(--text2);
-            cursor: pointer; transition: all 0.12s; white-space: nowrap; }
-    .chip.on, .chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
-    .filter-section { margin-bottom: 8px; }
-    .filter-section-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    /* LEFT */
+    .lp { width:var(--sidebar); flex-shrink:0; display:flex; flex-direction:column;
+          border-right:0.5px solid var(--border); background:var(--bg); overflow:hidden; }
+    .lp-head { padding:10px; border-bottom:0.5px solid var(--border); flex-shrink:0; }
+    .lp-head h2 { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase;
+                  letter-spacing:.5px; margin-bottom:8px; }
+    /* search */
+    .sb { position:relative; margin-bottom:8px; }
+    .sb input { width:100%; padding:8px 12px 8px 30px; border:0.5px solid var(--border2);
+                border-radius:var(--radius); background:var(--bg2); color:var(--text);
+                font-size:13px; outline:none; }
+    .sb input:focus { border-color:var(--blue); background:var(--bg); }
+    .sb-ico { position:absolute; left:9px; top:50%; transform:translateY(-50%);
+              font-size:13px; color:var(--text3); pointer-events:none; }
+    /* filter chips */
+    .f-sec { margin-bottom:7px; }
+    .f-sec-lbl { font-size:10px; color:var(--text3); margin-bottom:3px; text-transform:uppercase; letter-spacing:.5px; }
+    .chips { display:flex; gap:4px; flex-wrap:wrap; }
+    .chip { font-size:11px; padding:3px 8px; border:0.5px solid var(--border2); border-radius:20px;
+            background:var(--bg); color:var(--text2); cursor:pointer; transition:all .12s; white-space:nowrap; }
+    .chip.on, .chip:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-lt); }
+    /* card list */
+    .cl { flex:1; overflow-y:auto; }
+    .cl-empty { padding:2rem 1rem; text-align:center; color:var(--text2); font-size:13px; }
+    .cr { display:flex; align-items:center; gap:9px; padding:9px 10px;
+          border-bottom:0.5px solid var(--border); cursor:pointer; transition:background .12s; }
+    .cr:hover { background:var(--bg2); }
+    .cr.sel { background:var(--blue-lt); border-left:3px solid var(--blue); }
+    .cr.sel .cr-name { color:var(--blue); }
+    /* card thumb in list */
+    .cr-img { width:32px; height:44px; border-radius:3px; object-fit:cover; flex-shrink:0; background:var(--bg3); }
+    .cr-img-ph { width:32px; height:44px; border-radius:3px; background:var(--bg3);
+                 display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+    .cr-reg { width:24px; height:24px; border-radius:50%; background:var(--blue); color:white;
+              font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cr-info { flex:1; min-width:0; }
+    .cr-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cr-meta { font-size:11px; color:var(--text2); margin-top:1px; }
+    .cr-qb { min-width:22px; height:22px; border-radius:11px; background:var(--blue); color:white;
+              font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 5px; flex-shrink:0; }
+    .cr-qb.z { background:var(--bg3); color:var(--text3); }
+    /* lp foot */
+    .lp-foot { padding:8px 10px; border-top:0.5px solid var(--border); flex-shrink:0; }
+    .btn-add { width:100%; padding:9px; background:var(--blue); color:white; border:none;
+               border-radius:var(--radius); font-size:13px; font-weight:600; cursor:pointer; }
+    .btn-add:hover { background:var(--blue-dk); }
 
-    /* Card list */
-    .card-list { flex: 1; overflow-y: auto; }
-    .card-list-empty { padding: 2rem 1rem; text-align: center; color: var(--text2); font-size: 13px; }
-    .card-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-                border-bottom: 0.5px solid var(--border); cursor: pointer;
-                transition: background 0.12s; }
-    .card-row:hover { background: var(--bg2); }
-    .card-row.selected { background: var(--blue-lt); border-left: 3px solid var(--blue); }
-    .card-row.selected .cr-name { color: var(--blue); }
-    .cr-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--blue);
-                color: white; font-size: 11px; font-weight: 700;
-                display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .cr-info { flex: 1; min-width: 0; }
-    .cr-name { font-size: 13px; font-weight: 600; white-space: nowrap;
-               overflow: hidden; text-overflow: ellipsis; }
-    .cr-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
-    .cr-qty { flex-shrink: 0; }
-    .qty-badge { min-width: 24px; height: 24px; border-radius: 12px; background: var(--blue);
-                 color: white; font-size: 12px; font-weight: 700;
-                 display: flex; align-items: center; justify-content: center; padding: 0 6px; }
-    .qty-badge.zero { background: var(--bg3); color: var(--text3); }
+    /* RIGHT */
+    .rp { flex:1; display:flex; flex-direction:column; overflow:hidden; background:var(--bg2); }
+    .rp-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+                color:var(--text2); gap:10px; }
+    .rp-empty-ico { font-size:52px; }
+    .rp-empty-txt { font-size:15px; font-weight:500; }
+    .rp-empty-sub { font-size:13px; color:var(--text3); }
+    .rp-detail { flex:1; overflow-y:auto; padding:1.5rem; display:none; }
+    .rp-detail.on { display:block; }
+    .dc { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border);
+          overflow:hidden; max-width:520px; margin:0 auto; }
 
-    /* Add card button */
-    .lp-foot { padding: 10px 12px; border-top: 0.5px solid var(--border); flex-shrink: 0; }
-    .btn-add-card { width: 100%; padding: 9px; background: var(--blue); color: white; border: none;
-                    border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; }
-    .btn-add-card:hover { background: var(--blue-dk); }
+    /* detail header */
+    .dc-header { display:flex; gap:1rem; padding:1.25rem; border-bottom:0.5px solid var(--border); }
+    .dc-img-wrap { flex-shrink:0; }
+    .dc-img { width:100px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,.15); display:block; cursor:pointer; transition:transform .15s; }
+    .dc-img:hover { transform:scale(1.04); }
+    .dc-img-ph { width:100px; height:140px; border-radius:8px; background:var(--bg3);
+                 display:flex; align-items:center; justify-content:center; font-size:36px; }
+    .dc-header-info { flex:1; min-width:0; padding-top:4px; }
+    .dc-reg { width:32px; height:32px; border-radius:50%; background:var(--blue); color:white;
+              font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
+    .dc-name { font-size:20px; font-weight:700; margin-bottom:8px; }
+    .dc-pills { display:flex; gap:5px; flex-wrap:wrap; }
+    .pill { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:12px; font-size:11px; font-weight:500; }
+    .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 
-    /* ── RIGHT PANEL ── */
-    .right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg2); }
+    /* qty */
+    .dc-qty { padding:1.25rem; border-bottom:0.5px solid var(--border); }
+    .qty-lbl { font-size:11px; color:var(--text2); margin-bottom:10px; text-transform:uppercase; letter-spacing:.4px; }
+    .qty-ctrl { display:flex; align-items:center; gap:14px; }
+    .qty-big-btn { width:46px; height:46px; border-radius:50%; border:0.5px solid var(--border2);
+                   background:var(--bg2); color:var(--text); font-size:22px; cursor:pointer;
+                   display:flex; align-items:center; justify-content:center; transition:all .12s; }
+    .qty-big-btn:hover { background:var(--bg3); }
+    .qty-big-btn.add:hover { background:var(--blue); color:white; border-color:var(--blue); }
+    .qty-big-num { font-size:40px; font-weight:700; min-width:56px; text-align:center; }
+    .qty-unit { font-size:13px; color:var(--text2); }
 
-    /* Empty state */
-    .rp-empty { flex: 1; display: flex; flex-direction: column; align-items: center;
-                justify-content: center; color: var(--text2); gap: 12px; }
-    .rp-empty-icon { font-size: 56px; }
-    .rp-empty-text { font-size: 15px; font-weight: 500; }
-    .rp-empty-sub { font-size: 13px; color: var(--text3); }
+    /* detail fields */
+    .dc-fields { padding:1rem 1.25rem; display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+    .df-l { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
+    .df-v { font-size:14px; font-weight:500; }
 
-    /* Detail view */
-    .rp-detail { flex: 1; overflow-y: auto; padding: 2rem; display: none; }
-    .rp-detail.show { display: block; }
-    .detail-card { background: var(--bg); border-radius: var(--radius-lg);
-                   border: 0.5px solid var(--border); overflow: hidden; max-width: 560px; margin: 0 auto; }
-    .detail-header { padding: 1.5rem; border-bottom: 0.5px solid var(--border); }
-    .detail-reg { display: inline-flex; align-items: center; justify-content: center;
-                  width: 36px; height: 36px; border-radius: 50%; background: var(--blue);
-                  color: white; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
-    .detail-name { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-    .detail-pills { display: flex; gap: 6px; flex-wrap: wrap; }
-    .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
-            border-radius: 12px; font-size: 12px; font-weight: 500; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    /* actions */
+    .dc-acts { padding:1rem 1.25rem; display:flex; gap:8px; border-top:0.5px solid var(--border); }
+    .btn-edit { flex:1; padding:8px; border:0.5px solid var(--border2); border-radius:var(--radius);
+                background:none; color:var(--text); font-size:13px; cursor:pointer; font-weight:500; }
+    .btn-edit:hover { background:var(--bg2); }
+    .btn-lnk { flex:1; padding:8px; border:0.5px solid var(--blue); border-radius:var(--radius);
+               background:none; color:var(--blue); font-size:13px; cursor:pointer; font-weight:500; }
+    .btn-lnk:hover { background:var(--blue-lt); }
+    .btn-del { padding:8px 14px; border:0.5px solid var(--red); border-radius:var(--radius);
+               background:none; color:var(--red); font-size:13px; cursor:pointer; }
+    .btn-del:hover { background:var(--red-lt); }
 
-    /* Qty control */
-    .detail-qty { padding: 1.5rem; border-bottom: 0.5px solid var(--border); }
-    .qty-label { font-size: 12px; color: var(--text2); margin-bottom: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
-    .qty-control { display: flex; align-items: center; gap: 16px; }
-    .qty-big-btn { width: 48px; height: 48px; border-radius: 50%;
-                   border: 0.5px solid var(--border2); background: var(--bg2);
-                   color: var(--text); font-size: 24px; cursor: pointer;
-                   display: flex; align-items: center; justify-content: center;
-                   transition: all 0.12s; font-weight: 300; }
-    .qty-big-btn:hover { background: var(--bg3); border-color: var(--blue); color: var(--blue); }
-    .qty-big-btn.add:hover { background: var(--blue); color: white; border-color: var(--blue); }
-    .qty-big-num { font-size: 42px; font-weight: 700; min-width: 60px; text-align: center; }
-    .qty-unit { font-size: 14px; color: var(--text2); }
-
-    /* Detail fields */
-    .detail-fields { padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .df-item { }
-    .df-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
-    .df-val { font-size: 14px; font-weight: 500; }
-
-    /* Detail actions */
-    .detail-actions { padding: 1rem 1.5rem; display: flex; gap: 8px; border-top: 0.5px solid var(--border); }
-    .btn-edit { flex: 1; padding: 9px; border: 0.5px solid var(--border2); border-radius: var(--radius);
-                background: none; color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; }
-    .btn-edit:hover { background: var(--bg2); }
-    .btn-del { padding: 9px 16px; border: 0.5px solid var(--red); border-radius: var(--radius);
-               background: none; color: var(--red); font-size: 13px; cursor: pointer; }
-    .btn-del:hover { background: var(--red-lt); }
-
-    /* ══ MODAL ══ */
-    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-                z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-bg.open { display: flex; }
-    .modal { background: var(--bg); border-radius: var(--radius-lg); border: 0.5px solid var(--border);
-             padding: 1.5rem; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; }
-    .modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 1.25rem; }
-    .field { margin-bottom: 12px; }
-    .field label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 5px; }
-    .field input, .field select { width: 100%; padding: 8px 10px; border: 0.5px solid var(--border2);
-                                   border-radius: var(--radius); background: var(--bg);
-                                   color: var(--text); font-size: 14px; outline: none; }
-    .field input:focus, .field select:focus { border-color: var(--blue); }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
-    .btn-cancel { padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius);
-                  background: none; color: var(--text2); font-size: 14px; cursor: pointer; }
-    .btn-save { padding: 8px 18px; background: var(--blue); color: white; border: none;
-                border-radius: var(--radius); font-size: 14px; cursor: pointer; font-weight: 600; }
-    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    /* Autocomplete */
-    .ac-wrap { position: relative; }
-    .ac-list { position: absolute; top: calc(100% + 3px); left: 0; right: 0; background: var(--bg);
-               border: 0.5px solid var(--border2); border-radius: var(--radius); z-index: 400;
-               max-height: 200px; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.13); display: none; }
-    .ac-list.show { display: block; }
-    .ac-item { padding: 8px 12px; font-size: 13px; cursor: pointer; color: var(--text);
-               border-bottom: 0.5px solid var(--border); }
-    .ac-item:last-child { border-bottom: none; }
-    .ac-item:hover, .ac-item.hi { background: var(--blue-lt); color: var(--blue); }
+    /* ── MODALS ── */
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100;
+                align-items:center; justify-content:center; padding:1rem; }
+    .modal-bg.open { display:flex; }
+    .modal { background:var(--bg); border-radius:var(--radius-lg); border:0.5px solid var(--border);
+             padding:1.5rem; width:100%; max-width:420px; max-height:90vh; overflow-y:auto; }
+    .modal h3 { font-size:17px; font-weight:700; margin-bottom:1.25rem; }
+    .field { margin-bottom:12px; }
+    .field label { font-size:12px; color:var(--text2); display:block; margin-bottom:4px; }
+    .field input,.field select { width:100%; padding:8px 10px; border:0.5px solid var(--border2);
+                                  border-radius:var(--radius); background:var(--bg); color:var(--text);
+                                  font-size:14px; outline:none; }
+    .field input:focus,.field select:focus { border-color:var(--blue); }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .field-hint { font-size:11px; color:var(--text2); margin-top:3px; }
+    .modal-btns { display:flex; gap:8px; justify-content:flex-end; margin-top:1.25rem; }
+    .btn-cancel { padding:8px 18px; border:0.5px solid var(--border2); border-radius:var(--radius);
+                  background:none; color:var(--text2); font-size:14px; cursor:pointer; }
+    .btn-save { padding:8px 18px; background:var(--blue); color:white; border:none;
+                border-radius:var(--radius); font-size:14px; cursor:pointer; font-weight:600; }
+    .btn-save:disabled { opacity:.6; cursor:not-allowed; }
 
     /* Reg grid */
-    .reg-grid { display: grid; grid-template-columns: repeat(9,1fr); gap: 4px; margin-top: 4px; }
-    .reg-cell { padding: 5px 2px; border: 0.5px solid var(--border2); border-radius: 5px;
-                background: var(--bg2); color: var(--text2); font-size: 12px; font-weight: 600;
-                text-align: center; cursor: pointer; transition: all 0.12s; }
-    .reg-cell:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
-    .reg-cell.on { background: var(--blue); color: white; border-color: var(--blue); }
+    .reg-grid { display:grid; grid-template-columns:repeat(9,1fr); gap:4px; margin-top:4px; }
+    .reg-cell { padding:5px 2px; border:0.5px solid var(--border2); border-radius:5px;
+                background:var(--bg2); color:var(--text2); font-size:12px; font-weight:600;
+                text-align:center; cursor:pointer; transition:all .12s; }
+    .reg-cell:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-lt); }
+    .reg-cell.on { background:var(--blue); color:white; border-color:var(--blue); }
 
-    /* Toast */
-    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
-             background: #1a1a1a; color: white; padding: 10px 20px; border-radius: 20px;
-             font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 500; white-space: nowrap; }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    /* Autocomplete */
+    .ac-wrap { position:relative; }
+    .ac-list { position:absolute; top:calc(100% + 3px); left:0; right:0; background:var(--bg);
+               border:0.5px solid var(--border2); border-radius:var(--radius); z-index:400;
+               max-height:200px; overflow-y:auto; box-shadow:0 6px 20px rgba(0,0,0,.13); display:none; }
+    .ac-list.show { display:block; }
+    .ac-item { padding:8px 12px; font-size:13px; cursor:pointer; border-bottom:0.5px solid var(--border); }
+    .ac-item:last-child { border-bottom:none; }
+    .ac-item:hover,.ac-item.hi { background:var(--blue-lt); color:var(--blue); }
 
-    /* Loading */
-    .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3);
-                       z-index: 600; align-items: center; justify-content: center; }
-    .loading-overlay.show { display: flex; }
-    .loading-spinner { background: var(--bg); padding: 1.5rem 2rem; border-radius: var(--radius-lg);
-                       font-size: 14px; color: var(--text2); }
+    /* ── IMAGE PICKER MODAL ── */
+    .img-modal { max-width:560px; }
+    .img-search-row { display:flex; gap:8px; margin-bottom:1rem; }
+    .img-search-row input { flex:1; padding:8px 12px; border:0.5px solid var(--border2);
+                             border-radius:var(--radius); background:var(--bg); color:var(--text);
+                             font-size:14px; outline:none; }
+    .img-search-row input:focus { border-color:var(--blue); }
+    .btn-search { padding:8px 16px; background:var(--blue); color:white; border:none;
+                  border-radius:var(--radius); font-size:13px; cursor:pointer; font-weight:600; white-space:nowrap; }
+    .btn-search:disabled { opacity:.6; cursor:not-allowed; }
+    .img-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:10px;
+                max-height:340px; overflow-y:auto; }
+    .img-cell { border-radius:8px; overflow:hidden; border:2px solid transparent; cursor:pointer;
+                transition:all .15s; position:relative; }
+    .img-cell:hover { border-color:var(--blue); transform:scale(1.03); }
+    .img-cell.picked { border-color:var(--blue); }
+    .img-cell.picked::after { content:'✓'; position:absolute; top:4px; right:4px; width:20px; height:20px;
+                               border-radius:50%; background:var(--blue); color:white; font-size:12px;
+                               display:flex; align-items:center; justify-content:center; font-weight:700; }
+    .img-cell img { width:100%; display:block; border-radius:6px; }
+    .img-cell-name { font-size:10px; color:var(--text2); padding:2px 4px 4px; text-align:center; }
+    .img-empty { padding:2rem; text-align:center; color:var(--text2); font-size:13px; }
+    .img-loading { padding:2rem; text-align:center; color:var(--text2); font-size:13px; }
+    .img-modal-btns { display:flex; gap:8px; justify-content:space-between; margin-top:1rem; }
+    .btn-no-img { padding:8px 14px; border:0.5px solid var(--border2); border-radius:var(--radius);
+                  background:none; color:var(--text2); font-size:13px; cursor:pointer; }
+
+    /* Lightbox */
+    .lbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:600;
+            align-items:center; justify-content:center; cursor:pointer; }
+    .lbox.open { display:flex; }
+    .lbox img { max-width:min(380px,90vw); max-height:88vh; border-radius:14px; cursor:default;
+                box-shadow:0 24px 64px rgba(0,0,0,.6); }
+    .lbox-close { position:absolute; top:1rem; right:1.25rem; color:white; font-size:28px; cursor:pointer; }
+
+    /* Toast / Loading */
+    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(80px);
+             background:#1a1a1a; color:white; padding:10px 20px; border-radius:20px;
+             font-size:13px; opacity:0; transition:all .3s; z-index:700; white-space:nowrap; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .loading-ov { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3);
+                  z-index:800; align-items:center; justify-content:center; }
+    .loading-ov.show { display:flex; }
+    .loading-box { background:var(--bg); padding:1.25rem 2rem; border-radius:var(--radius-lg); font-size:14px; color:var(--text2); }
 
     /* Mobile */
-    @media (max-width: 700px) {
-      body { overflow: auto; }
-      .app { height: auto; overflow: auto; }
-      .main { flex-direction: column; overflow: auto; }
-      .left-panel { width: 100%; border-right: none; border-bottom: 0.5px solid var(--border);
-                    max-height: 55vh; }
-      .right-panel { min-height: 45vh; }
-      .rp-detail { padding: 1rem; }
-      .detail-fields { grid-template-columns: 1fr 1fr; }
-      .uname { display: none; }
-      .field-row { grid-template-columns: 1fr; }
-      .stats-bar { display: none; }
+    @media(max-width:700px){
+      body { overflow:auto; }
+      .app { height:auto; overflow:auto; }
+      .main { flex-direction:column; }
+      .lp { width:100%; border-right:none; border-bottom:0.5px solid var(--border); max-height:50vh; }
+      .rp { min-height:50vh; }
+      .rp-detail { padding:1rem; }
+      .dc-header { flex-direction:column; align-items:center; text-align:center; }
+      .dc-pills { justify-content:center; }
+      .dc-fields { grid-template-columns:1fr 1fr; }
+      .uname { display:none; }
+      .stats-bar { display:none; }
+      .field-row { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══ AUTH ══ -->
+<!-- AUTH -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-card">
     <div class="auth-logo">🃏</div>
     <div class="auth-title">PTCG 卡牌管理系統</div>
     <div class="auth-sub">登入以管理你的個人卡牌收藏</div>
     <button class="btn-google" id="btnGoogle" onclick="loginGoogle()">
-      <svg class="gicon" viewBox="0 0 48 48">
+      <svg class="gico" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
         <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -271,95 +295,85 @@
       </svg>
       使用 Google 帳號登入
     </button>
-    <div class="auth-error" id="authError"></div>
+    <div class="auth-err" id="authErr"></div>
     <div class="auth-note">每位玩家的資料獨立保存於雲端<br>任何裝置皆可存取</div>
   </div>
 </div>
 
-<!-- ══ APP ══ -->
+<!-- APP -->
 <div class="app" id="app">
-
-  <!-- Topbar -->
   <div class="topbar">
-    <span class="topbar-title">🃏 PTCG 卡牌管理</span>
-    <div class="user-info">
+    <span class="tb-title">🃏 PTCG 卡牌管理</span>
+    <div class="uinfo">
       <div class="uav-fb" id="uavFb"></div>
       <img class="uav" id="uav" style="display:none" alt="">
       <span class="uname" id="uname"></span>
     </div>
     <button class="btn-sm" onclick="logout()">登出</button>
   </div>
-
-  <!-- Stats bar -->
   <div class="stats-bar" id="statsBar"></div>
-
-  <!-- Main -->
   <div class="main">
 
-    <!-- ── LEFT PANEL ── -->
-    <div class="left-panel">
+    <!-- LEFT -->
+    <div class="lp">
       <div class="lp-head">
         <h2>搜尋卡牌</h2>
-        <!-- Search -->
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="searchQ" placeholder="輸入卡牌名稱..." autocomplete="off"
-            oninput="onSearchInput()" onkeydown="onSearchKeydown(event)">
-          <div class="ac-list" id="searchAcList"></div>
+        <div class="sb">
+          <span class="sb-ico">🔍</span>
+          <input id="searchQ" type="text" placeholder="輸入名稱搜尋..." autocomplete="off"
+            oninput="onSearch()" onkeydown="onSearchKd(event)">
+          <div class="ac-list" id="searchAc"></div>
         </div>
-        <!-- Filters -->
-        <div class="filter-section">
-          <div class="filter-section-label">卡牌種類</div>
-          <div class="filter-chips" id="chipCat"></div>
+        <div class="f-sec">
+          <div class="f-sec-lbl">卡牌種類</div>
+          <div class="chips" id="chipCat"></div>
         </div>
-        <div class="filter-section" id="chipTypeSection">
-          <div class="filter-section-label">屬性</div>
-          <div class="filter-chips" id="chipType"></div>
+        <div class="f-sec" id="fTypeSec">
+          <div class="f-sec-lbl">屬性</div>
+          <div class="chips" id="chipType"></div>
         </div>
-        <div class="filter-section">
-          <div class="filter-section-label">稀有度</div>
-          <div class="filter-chips" id="chipRarity"></div>
+        <div class="f-sec">
+          <div class="f-sec-lbl">稀有度</div>
+          <div class="chips" id="chipRar"></div>
         </div>
       </div>
-
-      <!-- Card list -->
-      <div class="card-list" id="cardList"></div>
-
-      <!-- Add button -->
+      <div class="cl" id="cardList"></div>
       <div class="lp-foot">
-        <button class="btn-add-card" onclick="openAddModal()">＋ 新增卡牌到收藏</button>
+        <button class="btn-add" onclick="openAddModal()">＋ 新增卡牌到收藏</button>
       </div>
     </div>
 
-    <!-- ── RIGHT PANEL ── -->
-    <div class="right-panel">
-      <!-- Empty -->
+    <!-- RIGHT -->
+    <div class="rp">
       <div class="rp-empty" id="rpEmpty">
-        <div class="rp-empty-icon">👈</div>
-        <div class="rp-empty-text">從左側選擇一張卡牌</div>
-        <div class="rp-empty-sub">可搜尋名稱或依類別篩選</div>
+        <div class="rp-empty-ico">👈</div>
+        <div class="rp-empty-txt">從左側選擇一張卡牌</div>
+        <div class="rp-empty-sub">可依名稱、種類、屬性、稀有度篩選</div>
       </div>
-      <!-- Detail -->
       <div class="rp-detail" id="rpDetail">
-        <div class="detail-card">
-          <div class="detail-header">
-            <div class="detail-reg" id="dReg"></div>
-            <div class="detail-name" id="dName"></div>
-            <div class="detail-pills" id="dPills"></div>
+        <div class="dc">
+          <div class="dc-header">
+            <div class="dc-img-wrap" id="dcImgWrap"></div>
+            <div class="dc-header-info">
+              <div class="dc-reg" id="dReg"></div>
+              <div class="dc-name" id="dName"></div>
+              <div class="dc-pills" id="dPills"></div>
+            </div>
           </div>
-          <div class="detail-qty">
-            <div class="qty-label">擁有張數</div>
-            <div class="qty-control">
-              <button class="qty-big-btn" onclick="adjustQty(-1)">−</button>
+          <div class="dc-qty">
+            <div class="qty-lbl">擁有張數</div>
+            <div class="qty-ctrl">
+              <button class="qty-big-btn" onclick="adjQty(-1)">−</button>
               <div class="qty-big-num" id="dQty">0</div>
-              <button class="qty-big-btn add" onclick="adjustQty(1)">＋</button>
+              <button class="qty-big-btn add" onclick="adjQty(1)">＋</button>
               <span class="qty-unit">張</span>
             </div>
           </div>
-          <div class="detail-fields" id="dFields"></div>
-          <div class="detail-actions">
-            <button class="btn-edit" onclick="openEditModal()">✎ 編輯卡牌資訊</button>
-            <button class="btn-del" onclick="deleteSelected()">刪除</button>
+          <div class="dc-fields" id="dFields"></div>
+          <div class="dc-acts">
+            <button class="btn-edit" onclick="openEditModal()">✎ 編輯資訊</button>
+            <button class="btn-lnk" onclick="openImgPicker(true)">🖼 更換卡面</button>
+            <button class="btn-del" onclick="delSelected()">刪除</button>
           </div>
         </div>
       </div>
@@ -367,45 +381,41 @@
   </div>
 </div>
 
-<!-- ══ ADD / EDIT MODAL ══ -->
+<!-- ADD / EDIT MODAL -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <h3 id="modalTitle">新增卡牌</h3>
-    <!-- 賽場標誌 -->
     <div class="field">
-      <label>賽場標誌 — 目前選擇：<strong id="regLabel" style="color:var(--blue)">A</strong></label>
+      <label>賽場標誌 — 目前：<strong id="regLbl" style="color:var(--blue)">A</strong></label>
       <div class="reg-grid" id="regGrid"></div>
     </div>
-    <!-- 名稱 -->
     <div class="field">
       <label>名稱</label>
       <div class="ac-wrap">
-        <input type="text" id="fName" placeholder="例：皮卡丘 ex" autocomplete="off"
-          oninput="onNameAcInput()" onkeydown="onNameAcKeydown(event)">
-        <div class="ac-list" id="nameAcList"></div>
+        <input id="fName" type="text" placeholder="例：皮卡丘 ex" autocomplete="off"
+          oninput="onNameAc()" onkeydown="onNameKd(event)">
+        <div class="ac-list" id="nameAc"></div>
       </div>
     </div>
-    <!-- 類別 + 屬性 -->
     <div class="field-row">
       <div class="field">
         <label>類別</label>
-        <select id="fCat" onchange="onCatChange()">
+        <select id="fCat" onchange="onCatChg()">
           <option>寶可夢</option><option>支援者</option><option>物品</option><option>道具</option><option>能量</option>
         </select>
       </div>
       <div class="field" id="fTypeWrap">
         <label>屬性</label>
         <div class="ac-wrap">
-          <input type="text" id="fType" placeholder="選擇屬性..." autocomplete="off" readonly
-            onfocus="onTypeAcFocus()" onkeydown="onTypeAcKeydown(event)">
-          <div class="ac-list" id="typeAcList"></div>
+          <input id="fType" type="text" placeholder="選擇屬性..." readonly autocomplete="off"
+            onfocus="showTypeAc()" onkeydown="onTypeKd(event)">
+          <div class="ac-list" id="typeAc"></div>
         </div>
       </div>
     </div>
-    <!-- 稀有度 -->
     <div class="field">
       <label>稀有度</label>
-      <select id="fRarity">
+      <select id="fRar">
         <option>◆ C (Common)</option><option>◆◆ U (Uncommon)</option><option>◆◆◆ R (Rare)</option>
         <option>◆◆◆◆ RR (Double Rare)</option><option>★ AR (Art Rare)</option>
         <option>★★ SAR (Special Art Rare)</option><option>★★★ UR (Ultra Rare)</option>
@@ -420,11 +430,37 @@
   </div>
 </div>
 
-<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner">載入中...</div></div>
+<!-- IMAGE PICKER MODAL -->
+<div class="modal-bg" id="imgModalBg">
+  <div class="modal img-modal">
+    <h3>選擇卡面圖片</h3>
+    <div class="img-search-row">
+      <input id="imgQ" type="text" placeholder="輸入英文名稱搜尋（如 Pikachu）"
+        onkeydown="if(event.key==='Enter') searchImg()">
+      <button class="btn-search" id="btnImgSearch" onclick="searchImg()">搜尋</button>
+    </div>
+    <div id="imgGrid" class="img-grid"></div>
+    <div class="img-modal-btns">
+      <button class="btn-no-img" onclick="applyNoImg()">不使用卡面圖片</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeImgModal()">取消</button>
+        <button class="btn-save" id="btnImgApply" onclick="applyImg()" disabled>套用選擇</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lbox" id="lbox" onclick="closeLbox()">
+  <span class="lbox-close">✕</span>
+  <img id="lboxImg" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<div class="loading-ov" id="loadOv"><div class="loading-box">載入中...</div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
-// ══ Firebase Config ══
+// ══ Firebase ══
 const firebaseConfig = {
   apiKey:            "AIzaSyA7yVaW3zF1P805JlnEpHn8yhLcD2v9Orw",
   authDomain:        "ptcg-manager-4ff61.firebaseapp.com",
@@ -433,7 +469,6 @@ const firebaseConfig = {
   messagingSenderId: "340810690111",
   appId:             "1:340810690111:web:ed9a7001e3b6f5bb00128a"
 };
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -444,473 +479,444 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
+const TCGAPI = 'https://api.pokemontcg.io/v2/cards';
 
 // ══ Constants ══
-const CATS    = ['寶可夢','支援者','物品','道具','能量'];
-const TYPES   = ['一般','火','水','草','電','惡','超','鬥','鋼','龍'];
-const RARITIES= ['◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
-                 '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)',
-                 '★★★★ SR (Super Rare)','◇ ACE SPEC','♦ PR (Promo)','其他'];
+const CATS  = ['寶可夢','支援者','物品','道具','能量'];
+const TYPES = ['一般','火','水','草','電','惡','超','鬥','鋼','龍'];
+const RARS  = ['◆ C (Common)','◆◆ U (Uncommon)','◆◆◆ R (Rare)','◆◆◆◆ RR (Double Rare)',
+               '★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)',
+               '★★★★ SR (Super Rare)','◇ ACE SPEC','♦ PR (Promo)','其他'];
 
-const TYPE_CFG = {
-  '一般':{bg:'#F1EFE8',color:'#444441',dot:'#888780'},'火':{bg:'#FAECE7',color:'#993C1D',dot:'#EF5350'},
-  '水':{bg:'#E6F1FB',color:'#185FA5',dot:'#42A5F5'},'草':{bg:'#EAF3DE',color:'#3B6D11',dot:'#66BB6A'},
-  '電':{bg:'#FAEEDA',color:'#854F0B',dot:'#FDD835'},'惡':{bg:'#2C2C2A',color:'#D3D1C7',dot:'#888780'},
-  '超':{bg:'#EEEDFE',color:'#3C3489',dot:'#AB47BC'},'鬥':{bg:'#FAECE7',color:'#712B13',dot:'#FF7043'},
-  '鋼':{bg:'#F1EFE8',color:'#3C3489',dot:'#78909C'},'龍':{bg:'#EEEDFE',color:'#26215C',dot:'#5C6BC0'},
-};
-const CAT_CFG = {
-  '寶可夢':{bg:'#E6F1FB',color:'#0C447C'},'支援者':{bg:'#EEEDFE',color:'#3C3489'},
-  '物品':{bg:'#EAF3DE',color:'#27500A'},'道具':{bg:'#FAEEDA',color:'#633806'},'能量':{bg:'#FAECE7',color:'#993C1D'},
-};
-const RAR_CFG = {
-  '◆ C (Common)':{bg:'#F1EFE8',color:'#444441'},'◆◆ U (Uncommon)':{bg:'#EAF3DE',color:'#3B6D11'},
-  '◆◆◆ R (Rare)':{bg:'#E6F1FB',color:'#0C447C'},'◆◆◆◆ RR (Double Rare)':{bg:'#EEEDFE',color:'#3C3489'},
-  '★ AR (Art Rare)':{bg:'#FAEEDA',color:'#633806'},'★★ SAR (Special Art Rare)':{bg:'#FAECE7',color:'#993C1D'},
-  '★★★ UR (Ultra Rare)':{bg:'#FAEEDA',color:'#854F0B'},'★★★★ SR (Super Rare)':{bg:'#FAECE7',color:'#712B13'},
-  '◇ ACE SPEC':{bg:'#E6F1FB',color:'#185FA5'},'♦ PR (Promo)':{bg:'#EEEDFE',color:'#26215C'},
-  '其他':{bg:'#F1EFE8',color:'#888780'},
-};
+const TC = { '一般':{bg:'#F1EFE8',c:'#444441',dot:'#888780'},'火':{bg:'#FAECE7',c:'#993C1D',dot:'#EF5350'},
+  '水':{bg:'#E6F1FB',c:'#185FA5',dot:'#42A5F5'},'草':{bg:'#EAF3DE',c:'#3B6D11',dot:'#66BB6A'},
+  '電':{bg:'#FAEEDA',c:'#854F0B',dot:'#FDD835'},'惡':{bg:'#2C2C2A',c:'#D3D1C7',dot:'#888780'},
+  '超':{bg:'#EEEDFE',c:'#3C3489',dot:'#AB47BC'},'鬥':{bg:'#FAECE7',c:'#712B13',dot:'#FF7043'},
+  '鋼':{bg:'#F1EFE8',c:'#3C3489',dot:'#78909C'},'龍':{bg:'#EEEDFE',c:'#26215C',dot:'#5C6BC0'} };
+const CC = { '寶可夢':{bg:'#E6F1FB',c:'#0C447C'},'支援者':{bg:'#EEEDFE',c:'#3C3489'},
+  '物品':{bg:'#EAF3DE',c:'#27500A'},'道具':{bg:'#FAEEDA',c:'#633806'},'能量':{bg:'#FAECE7',c:'#993C1D'} };
+const RC = { '◆ C (Common)':{bg:'#F1EFE8',c:'#444441'},'◆◆ U (Uncommon)':{bg:'#EAF3DE',c:'#3B6D11'},
+  '◆◆◆ R (Rare)':{bg:'#E6F1FB',c:'#0C447C'},'◆◆◆◆ RR (Double Rare)':{bg:'#EEEDFE',c:'#3C3489'},
+  '★ AR (Art Rare)':{bg:'#FAEEDA',c:'#633806'},'★★ SAR (Special Art Rare)':{bg:'#FAECE7',c:'#993C1D'},
+  '★★★ UR (Ultra Rare)':{bg:'#FAEEDA',c:'#854F0B'},'★★★★ SR (Super Rare)':{bg:'#FAECE7',c:'#712B13'},
+  '◇ ACE SPEC':{bg:'#E6F1FB',c:'#185FA5'},'♦ PR (Promo)':{bg:'#EEEDFE',c:'#26215C'},'其他':{bg:'#F1EFE8',c:'#888780'} };
 
 const POKEMON_ZH = [
   '妙蛙種子','妙蛙草','妙蛙花','小火龍','火恐龍','噴火龍','傑尼龜','卡咪龜','水箭龜',
-  '綠毛蟲','鐵甲蛹','巴大蝶','獨角蟲','刀螂蛹','大針蜂','波波','比比鳥','大比鳥',
-  '皮丘','皮卡丘','雷丘','小拉達','拉達','烈雀','大嘴雀','阿柏蛇','阿柏怪',
-  '沙瓦克','穿山王','尼多蘭','尼多娜','尼多王','尼多后','可愛寶貝','大惡花',
-  '走路草','臭臭花','喇叭芽','大食花','爆香螺','磁螺','小電球','三合一磁怪',
-  '嘟嘟','嘟嘟利','可達鴨','哥達鴨','猴怪','火爆猴','多多','多多嘴',
-  '迷你龍','哈克龍','快龍','伊布','水精靈','雷精靈','火精靈','超能力者',
-  '葉精靈','太陽精靈','月亮精靈','仙子精靈','冰精靈','冰晶靈','幸福蛋',
-  '夢夢蛋','目目魚','墨海馬','海馬龍','迷唇姐','迷唇娜','化石盔','始祖翼龍',
-  '電擊獸','胖丁','胖可丁','吃吃','大吃吃','小拳石','隆隆石','隆隆岩',
-  '腕力','豪力','怪力','呆呆獸','呆殼獸','呆呆王','快速球','巢穴球',
-  '菊草葉','月桂葉','大竺葵','火球鼠','火岩鼠','火爆獸','波克比','波克基古',
-  '菠蘿花','強棘球','棘刺球','臭泥娃娃','毒臭泥','吉利蛋','幸福蛋',
+  '皮丘','皮卡丘','雷丘','小拉達','拉達','阿柏蛇','阿柏怪','沙瓦克','穿山王',
+  '尼多蘭','尼多娜','尼多王','尼多后','可愛寶貝','大惡花','走路草','臭臭花','喇叭芽','大食花',
+  '嘟嘟','嘟嘟利','可達鴨','哥達鴨','猴怪','火爆猴','迷你龍','哈克龍','快龍',
+  '伊布','水精靈','雷精靈','火精靈','超能力者','葉精靈','太陽精靈','月亮精靈',
+  '仙子精靈','冰精靈','冰晶靈','幸福蛋','胖丁','胖可丁',
+  '腕力','豪力','怪力','呆呆獸','呆殼獸','呆呆王',
+  '菊草葉','月桂葉','大竺葵','火球鼠','火岩鼠','火爆獸',
+  '波克比','波克基古','菠蘿花','強棘球','棘刺球',
   '超音蝠','叉字蝠','山貓丁','勇士貓','刀刀鱗','大锹甲','飛天螳螂',
-  '燈籠魚','翠絲螺','殼盔龜','磁動龜','大磁炮','快樂蛋',
   '木守宮','長舌葉','蜥蜴王','火稚雞','力壯雞','火焰雞','水躍魚','流氷人','海魔獸',
-  '貓鼬','布比娜','九尾貓','滾滾寶','鐵皮球','爆炸球','心蝙蝠','大心蝙蝠',
-  '孢子蘑菇','毒蘑菇','溶溶鯊','巨顎鯊','沙漠蜻蜓','飛天蜻蜓',
+  '貓鼬','布比娜','九尾貓','滾滾寶','鐵皮球','爆炸球','孢子蘑菇','毒蘑菇',
+  '溶溶鯊','巨顎鯊','沙漠蜻蜓','飛天蜻蜓',
   '炎武王','大劍鬼','風速狗','超夢','夢幻','急凍鳥','閃電鳥','盔甲鳥',
-  '木守宮ex','蜥蜴王ex','火焰雞ex','海魔獸ex',
   '毛草貓','長草貓','大草貓','小火鱷','中火鱷','大火鱷','波波鴨','大波鴨','波鴨爺',
   '皮卡丘ex','雷丘ex','噴火龍ex','超夢ex','夢幻ex','伊布ex',
   '帝牙盧卡','帕路奇亞','騎拉帝納','帝牙盧卡ex','帕路奇亞ex','騎拉帝納ex',
-  '蓋歐卡','固拉多','烈空坐','捷拉奧拉','無極汰那',
-  '古拉頓ex','蓋歐卡ex','烈空坐ex','捷拉奧拉ex',
+  '蓋歐卡','固拉多','烈空坐','蓋歐卡ex','固拉多ex','烈空坐ex',
+  '捷拉奧拉','無極汰那','捷拉奧拉ex','日月伊布',
   '湯圓熊貓','湯圓熊貓ex','鐵格寶','鐵格寶ex','可多拉ex','沙奈朵ex',
-  '達克萊伊ex','花炰獸ex','源紋鵝ex','霜奔ex',
-  '歐尼雷斯ex','碧璽拉吉拉ex','帕底亞土王','帕底亞地獄犬',
-  '雪拉比','史鐸奇','塞爾達','嗡嗡歌基','基格爾德','薩戮達',
-  '格鬥巢姆','鋼鐵葉冠','古代巢姆','未來謝米','鐵荊棘','鐵頭蛇','古代刺甲',
+  '達克萊伊ex','花炰獸ex','源紋鵝ex','霜奔ex','歐尼雷斯ex','碧璽拉吉拉ex',
+  '帕底亞土王','帕底亞地獄犬','格鬥巢姆','鋼鐵葉冠','鐵荊棘','鐵頭蛇',
+  '雪拉比','史鐸奇','嗡嗡歌基','基格爾德','薩戮達',
   '博士的研究','瑪俐的決心','查哈利的練習','納奈的心意','拉丁的指引',
   '山椒媽媽的愛','莉莉艾的幹勁','梅花的決心','尤里卡的救援',
-  '精靈球','超級球','高級球','大師球','起源球','快速球','巢穴球','古代快球','古代快速球',
-  '修復機','復活草','全復活藥','力量頭帶','訓練器','特殊能量',
+  '精靈球','超級球','高級球','大師球','起源球','快速球','巢穴球','古代快速球',
+  '修復機','復活草','全復活藥','力量頭帶','訓練器',
   '基本草能量','基本火能量','基本水能量','基本電能量','基本超能量',
   '基本鬥能量','基本惡能量','基本鋼能量','雙色能量','加速能量',
 ];
 
 // ══ State ══
-let user = null, cards = [], selectedId = null, editId = null;
-let selectedReg = 'A';
-let filterCat = '', filterType = '', filterRarity = '';
-let searchQ = '';
+let user=null, cards=[], selId=null, editId=null, selReg='A';
+let fCat='', fType='', fRar='', searchQ='';
+// img picker state
+let imgPickerForEdit=false, pickedImgUrl='', imgResults=[];
 
 // ══ Auth ══
 onAuthStateChanged(auth, u => {
   if (u) {
     user = u;
     document.getElementById('authScreen').style.display = 'none';
-    document.getElementById('app').classList.add('visible');
+    document.getElementById('app').classList.add('on');
     if (u.photoURL) {
-      document.getElementById('uav').src = u.photoURL;
-      document.getElementById('uav').style.display = 'block';
-      document.getElementById('uavFb').style.display = 'none';
-    } else {
-      document.getElementById('uavFb').textContent = (u.displayName||'U')[0].toUpperCase();
-    }
+      document.getElementById('uav').src=u.photoURL; document.getElementById('uav').style.display='block';
+      document.getElementById('uavFb').style.display='none';
+    } else { document.getElementById('uavFb').textContent=(u.displayName||'U')[0].toUpperCase(); }
     document.getElementById('uname').textContent = u.displayName || u.email;
     loadCards();
   } else {
-    user = null; cards = []; selectedId = null;
-    document.getElementById('authScreen').style.display = 'flex';
-    document.getElementById('app').classList.remove('visible');
+    user=null; cards=[]; selId=null;
+    document.getElementById('authScreen').style.display='flex';
+    document.getElementById('app').classList.remove('on');
   }
 });
 
 window.loginGoogle = async () => {
-  const btn = document.getElementById('btnGoogle');
-  btn.disabled = true; btn.textContent = '登入中...';
+  const b = document.getElementById('btnGoogle');
+  b.disabled=true; b.textContent='登入中...';
   try { await signInWithPopup(auth, gp); }
   catch(e) {
-    const el = document.getElementById('authError');
-    el.textContent = e.code==='auth/popup-closed-by-user' ? '視窗已關閉，請再試' : '登入失敗，請再試';
-    el.classList.add('show');
-    btn.disabled = false; btn.textContent = '使用 Google 帳號登入';
+    const el=document.getElementById('authErr');
+    el.textContent = e.code==='auth/popup-closed-by-user'?'視窗已關閉，請再試':'登入失敗，請再試';
+    el.classList.add('show'); b.disabled=false; b.textContent='使用 Google 帳號登入';
   }
 };
 window.logout = () => signOut(auth);
 
 // ══ Firestore ══
-const ref = () => collection(db, 'users', user.uid, 'cards');
-
+const ref = () => collection(db,'users',user.uid,'cards');
 async function loadCards() {
-  showLoading(true);
-  try {
-    const snap = await getDocs(ref());
-    cards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  } catch(e) { toast('❌ 載入失敗'); }
-  showLoading(false);
-  renderAll();
+  showLoad(true);
+  try { const s=await getDocs(ref()); cards=s.docs.map(d=>({id:d.id,...d.data()})); }
+  catch(e) { toast('❌ 載入失敗'); }
+  showLoad(false); renderAll();
 }
 
 // ══ Filters ══
 function buildChips() {
-  // Cat
-  const cc = document.getElementById('chipCat');
-  cc.innerHTML = '';
-  CATS.forEach(c => {
-    const el = document.createElement('div');
-    el.className = 'chip' + (filterCat===c?' on':'');
-    el.textContent = c;
-    el.onclick = () => { filterCat = filterCat===c ? '' : c; if(filterCat!=='寶可夢') filterType=''; buildChips(); renderList(); };
-    cc.appendChild(el);
-  });
-  // Type (only show if cat is 寶可夢 or no filter)
-  const ts = document.getElementById('chipTypeSection');
-  ts.style.display = (filterCat===''||filterCat==='寶可夢') ? '' : 'none';
-  const tc = document.getElementById('chipType');
-  tc.innerHTML = '';
-  TYPES.forEach(t => {
-    const el = document.createElement('div');
-    el.className = 'chip' + (filterType===t?' on':'');
-    el.textContent = t;
-    el.onclick = () => { filterType = filterType===t ? '' : t; buildChips(); renderList(); };
-    tc.appendChild(el);
-  });
-  // Rarity
-  const rc = document.getElementById('chipRarity');
-  rc.innerHTML = '';
-  RARITIES.forEach(r => {
-    const el = document.createElement('div');
-    el.className = 'chip' + (filterRarity===r?' on':'');
-    el.textContent = r;
-    el.onclick = () => { filterRarity = filterRarity===r ? '' : r; buildChips(); renderList(); };
-    rc.appendChild(el);
-  });
+  mk('chipCat', CATS, fCat, v=>{ fCat=fCat===v?'':v; if(fCat!=='寶可夢') fType=''; buildChips(); renderList(); });
+  document.getElementById('fTypeSec').style.display = (!fCat||fCat==='寶可夢')?'':'none';
+  mk('chipType', TYPES, fType, v=>{ fType=fType===v?'':v; buildChips(); renderList(); });
+  mk('chipRar', RARS, fRar, v=>{ fRar=fRar===v?'':v; buildChips(); renderList(); });
+}
+function mk(id, items, cur, fn) {
+  const el=document.getElementById(id); el.innerHTML='';
+  items.forEach(i=>{ const c=document.createElement('div'); c.className='chip'+(cur===i?' on':''); c.textContent=i; c.onclick=()=>fn(i); el.appendChild(c); });
 }
 
+// ══ List ══
 function getFiltered() {
-  const q = searchQ.toLowerCase();
-  return cards.filter(c => {
-    if (filterCat && c.cat !== filterCat) return false;
-    if (filterType && c.type !== filterType) return false;
-    if (filterRarity && c.rarity !== filterRarity) return false;
-    if (q && !c.name.toLowerCase().includes(q) && !c.reg.toLowerCase().includes(q)) return false;
+  const q=searchQ.toLowerCase();
+  return cards.filter(c=>{
+    if(fCat&&c.cat!==fCat) return false;
+    if(fType&&c.type!==fType) return false;
+    if(fRar&&c.rarity!==fRar) return false;
+    if(q&&!c.name.toLowerCase().includes(q)&&!c.reg.toLowerCase().includes(q)) return false;
     return true;
   });
 }
 
-// ══ Render ══
-function renderAll() { buildChips(); renderList(); renderStats(); }
-
 function renderList() {
-  const list = document.getElementById('cardList');
-  const filtered = getFiltered();
-  if (!filtered.length) {
-    list.innerHTML = `<div class="card-list-empty">${cards.length ? '沒有符合條件的卡牌' : '尚無卡牌，點下方新增'}</div>`;
-    return;
-  }
-  list.innerHTML = '';
-  filtered.forEach(c => {
-    const row = document.createElement('div');
-    row.className = 'card-row' + (c.id===selectedId?' selected':'');
-    row.onclick = () => selectCard(c.id);
-    const cc = CAT_CFG[c.cat]||{bg:'#eee',color:'#333'};
-    const metaParts = [c.cat];
-    if (c.type) metaParts.push(c.type);
-    metaParts.push(c.rarity||'');
-    row.innerHTML = `
-      <div class="cr-badge">${c.reg}</div>
-      <div class="cr-info">
-        <div class="cr-name">${c.name}</div>
-        <div class="cr-meta">${metaParts.filter(Boolean).join(' · ')}</div>
-      </div>
-      <div class="cr-qty">
-        <div class="qty-badge${c.qty>0?'':' zero'}">${c.qty}</div>
-      </div>`;
-    list.appendChild(row);
+  const cl=document.getElementById('cardList');
+  const list=getFiltered();
+  if(!list.length){ cl.innerHTML=`<div class="cl-empty">${cards.length?'沒有符合條件的卡牌':'尚無卡牌，點下方新增'}</div>`; return; }
+  cl.innerHTML='';
+  list.forEach(c=>{
+    const row=document.createElement('div');
+    row.className='cr'+(c.id===selId?' sel':'');
+    row.onclick=()=>selCard(c.id);
+    const imgHtml = c.imageUrl
+      ? `<img class="cr-img" src="${c.imageUrl}" alt="" loading="lazy">`
+      : `<div class="cr-img-ph">🃏</div>`;
+    const meta=[c.cat,c.type,c.rarity].filter(Boolean).join(' · ');
+    row.innerHTML=`${imgHtml}<div class="cr-reg">${c.reg}</div>
+      <div class="cr-info"><div class="cr-name">${c.name}</div><div class="cr-meta">${meta}</div></div>
+      <div class="cr-qb${c.qty>0?'':' z'}">${c.qty}</div>`;
+    cl.appendChild(row);
   });
 }
 
 function renderStats() {
-  const total = cards.reduce((s,c)=>s+c.qty,0);
-  const rare  = cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
-  document.getElementById('statsBar').innerHTML = [
-    ['種類', cards.length],
-    ['總張數', total],
-    ['寶可夢', cards.filter(c=>c.cat==='寶可夢').length],
-    ['訓練家', cards.filter(c=>['支援者','物品','道具'].includes(c.cat)).length],
-    ['高稀有', rare],
-  ].map(([l,v])=>`<div class="stat-item"><div class="si-label">${l}</div><div class="si-val">${v}</div></div>`).join('');
+  const tot=cards.reduce((s,c)=>s+c.qty,0);
+  const rare=cards.filter(c=>['★ AR (Art Rare)','★★ SAR (Special Art Rare)','★★★ UR (Ultra Rare)','★★★★ SR (Super Rare)'].includes(c.rarity)).length;
+  document.getElementById('statsBar').innerHTML=[
+    ['種類',cards.length],['總張數',tot],
+    ['寶可夢',cards.filter(c=>c.cat==='寶可夢').length],
+    ['訓練家',cards.filter(c=>['支援者','物品','道具'].includes(c.cat)).length],
+    ['高稀有',rare],['已有卡面',cards.filter(c=>c.imageUrl).length],
+  ].map(([l,v])=>`<div class="si"><div class="si-l">${l}</div><div class="si-v">${v}</div></div>`).join('');
 }
 
-function selectCard(id) {
-  selectedId = id;
-  renderList();
-  renderDetail();
-}
+function renderAll() { buildChips(); renderList(); renderStats(); }
+
+// ══ Detail ══
+function selCard(id) { selId=id; renderList(); renderDetail(); }
 
 function renderDetail() {
-  const c = cards.find(x=>x.id===selectedId);
-  document.getElementById('rpEmpty').style.display  = c ? 'none' : 'flex';
-  document.getElementById('rpDetail').classList.toggle('show', !!c);
-  if (!c) return;
-
-  document.getElementById('dReg').textContent  = c.reg;
-  document.getElementById('dName').textContent = c.name;
-  document.getElementById('dQty').textContent  = c.qty;
-
-  // Pills
-  const pills = document.getElementById('dPills');
-  pills.innerHTML = '';
-  const cc = CAT_CFG[c.cat]||{bg:'#eee',color:'#333'};
-  pills.innerHTML += `<span class="pill" style="background:${cc.bg};color:${cc.color}">${c.cat}</span>`;
-  if (c.type) {
-    const tc = TYPE_CFG[c.type]||TYPE_CFG['一般'];
-    pills.innerHTML += `<span class="pill" style="background:${tc.bg};color:${tc.color}"><span class="dot" style="background:${tc.dot}"></span>${c.type}</span>`;
+  const c=cards.find(x=>x.id===selId);
+  document.getElementById('rpEmpty').style.display=c?'none':'flex';
+  document.getElementById('rpDetail').classList.toggle('on',!!c);
+  if(!c) return;
+  document.getElementById('dReg').textContent=c.reg;
+  document.getElementById('dName').textContent=c.name;
+  document.getElementById('dQty').textContent=c.qty;
+  // image
+  const iw=document.getElementById('dcImgWrap');
+  if(c.imageUrl) {
+    iw.innerHTML=`<img class="dc-img" src="${c.imageUrl}" alt="${c.name}" onclick="openLbox('${c.imageUrl}')">`;
+  } else {
+    iw.innerHTML=`<div class="dc-img-ph">🃏</div>`;
   }
-  if (c.rarity) {
-    const rc = RAR_CFG[c.rarity]||{bg:'#eee',color:'#333'};
-    pills.innerHTML += `<span class="pill" style="background:${rc.bg};color:${rc.color}">${c.rarity}</span>`;
-  }
-
-  // Fields
-  document.getElementById('dFields').innerHTML = [
-    ['賽場標誌', c.reg],
-    ['類別', c.cat],
-    ['屬性', c.type||'—'],
-    ['稀有度', c.rarity||'—'],
-  ].map(([l,v])=>`<div class="df-item"><div class="df-label">${l}</div><div class="df-val">${v}</div></div>`).join('');
+  // pills
+  const pills=document.getElementById('dPills');
+  const cc2=CC[c.cat]||{bg:'#eee',c:'#333'};
+  let ph=`<span class="pill" style="background:${cc2.bg};color:${cc2.c}">${c.cat}</span>`;
+  if(c.type){const t=TC[c.type]||TC['一般'];ph+=`<span class="pill" style="background:${t.bg};color:${t.c}"><span class="dot" style="background:${t.dot}"></span>${c.type}</span>`;}
+  if(c.rarity){const r=RC[c.rarity]||{bg:'#eee',c:'#333'};ph+=`<span class="pill" style="background:${r.bg};color:${r.c}">${c.rarity}</span>`;}
+  pills.innerHTML=ph;
+  // fields
+  document.getElementById('dFields').innerHTML=[['賽場標誌',c.reg],['類別',c.cat],['屬性',c.type||'—'],['稀有度',c.rarity||'—']]
+    .map(([l,v])=>`<div><div class="df-l">${l}</div><div class="df-v">${v}</div></div>`).join('');
 }
 
-// ══ Qty adjust ══
-window.adjustQty = async (delta) => {
-  const c = cards.find(x=>x.id===selectedId); if (!c) return;
-  const qty = Math.max(0, c.qty + delta);
-  try {
-    await updateDoc(doc(db,'users',user.uid,'cards',selectedId),{qty});
-    c.qty = qty; renderList(); renderDetail(); renderStats();
-  } catch(e) { toast('❌ 更新失敗'); }
+// ══ Qty ══
+window.adjQty = async delta => {
+  const c=cards.find(x=>x.id===selId); if(!c) return;
+  const qty=Math.max(0,c.qty+delta);
+  try { await updateDoc(doc(db,'users',user.uid,'cards',selId),{qty}); c.qty=qty; renderList(); renderDetail(); renderStats(); }
+  catch(e){ toast('❌ 更新失敗'); }
 };
 
 // ══ Delete ══
-window.deleteSelected = async () => {
-  const c = cards.find(x=>x.id===selectedId); if (!c) return;
-  if (!confirm(`確定要從收藏中刪除「${c.name}」嗎？`)) return;
+window.delSelected = async () => {
+  const c=cards.find(x=>x.id===selId); if(!c) return;
+  if(!confirm(`確定要刪除「${c.name}」嗎？`)) return;
   try {
-    await deleteDoc(doc(db,'users',user.uid,'cards',selectedId));
-    cards = cards.filter(x=>x.id!==selectedId);
-    selectedId = null; renderAll(); renderDetail();
-    toast('已刪除');
-  } catch(e) { toast('❌ 刪除失敗'); }
+    await deleteDoc(doc(db,'users',user.uid,'cards',selId));
+    cards=cards.filter(x=>x.id!==selId); selId=null; renderAll(); renderDetail(); toast('已刪除');
+  } catch(e){ toast('❌ 刪除失敗'); }
 };
 
-// ══ Modal ══
+// ══ ADD/EDIT MODAL ══
 window.openAddModal = () => {
-  editId = null; selectedReg = 'A';
-  document.getElementById('modalTitle').textContent = '新增卡牌';
-  document.getElementById('fName').value   = '';
-  document.getElementById('fCat').value    = '寶可夢';
-  document.getElementById('fType').value   = '一般';
-  document.getElementById('fRarity').value = '◆ C (Common)';
-  document.getElementById('fTypeWrap').style.display = '';
-  initRegGrid(); updateRegLabel();
+  editId=null; selReg='A';
+  document.getElementById('modalTitle').textContent='新增卡牌';
+  document.getElementById('fName').value='';
+  document.getElementById('fCat').value='寶可夢';
+  document.getElementById('fType').value='一般';
+  document.getElementById('fRar').value='◆ C (Common)';
+  document.getElementById('fTypeWrap').style.display='';
+  initRegGrid(); updRegLbl();
   document.getElementById('modalBg').classList.add('open');
-  setTimeout(() => document.getElementById('fName').focus(), 100);
+  setTimeout(()=>document.getElementById('fName').focus(),100);
 };
-
 window.openEditModal = () => {
-  const c = cards.find(x=>x.id===selectedId); if (!c) return;
-  editId = selectedId; selectedReg = c.reg;
-  document.getElementById('modalTitle').textContent = '編輯卡牌';
-  document.getElementById('fName').value   = c.name;
-  document.getElementById('fCat').value    = c.cat;
-  document.getElementById('fType').value   = c.type || '一般';
-  document.getElementById('fRarity').value = c.rarity || '◆ C (Common)';
-  document.getElementById('fTypeWrap').style.display = c.cat==='寶可夢' ? '' : 'none';
-  initRegGrid(); updateRegLabel();
+  const c=cards.find(x=>x.id===selId); if(!c) return;
+  editId=selId; selReg=c.reg;
+  document.getElementById('modalTitle').textContent='編輯卡牌';
+  document.getElementById('fName').value=c.name;
+  document.getElementById('fCat').value=c.cat;
+  document.getElementById('fType').value=c.type||'一般';
+  document.getElementById('fRar').value=c.rarity||'◆ C (Common)';
+  document.getElementById('fTypeWrap').style.display=c.cat==='寶可夢'?'':'none';
+  initRegGrid(); updRegLbl();
   document.getElementById('modalBg').classList.add('open');
 };
-
 window.closeModal = () => {
   document.getElementById('modalBg').classList.remove('open');
-  document.getElementById('nameAcList').classList.remove('show');
-  document.getElementById('typeAcList').classList.remove('show');
+  document.getElementById('nameAc').classList.remove('show');
+  document.getElementById('typeAc').classList.remove('show');
 };
-
-window.onCatChange = () => {
-  const isPokemon = document.getElementById('fCat').value === '寶可夢';
-  document.getElementById('fTypeWrap').style.display = isPokemon ? '' : 'none';
-  if (!isPokemon) document.getElementById('fType').value = '一般';
+window.onCatChg = () => {
+  const ok=document.getElementById('fCat').value==='寶可夢';
+  document.getElementById('fTypeWrap').style.display=ok?'':'none';
+  if(!ok) document.getElementById('fType').value='一般';
 };
-
 window.saveCard = async () => {
-  const btn  = document.getElementById('btnSave');
-  const name = document.getElementById('fName').value.trim();
-  if (!name) { alert('請輸入卡牌名稱'); return; }
-  const cat  = document.getElementById('fCat').value;
-  const data = {
-    reg:    selectedReg,
-    name,
-    cat,
-    type:   cat==='寶可夢' ? document.getElementById('fType').value : '',
-    rarity: document.getElementById('fRarity').value,
-    qty:    editId ? cards.find(x=>x.id===editId)?.qty||0 : 0,
+  const btn=document.getElementById('btnSave');
+  const name=document.getElementById('fName').value.trim();
+  if(!name){alert('請輸入卡牌名稱');return;}
+  const cat=document.getElementById('fCat').value;
+  const data={
+    reg:selReg, name, cat,
+    type: cat==='寶可夢'?document.getElementById('fType').value:'',
+    rarity: document.getElementById('fRar').value,
+    qty: editId?cards.find(x=>x.id===editId)?.qty||0:0,
+    imageUrl: editId?cards.find(x=>x.id===editId)?.imageUrl||'':'',
   };
-  btn.disabled = true; btn.textContent = '儲存中...';
+  btn.disabled=true; btn.textContent='儲存中...';
   try {
-    if (editId) {
-      await updateDoc(doc(db,'users',user.uid,'cards',editId), data);
-      Object.assign(cards.find(x=>x.id===editId), data);
-      selectedId = editId; toast('✅ 已更新');
+    if(editId){
+      await updateDoc(doc(db,'users',user.uid,'cards',editId),data);
+      Object.assign(cards.find(x=>x.id===editId),data);
+      selId=editId; toast('✅ 已更新');
     } else {
-      const r = await addDoc(ref(), {...data, createdAt: serverTimestamp()});
-      const newCard = {id: r.id, ...data};
-      cards.push(newCard); selectedId = r.id; toast('✅ 已新增：' + name);
+      const r=await addDoc(ref(),{...data,createdAt:serverTimestamp()});
+      const nc={id:r.id,...data}; cards.push(nc); selId=r.id; toast('✅ 已新增：'+name);
     }
     closeModal(); renderAll(); renderDetail();
-  } catch(e) { toast('❌ 儲存失敗'); }
-  btn.disabled = false; btn.textContent = '儲存';
+    // auto open img picker for new cards
+    if(!editId) setTimeout(()=>openImgPicker(false,name),300);
+  } catch(e){ toast('❌ 儲存失敗'); }
+  btn.disabled=false; btn.textContent='儲存';
 };
 
-// ══ Reg Grid ══
-function initRegGrid() {
-  const grid = document.getElementById('regGrid');
-  grid.innerHTML = '';
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
-    const cell = document.createElement('div');
-    cell.className = 'reg-cell' + (l===selectedReg?' on':'');
-    cell.textContent = l;
-    cell.onclick = () => { selectedReg = l; initRegGrid(); updateRegLabel(); };
+// ══ IMAGE PICKER ══
+window.openImgPicker = (forEdit=true, suggestName='') => {
+  imgPickerForEdit=forEdit; pickedImgUrl=''; imgResults=[];
+  const c=cards.find(x=>x.id===selId);
+  const qVal = suggestName || (c?c.name:'');
+  document.getElementById('imgQ').value=qVal;
+  document.getElementById('imgGrid').innerHTML='';
+  document.getElementById('btnImgApply').disabled=true;
+  document.getElementById('imgModalBg').classList.add('open');
+  if(qVal) searchImg();
+};
+window.closeImgModal = () => document.getElementById('imgModalBg').classList.remove('open');
+
+window.searchImg = async () => {
+  const q=document.getElementById('imgQ').value.trim();
+  if(!q) return;
+  const btn=document.getElementById('btnImgSearch');
+  btn.disabled=true; btn.textContent='搜尋中...';
+  document.getElementById('imgGrid').innerHTML=`<div class="img-loading" style="grid-column:1/-1">搜尋中...</div>`;
+  pickedImgUrl=''; imgResults=[];
+  document.getElementById('btnImgApply').disabled=true;
+  try {
+    const res=await fetch(`${TCGAPI}?q=name:"${encodeURIComponent(q)}"&pageSize=20&orderBy=-set.releaseDate`);
+    const data=await res.json();
+    imgResults=data.data||[];
+    renderImgGrid();
+  } catch(e){
+    document.getElementById('imgGrid').innerHTML=`<div class="img-empty" style="grid-column:1/-1">搜尋失敗，請確認網路連線</div>`;
+  }
+  btn.disabled=false; btn.textContent='搜尋';
+};
+
+function renderImgGrid() {
+  const grid=document.getElementById('imgGrid');
+  if(!imgResults.length){
+    grid.innerHTML=`<div class="img-empty" style="grid-column:1/-1">找不到符合的卡牌<br><small>請嘗試英文名稱（如 Pikachu、Charizard）</small></div>`;
+    return;
+  }
+  grid.innerHTML='';
+  imgResults.forEach(card=>{
+    const url=card.images?.small||'';
+    if(!url) return;
+    const cell=document.createElement('div');
+    cell.className='img-cell'+(pickedImgUrl===url?' picked':'');
+    cell.innerHTML=`<img src="${url}" alt="${card.name}" loading="lazy">
+      <div class="img-cell-name">${card.set?.name||''}</div>`;
+    cell.onclick=()=>{ pickedImgUrl=url; renderImgGrid(); document.getElementById('btnImgApply').disabled=false; };
     grid.appendChild(cell);
   });
 }
-function updateRegLabel() {
-  document.getElementById('regLabel').textContent = selectedReg;
+
+window.applyImg = async () => {
+  if(!pickedImgUrl||!selId) return;
+  try {
+    await updateDoc(doc(db,'users',user.uid,'cards',selId),{imageUrl:pickedImgUrl});
+    const c=cards.find(x=>x.id===selId); if(c) c.imageUrl=pickedImgUrl;
+    closeImgModal(); renderList(); renderDetail(); renderStats(); toast('✅ 卡面已更新');
+  } catch(e){ toast('❌ 更新失敗'); }
+};
+window.applyNoImg = async () => {
+  if(!selId) return;
+  try {
+    await updateDoc(doc(db,'users',user.uid,'cards',selId),{imageUrl:''});
+    const c=cards.find(x=>x.id===selId); if(c) c.imageUrl='';
+    closeImgModal(); renderList(); renderDetail(); renderStats(); toast('已移除卡面');
+  } catch(e){ toast('❌ 更新失敗'); }
+};
+
+// ══ LIGHTBOX ══
+window.openLbox = url => { document.getElementById('lboxImg').src=url; document.getElementById('lbox').classList.add('open'); };
+window.closeLbox = () => document.getElementById('lbox').classList.remove('open');
+
+// ══ REG GRID ══
+function initRegGrid() {
+  const g=document.getElementById('regGrid'); g.innerHTML='';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l=>{
+    const c=document.createElement('div');
+    c.className='reg-cell'+(l===selReg?' on':'');
+    c.textContent=l;
+    c.onclick=()=>{ selReg=l; initRegGrid(); updRegLbl(); };
+    g.appendChild(c);
+  });
 }
+function updRegLbl() { document.getElementById('regLbl').textContent=selReg; }
 
-// ══ Search Autocomplete ══
-let searchAcIdx = -1;
-window.onSearchInput = () => {
-  searchQ = document.getElementById('searchQ').value.trim();
-  const q = searchQ.toLowerCase();
-  searchAcIdx = -1;
-  const list = document.getElementById('searchAcList');
-  if (!q) { list.classList.remove('show'); renderList(); return; }
-  const fromCards = [...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
-  const fromDB    = POKEMON_ZH.filter(n=>n.includes(searchQ)&&!fromCards.includes(n));
-  const matches   = [...fromCards,...fromDB].slice(0,10);
-  list.innerHTML  = '';
-  if (!matches.length) { list.classList.remove('show'); renderList(); return; }
-  matches.forEach(name => {
-    const item = document.createElement('div');
-    item.className = 'ac-item'; item.textContent = name;
-    item.onmousedown = e => { e.preventDefault(); document.getElementById('searchQ').value=name; searchQ=name; list.classList.remove('show'); renderList(); };
-    list.appendChild(item);
-  });
-  list.classList.add('show');
-  renderList();
+// ══ AUTOCOMPLETE: Search ══
+let srchIdx=-1;
+window.onSearch = () => {
+  searchQ=document.getElementById('searchQ').value.trim();
+  const q=searchQ.toLowerCase(), ac=document.getElementById('searchAc');
+  srchIdx=-1;
+  if(!q){ ac.classList.remove('show'); renderList(); return; }
+  const fm=[...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
+  const fd=POKEMON_ZH.filter(n=>n.includes(searchQ)&&!fm.includes(n));
+  const m=[...fm,...fd].slice(0,10);
+  ac.innerHTML=''; if(!m.length){ac.classList.remove('show');renderList();return;}
+  m.forEach(n=>{const i=document.createElement('div');i.className='ac-item';i.textContent=n;
+    i.onmousedown=e=>{e.preventDefault();document.getElementById('searchQ').value=n;searchQ=n;ac.classList.remove('show');renderList();};
+    ac.appendChild(i);});
+  ac.classList.add('show'); renderList();
 };
-window.onSearchKeydown = e => {
-  const list = document.getElementById('searchAcList');
-  const items = list.querySelectorAll('.ac-item');
-  if (!list.classList.contains('show')) return;
-  if (e.key==='ArrowDown') { e.preventDefault(); searchAcIdx=Math.min(searchAcIdx+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('hi',i===searchAcIdx)); }
-  else if (e.key==='ArrowUp') { e.preventDefault(); searchAcIdx=Math.max(searchAcIdx-1,-1); items.forEach((el,i)=>el.classList.toggle('hi',i===searchAcIdx)); }
-  else if (e.key==='Enter'&&searchAcIdx>=0) { e.preventDefault(); const n=items[searchAcIdx].textContent; document.getElementById('searchQ').value=n; searchQ=n; list.classList.remove('show'); renderList(); }
-  else if (e.key==='Escape') list.classList.remove('show');
+window.onSearchKd = e => {
+  const ac=document.getElementById('searchAc'),items=ac.querySelectorAll('.ac-item');
+  if(!ac.classList.contains('show')) return;
+  if(e.key==='ArrowDown'){e.preventDefault();srchIdx=Math.min(srchIdx+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('hi',i===srchIdx));}
+  else if(e.key==='ArrowUp'){e.preventDefault();srchIdx=Math.max(srchIdx-1,-1);items.forEach((el,i)=>el.classList.toggle('hi',i===srchIdx));}
+  else if(e.key==='Enter'&&srchIdx>=0){e.preventDefault();const n=items[srchIdx].textContent;document.getElementById('searchQ').value=n;searchQ=n;ac.classList.remove('show');renderList();}
+  else if(e.key==='Escape') ac.classList.remove('show');
 };
 
-// ══ Name Autocomplete (in modal) ══
-let nameAcIdx = -1;
-window.onNameAcInput = () => {
-  const val = document.getElementById('fName').value.trim();
-  const list = document.getElementById('nameAcList');
-  nameAcIdx = -1;
-  if (!val) { list.classList.remove('show'); return; }
-  const q = val.toLowerCase();
-  const fromCards = [...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
-  const fromDB    = POKEMON_ZH.filter(n=>n.includes(val)&&!fromCards.includes(n));
-  const matches   = [...fromCards,...fromDB].slice(0,10);
-  list.innerHTML  = '';
-  if (!matches.length) { list.classList.remove('show'); return; }
-  matches.forEach(name => {
-    const item = document.createElement('div');
-    item.className='ac-item'; item.textContent=name;
-    item.onmousedown = e => { e.preventDefault(); document.getElementById('fName').value=name; list.classList.remove('show'); };
-    list.appendChild(item);
-  });
-  list.classList.add('show');
+// ══ AUTOCOMPLETE: Name ══
+let nameIdx=-1;
+window.onNameAc = () => {
+  const v=document.getElementById('fName').value.trim(), ac=document.getElementById('nameAc');
+  nameIdx=-1; if(!v){ac.classList.remove('show');return;}
+  const q=v.toLowerCase();
+  const fm=[...new Set(cards.map(c=>c.name))].filter(n=>n.toLowerCase().includes(q));
+  const fd=POKEMON_ZH.filter(n=>n.includes(v)&&!fm.includes(n));
+  const m=[...fm,...fd].slice(0,10);
+  ac.innerHTML=''; if(!m.length){ac.classList.remove('show');return;}
+  m.forEach(n=>{const i=document.createElement('div');i.className='ac-item';i.textContent=n;
+    i.onmousedown=e=>{e.preventDefault();document.getElementById('fName').value=n;ac.classList.remove('show');};
+    ac.appendChild(i);});
+  ac.classList.add('show');
 };
-window.onNameAcKeydown = e => {
-  const list  = document.getElementById('nameAcList');
-  const items = list.querySelectorAll('.ac-item');
-  if (!list.classList.contains('show')) return;
-  if (e.key==='ArrowDown') { e.preventDefault(); nameAcIdx=Math.min(nameAcIdx+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('hi',i===nameAcIdx)); }
-  else if (e.key==='ArrowUp') { e.preventDefault(); nameAcIdx=Math.max(nameAcIdx-1,-1); items.forEach((el,i)=>el.classList.toggle('hi',i===nameAcIdx)); }
-  else if (e.key==='Enter'&&nameAcIdx>=0) { e.preventDefault(); document.getElementById('fName').value=items[nameAcIdx].textContent; list.classList.remove('show'); }
-  else if (e.key==='Escape') list.classList.remove('show');
+window.onNameKd = e => {
+  const ac=document.getElementById('nameAc'),items=ac.querySelectorAll('.ac-item');
+  if(!ac.classList.contains('show')) return;
+  if(e.key==='ArrowDown'){e.preventDefault();nameIdx=Math.min(nameIdx+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('hi',i===nameIdx));}
+  else if(e.key==='ArrowUp'){e.preventDefault();nameIdx=Math.max(nameIdx-1,-1);items.forEach((el,i)=>el.classList.toggle('hi',i===nameIdx));}
+  else if(e.key==='Enter'&&nameIdx>=0){e.preventDefault();document.getElementById('fName').value=items[nameIdx].textContent;ac.classList.remove('show');}
+  else if(e.key==='Escape') ac.classList.remove('show');
 };
 
-// ══ Type Autocomplete (in modal) ══
-let typeAcIdx = -1;
-window.onTypeAcFocus = () => showTypeAc('');
-window.onTypeAcKeydown = e => {
-  const list  = document.getElementById('typeAcList');
-  const items = list.querySelectorAll('.ac-item');
-  if (!list.classList.contains('show')&&e.key==='ArrowDown') { showTypeAc(''); return; }
-  if (e.key==='ArrowDown') { e.preventDefault(); typeAcIdx=Math.min(typeAcIdx+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('hi',i===typeAcIdx)); }
-  else if (e.key==='ArrowUp') { e.preventDefault(); typeAcIdx=Math.max(typeAcIdx-1,-1); items.forEach((el,i)=>el.classList.toggle('hi',i===typeAcIdx)); }
-  else if (e.key==='Enter'&&typeAcIdx>=0) { e.preventDefault(); document.getElementById('fType').value=items[typeAcIdx].textContent; list.classList.remove('show'); }
-  else if (e.key==='Escape') list.classList.remove('show');
+// ══ AUTOCOMPLETE: Type ══
+let typeIdx=-1;
+window.showTypeAc = () => {
+  const ac=document.getElementById('typeAc'); typeIdx=-1; ac.innerHTML='';
+  TYPES.forEach(t=>{const i=document.createElement('div');i.className='ac-item';i.textContent=t;
+    i.onmousedown=e=>{e.preventDefault();document.getElementById('fType').value=t;ac.classList.remove('show');};
+    ac.appendChild(i);});
+  ac.classList.add('show');
 };
-function showTypeAc(q) {
-  const list = document.getElementById('typeAcList');
-  typeAcIdx = -1;
-  const matches = q ? TYPES.filter(t=>t.includes(q)) : TYPES;
-  list.innerHTML = '';
-  matches.forEach(t => {
-    const item = document.createElement('div');
-    item.className='ac-item'; item.textContent=t;
-    item.onmousedown = e => { e.preventDefault(); document.getElementById('fType').value=t; list.classList.remove('show'); };
-    list.appendChild(item);
-  });
-  list.classList.add('show');
-}
+window.onTypeKd = e => {
+  const ac=document.getElementById('typeAc'),items=ac.querySelectorAll('.ac-item');
+  if(!ac.classList.contains('show')&&e.key==='ArrowDown'){showTypeAc();return;}
+  if(e.key==='ArrowDown'){e.preventDefault();typeIdx=Math.min(typeIdx+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('hi',i===typeIdx));}
+  else if(e.key==='ArrowUp'){e.preventDefault();typeIdx=Math.max(typeIdx-1,-1);items.forEach((el,i)=>el.classList.toggle('hi',i===typeIdx));}
+  else if(e.key==='Enter'&&typeIdx>=0){e.preventDefault();document.getElementById('fType').value=items[typeIdx].textContent;ac.classList.remove('show');}
+  else if(e.key==='Escape') ac.classList.remove('show');
+};
 
-// ══ Global click to close autocomplete ══
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-box'))  document.getElementById('searchAcList').classList.remove('show');
-  if (!e.target.closest('#fName')&&!e.target.closest('#nameAcList')) document.getElementById('nameAcList').classList.remove('show');
-  if (!e.target.closest('#fTypeWrap'))   document.getElementById('typeAcList').classList.remove('show');
+// ══ CLOSE DROPDOWNS ON OUTSIDE CLICK ══
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.sb'))       document.getElementById('searchAc').classList.remove('show');
+  if(!e.target.closest('#fName')&&!e.target.closest('#nameAc')) document.getElementById('nameAc').classList.remove('show');
+  if(!e.target.closest('#fTypeWrap')) document.getElementById('typeAc').classList.remove('show');
 });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ closeModal(); closeImgModal(); closeLbox(); }
+});
+document.getElementById('modalBg').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeModal(); });
+document.getElementById('imgModalBg').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeImgModal(); });
 
-// ══ Keyboard ══
-document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
-document.getElementById('modalBg').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
+// ══ UTILS ══
+function showLoad(v){ document.getElementById('loadOv').classList.toggle('show',v); }
+let toastT;
+window.toast = msg=>{ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2500); };
 
-// ══ Utils ══
-function showLoading(v) { document.getElementById('loadingOverlay').classList.toggle('show', v); }
-let toastTimer;
-window.toast = msg => {
-  const t = document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
-};
-
-// Boot
 renderDetail();
 </script>
 </body>
